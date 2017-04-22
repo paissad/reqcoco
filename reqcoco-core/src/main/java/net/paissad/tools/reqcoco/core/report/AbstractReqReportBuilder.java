@@ -25,9 +25,9 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	 * 
 	 * @throws ReqReportBuilderException
 	 */
-	abstract protected void build() throws ReqReportBuilderException;
+	protected abstract void build() throws ReqReportBuilderException;
 
-	abstract protected OutputStream getOutput();
+	protected abstract OutputStream getOutput();
 
 	/**
 	 * @return The ratio of requirements for which the codes are marked as done !

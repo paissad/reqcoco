@@ -117,7 +117,7 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 
 	protected abstract Map<String, Object> getOptions();
 
-	private static enum SOURCE_TYPE {
+	private enum SOURCE_TYPE {
 		FILE, URL;
 	}
 
