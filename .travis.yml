@@ -1,0 +1,15 @@
+sudo: false
+language: java
+jdk:
+  - oraclejdk8
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+addons:
+  sonarqube:
+    organization: paissad
+    branches:
+      - master
+script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
