@@ -10,6 +10,12 @@
 
   <artifactId>reqcoco-api</artifactId>
 
-  <name>reqcoco-api</name>
+  <name>ReqCoCo API</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+  </dependencies>
 </project>
