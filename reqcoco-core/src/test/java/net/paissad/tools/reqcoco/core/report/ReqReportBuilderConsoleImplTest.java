@@ -14,7 +14,7 @@ import net.paissad.tools.reqcoco.core.TestUtil;
 
 public class ReqReportBuilderConsoleImplTest {
 
-	private ReqReportBuilderConsoleImpl reqReportBuilderConsole;
+	private ReqReportBuilderConsole reqReportBuilderConsole;
 
 	@Before
 	public void setUp() throws Exception {
@@ -39,7 +39,7 @@ public class ReqReportBuilderConsoleImplTest {
 
 	private void setUpByUsingUri(final URI uri) throws ReqParserException {
 		Collection<Requirement> reqs = TestUtil.getRequirementsFromStub(uri, null);
-		this.reqReportBuilderConsole = new ReqReportBuilderConsoleImpl(reqs);
+		this.reqReportBuilderConsole = new ReqReportBuilderConsole(reqs);
 	}
 
 }

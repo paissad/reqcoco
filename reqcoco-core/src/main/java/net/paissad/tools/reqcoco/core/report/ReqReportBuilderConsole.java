@@ -12,13 +12,13 @@ import org.slf4j.LoggerFactory;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 
-public class ReqReportBuilderConsoleImpl extends AbstractReqReportBuilder {
+public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 
-	private static final Logger		LOGGER	= LoggerFactory.getLogger(ReqReportBuilderConsoleImpl.class);
+	private static final Logger		LOGGER	= LoggerFactory.getLogger(ReqReportBuilderConsole.class);
 
 	private static final Charset	UTF8	= Charset.forName("UTF-8");
 
-	public ReqReportBuilderConsoleImpl(final Collection<Requirement> requirements) {
+	public ReqReportBuilderConsole(final Collection<Requirement> requirements) {
 		getRequirements().addAll(requirements);
 	}
 
