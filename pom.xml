@@ -6,8 +6,50 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>ReqCoCo Parent</name>
+  <name>ReqCoCo</name>
+  <description>Requirements Code Coverage</description>
+  <url>https://github.com/paissad/reqcoco</url>
+  <inceptionYear>2017</inceptionYear>
 
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/paissad/reqcoco/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Travis</system>
+    <url>https://travis-ci.org/paissad/soapui-multi-testrunner</url>
+  </ciManagement>
+
+  <prerequisites>
+    <maven>3.3.9</maven>
+  </prerequisites>
+
+  <scm>
+    <connection>scm:git:https://github.com/paissad/reqcoco.git</connection>
+    <developerConnection>scm:git:https://github.com/paissad/reqcoco.git</developerConnection>
+    <url>https://github.com/paissad/reqcoco.git</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License v3.0 or later</name>
+      <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+      <distribution>manual</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>paissad</id>
+      <email>paissad@gmail.com</email>
+      <name>P. I. DIAKHATE</name>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
