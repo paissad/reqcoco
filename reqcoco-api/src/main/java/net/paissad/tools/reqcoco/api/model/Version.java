@@ -26,5 +26,6 @@ public class Version implements Serializable {
 	private Revision			revision;
 
 	public Version() {
+		// default no-arg constructor
 	}
 }

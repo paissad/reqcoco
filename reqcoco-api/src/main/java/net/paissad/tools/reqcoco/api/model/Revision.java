@@ -22,6 +22,7 @@ public class Revision implements Serializable {
 	private String				value;
 
 	public Revision() {
+		// default no-arg constructor
 	}
 
 }

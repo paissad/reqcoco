@@ -40,6 +40,7 @@ public class Requirement implements Serializable {
 	private boolean				testDone;
 
 	public Requirement() {
+		// default no-arg constructor
 	}
 
 }
