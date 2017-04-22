@@ -11,11 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @XmlRootElement(name = "requirement")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter
+@ToString(exclude = { "fullDescription" })
 public class Requirement implements Serializable {
 
 	private static final long	serialVersionUID	= 1L;

@@ -10,11 +10,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @XmlRootElement(name = "version")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter
+@ToString
 public class Version implements Serializable {
 
 	private static final long	serialVersionUID	= 1L;
