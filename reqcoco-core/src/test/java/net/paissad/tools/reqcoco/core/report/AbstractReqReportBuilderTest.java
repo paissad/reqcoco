@@ -3,11 +3,8 @@ package net.paissad.tools.reqcoco.core.report;
 import java.io.OutputStream;
 import java.util.Collection;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
@@ -19,14 +16,6 @@ public class AbstractReqReportBuilderTest {
 	private Collection<Requirement>		requirements;
 
 	private AbstractReqReportBuilder	abstractRequirementReportBuilder;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -48,10 +37,6 @@ public class AbstractReqReportBuilderTest {
 				// Do nothing ...
 			}
 		};
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

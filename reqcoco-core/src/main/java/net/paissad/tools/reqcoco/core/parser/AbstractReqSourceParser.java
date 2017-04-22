@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.paissad.tools.reqcoco.api.exception.ReParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.api.model.Version;
@@ -43,7 +43,7 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 	private Requirements		cachedRequirements;
 
 	@Override
-	public Requirements getRequirements() throws ReParserException {
+	public Requirements getRequirements() throws ReqParserException {
 
 		try {
 
@@ -75,12 +75,12 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 		} catch (Exception e) {
 			String errMsg = "Error while retrieving requirements from the source : " + e.getMessage();
 			LOGGER.error(errMsg, e);
-			throw new ReParserException(errMsg, e);
+			throw new ReqParserException(errMsg, e);
 		}
 	}
 
 	@Override
-	public Collection<Requirement> getRequirements(final Version version) throws ReParserException {
+	public Collection<Requirement> getRequirements(final Version version) throws ReqParserException {
 
 		if (version != null && version.getValue() != null) {
 
