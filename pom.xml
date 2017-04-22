@@ -18,7 +18,7 @@
 
   <ciManagement>
     <system>Travis</system>
-    <url>https://travis-ci.org/paissad/soapui-multi-testrunner</url>
+    <url>https://travis-ci.org/paissad/reqcoco</url>
   </ciManagement>
 
   <prerequisites>
