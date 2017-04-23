@@ -7,18 +7,27 @@ import java.util.LinkedList;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
+import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 
 public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 
 	@Getter(value = AccessLevel.PROTECTED)
-	private Collection<Requirement> requirements = new LinkedList<>();
+	private Collection<Requirement>	requirements	= new LinkedList<>();
+
+	@Getter
+	@Setter
+	private ReqReportConfig			reportConfig;
+
+	private ReqReportConfig			defaultReportConfig;
 
 	@Override
-	public void run(Collection<Requirement> requirements, OutputStream out) throws ReqReportBuilderException {
+	public void run(Collection<Requirement> requirements, OutputStream out, final ReqReportConfig config) throws ReqReportBuilderException {
+		this.setReportConfig(config);
 		build();
 	}
 
@@ -99,4 +108,11 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 		return Requirements.getByVersion(getRequirements(), versionValue);
 	}
 
+	protected ReqReportConfig getDefaultReportConfig() {
+		if (this.defaultReportConfig == null) {
+			this.defaultReportConfig = new ReqReportConfig() {
+			};
+		}
+		return this.defaultReportConfig;
+	}
 }

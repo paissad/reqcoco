@@ -36,6 +36,7 @@ public class AbstractReqReportBuilderTest {
 			protected void build() throws ReqReportBuilderException {
 				// Do nothing ...
 			}
+
 		};
 	}
 

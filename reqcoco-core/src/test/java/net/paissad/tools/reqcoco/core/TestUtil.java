@@ -14,6 +14,8 @@ public class TestUtil {
 
 	public static final URI	REQUIREMENTS_INPUT_FILE1_XML_URI;
 
+	public static final URI	REQUIREMENTS_INPUT_FILE2_XML_URI;
+
 	public static final URI	REQUIREMENTS_INPUT_FILE_EMPTY_XML_URI;
 
 	public static final URI	REQUIREMENTS_INTPUT_MALFORMED_SOURCE1_XML_URI;
@@ -22,6 +24,7 @@ public class TestUtil {
 		try {
 
 			REQUIREMENTS_INPUT_FILE1_XML_URI = TestUtil.class.getResource("/requirements_input/file1.xml").toURI();
+			REQUIREMENTS_INPUT_FILE2_XML_URI = TestUtil.class.getResource("/requirements_input/file2.xml").toURI();
 			REQUIREMENTS_INPUT_FILE_EMPTY_XML_URI = TestUtil.class.getResource("/requirements_input/empty.xml").toURI();
 			REQUIREMENTS_INTPUT_MALFORMED_SOURCE1_XML_URI = TestUtil.class.getResource("/requirements_input/malformed_source1.xml").toURI();
 

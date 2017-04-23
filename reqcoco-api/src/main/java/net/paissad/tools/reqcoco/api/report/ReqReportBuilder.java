@@ -9,6 +9,6 @@ import net.paissad.tools.reqcoco.api.model.Requirement;
 @FunctionalInterface
 public interface ReqReportBuilder {
 
-	void run(final Collection<Requirement> requirements, final OutputStream out) throws ReqReportBuilderException;
+	void run(final Collection<Requirement> requirements, final OutputStream out, final ReqReportConfig config) throws ReqReportBuilderException;
 
 }

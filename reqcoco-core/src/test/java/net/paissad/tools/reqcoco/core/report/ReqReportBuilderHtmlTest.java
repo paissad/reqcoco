@@ -12,8 +12,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
+import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.core.TestUtil;
 
@@ -28,7 +28,7 @@ public class ReqReportBuilderHtmlTest {
 	public void setUp() throws Exception {
 		this.reportOutputPath = Files.createTempDirectory("__reqcoco_html_report__");
 		FileUtils.forceDeleteOnExit(this.reportOutputPath.toFile());
-		this.setUpByUsingUri(TestUtil.REQUIREMENTS_INPUT_FILE1_XML_URI);
+		this.setUpByUsingUri(TestUtil.REQUIREMENTS_INPUT_FILE2_XML_URI);
 	}
 
 	@After

@@ -2,59 +2,59 @@
 <meta charset="utf-8">
 <style>
 body {
-    width: 1060px;
-    margin: 50px auto;
+	width: 1060px;
+	margin: 50px auto;
 }
 
 path {
-    stroke: #fff;
+	stroke: #fff;
 }
 
 path:hover {
-    opacity: 0.9;
+	opacity: 0.9;
 }
 
 rect:hover {
-    fill: blue;
+	fill: blue;
 }
 
 .axis {
-    font: 10px sans-serif;
+	font: 10px sans-serif;
 }
 
 .legend tr {
-    border-bottom: 1px solid grey;
+	border-bottom: 1px solid grey;
 }
 
 .legend tr:first-child {
-    border-top: 1px solid grey;
+	border-top: 1px solid grey;
 }
 
 .axis path, .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
 }
 
 .x.axis path {
-    display: none;
+	display: none;
 }
 
 .legend {
-    margin-bottom: 76px;
-    display: inline-block;
-    border-collapse: collapse;
-    border-spacing: 0px;
+	margin-bottom: 76px;
+	display: inline-block;
+	border-collapse: collapse;
+	border-spacing: 0px;
 }
 
 .legend td {
-    padding: 4px 5px;
-    vertical-align: bottom;
+	padding: 4px 5px;
+	vertical-align: bottom;
 }
 
 .legendFreq, .legendPerc {
-    align: right;
-    width: 50px;
+	align: right;
+	width: 50px;
 }
 </style>
 <head>
@@ -425,8 +425,18 @@ function fieldLinkFormatter(value) {
 </script>
 
 <script>
-var freqDataCode=[${dataCode}];
-var freqDataTests=[${dataTests}];
+var freqDataCode=[
+	{Version:'Version 1.0',freq:{Done:10, Undone:3, Skipped:1}}
+	,{Version:'Version 1.1',freq:{Done:7, Undone:2, Skipped:0}}
+	,{Version:'Version 1.3',freq:{Done:8, Undone:3, Skipped:0}}
+	,{Version:'Version 2.0',freq:{Done:1, Undone:4, Skipped:0}},
+];
+var freqDataTests=[
+	{Version:'Version 1.0',freq:{Done:3, Undone:3, Skipped:1}}
+	,{Version:'Version 1.1',freq:{Done:1, Undone:2, Skipped:0}}
+	,{Version:'Version 1.3',freq:{Done:4, Undone:3, Skipped:0}}
+	,{Version:'Version 2.0',freq:{Done:6, Undone:4, Skipped:0}},
+];
 
 <!-- Dashboard for the source code coverage -->
 dashboard('#dashboard_code_coverage',freqDataCode);
@@ -437,4 +447,6 @@ dashboard('#dashboard_tests_coverage',freqDataTests);
 </script>
 
 <!--
+var freqDataCode=[${dataCode}];
+var freqDataTests=[${dataTests}];
 -->

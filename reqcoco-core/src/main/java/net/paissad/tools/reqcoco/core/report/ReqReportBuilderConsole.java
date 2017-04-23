@@ -20,6 +20,7 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 
 	public ReqReportBuilderConsole(final Collection<Requirement> requirements) {
 		getRequirements().addAll(requirements);
+		this.setReportConfig(getDefaultReportConfig());
 	}
 
 	@Override
@@ -35,6 +36,7 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 			final OutputStream out = getOutput();
 			try (BufferedOutputStream bos = new BufferedOutputStream(out, 8192)) {
 
+				out.write((getReportConfig().getTitle() + "\n").getBytes(UTF8));
 				out.write("========================================== SUMMARY ===============================================\n".getBytes(UTF8));
 
 				final String summaryFormat = "%-25s : %s\n";

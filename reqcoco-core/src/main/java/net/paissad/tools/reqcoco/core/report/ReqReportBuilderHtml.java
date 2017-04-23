@@ -45,7 +45,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	/**
 	 * The template configuration
 	 */
-	private Configuration			config;
+	private Configuration			templateConfig;
 
 	/**
 	 * The path of the directory where to create for the HTML report
@@ -75,17 +75,18 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		getRequirements().addAll(requirements);
 		this.reportOutputDirPath = reportOutputDirPath;
 		this.reportFilename = StringUtils.isBlank(reportFilename) ? DEFAULT_REPORT_FILENAME : reportFilename;
+		this.setReportConfig(getDefaultReportConfig());
 		initTemplateFormatter();
 	}
 
 	private void initTemplateFormatter() {
 		LOGGER.debug("Initializing HTML template formatter");
-		this.config = new Configuration(Configuration.VERSION_2_3_26);
-		this.config.setDefaultEncoding("UTF-8");
-		this.config.setLocale(Locale.US);
-		this.config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-		this.config.setLogTemplateExceptions(false);
-		this.config.setClassForTemplateLoading(getClass(), TEMPLATES_REPORTS_HTML_LOCATION);
+		this.templateConfig = new Configuration(Configuration.VERSION_2_3_26);
+		this.templateConfig.setDefaultEncoding("UTF-8");
+		this.templateConfig.setLocale(Locale.US);
+		this.templateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+		this.templateConfig.setLogTemplateExceptions(false);
+		this.templateConfig.setClassForTemplateLoading(getClass(), TEMPLATES_REPORTS_HTML_LOCATION);
 		LOGGER.debug("Finished initialization of HTML template formatter");
 	}
 
@@ -96,7 +97,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 			LOGGER.info("Starting to generate HTML report");
 
-			final Template template = this.config.getTemplate("template.html");
+			final Template template = this.templateConfig.getTemplate("template.html");
 
 			// We create the output directory before generating the HTML report and we copy the lib/ directory into it
 			Files.createDirectories(getReportOutputDirPath());
@@ -152,8 +153,12 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 		});
 
+		model.put("coverage_title", getReportConfig().getTitle());
+		model.put("code_coverage_diagram_name", getReportConfig().getCodeCoverageDiagramName());
+		model.put("tests_coverage_diagram_name", getReportConfig().getTestsCoverageDiagramName());
 		model.put("dataCode", dataCode.toString());
 		model.put("dataTests", dataTests.toString());
+		model.put("requirements", getRequirements());
 
 		return model;
 	}
