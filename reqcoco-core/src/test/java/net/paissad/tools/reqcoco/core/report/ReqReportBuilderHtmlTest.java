@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.api.exception.ReqParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.core.TestUtil;
@@ -46,7 +46,7 @@ public class ReqReportBuilderHtmlTest {
 		Assert.assertNotNull(this.reqReportBuilderHtml.getOutput());
 	}
 
-	private void setUpByUsingUri(final URI uri) throws ReqParserException {
+	private void setUpByUsingUri(final URI uri) throws ReqSourceParserException {
 		final Collection<Requirement> reqs = TestUtil.getRequirementsFromStub(uri, null);
 		this.reqReportBuilderHtml = new ReqReportBuilderHtml(reqs, this.reportOutputPath);
 	}

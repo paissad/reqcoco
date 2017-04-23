@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -81,6 +82,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		LOGGER.debug("Initializing HTML template formatter");
 		this.config = new Configuration(Configuration.VERSION_2_3_26);
 		this.config.setDefaultEncoding("UTF-8");
+		this.config.setLocale(Locale.US);
 		this.config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		this.config.setLogTemplateExceptions(false);
 		this.config.setClassForTemplateLoading(getClass(), TEMPLATES_REPORTS_HTML_LOCATION);
@@ -104,15 +106,10 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 			LOGGER.info("Finished generating HTML report");
 
-		} catch (IOException ioe) {
-			String errMsg = "I/O error while building HTML report : " + ioe.getMessage();
-			LOGGER.error(errMsg, ioe);
-			throw new ReqReportBuilderException(errMsg, ioe);
-
-		} catch (TemplateException te) {
-			String errMsg = "Error while formatting the HTML template : " + te.getMessage();
-			LOGGER.error(errMsg, te);
-			throw new ReqReportBuilderException(errMsg, te);
+		} catch (IOException | TemplateException e) {
+			String errMsg = "Error while building HTML report : " + e.getMessage();
+			LOGGER.error(errMsg, e);
+			throw new ReqReportBuilderException(errMsg, e);
 		}
 
 	}
