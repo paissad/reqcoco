@@ -10,7 +10,7 @@
 
   <artifactId>reqcoco-core</artifactId>
 
-  <name>ReqCoco Core</name>
+  <name>ReqCoCo Core</name>
 
   <dependencies>
     <dependency>
