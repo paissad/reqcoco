@@ -40,13 +40,23 @@ public class AbstractReqReportBuilderTest {
 	}
 
 	@Test
-	public void testGetCodeDoneRatio() {
+	public void testGetCodeDoneRatioAnyVersion() {
 		Assert.assertEquals(2f / 3f, this.abstractRequirementReportBuilder.getCodeDoneRatio(), 0.0001);
 	}
 
 	@Test
-	public void testGetTestDoneRatio() {
+	public void testGetCodeDoneRatioV1_0() {
+		Assert.assertEquals(1f / 2f, this.abstractRequirementReportBuilder.getCodeDoneRatio("1.0"), 0.0001);
+	}
+
+	@Test
+	public void testGetTestDoneRatioAnyVersion() {
 		Assert.assertEquals(1f / 3f, this.abstractRequirementReportBuilder.getTestDoneRatio(), 0.0001);
+	}
+
+	@Test
+	public void testGetTestDoneRatioV1_0() {
+		Assert.assertEquals(1f / 2f, this.abstractRequirementReportBuilder.getTestDoneRatio("1.0"), 0.0001);
 	}
 
 	@Test

@@ -34,7 +34,7 @@ public class Requirement implements Serializable {
 
 	private String				fullDescription;
 
-	@XmlElement
+	@XmlElement(required = true, nillable = false)
 	private Version				version;
 
 	private boolean				codeDone;

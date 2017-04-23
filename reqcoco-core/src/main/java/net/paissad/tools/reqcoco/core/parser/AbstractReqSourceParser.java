@@ -8,8 +8,6 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -68,6 +66,8 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 				default:
 					break;
 				}
+
+				this.sanitizeRequirements();
 			}
 
 			return this.getCachedRequirements();
@@ -81,15 +81,7 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 
 	@Override
 	public Collection<Requirement> getRequirements(final Version version) throws ReqParserException {
-
-		if (version != null && version.getValue() != null) {
-
-			final Stream<Requirement> reqs = getRequirements().getRequirements().stream();
-			return reqs.filter(req -> req != null && version.getValue().equals(req.getVersion().getValue())).collect(Collectors.toList());
-
-		} else {
-			return getRequirements().getRequirements();
-		}
+		return Requirements.getByVersion(getRequirements().getRequirements(), version.getValue());
 	}
 
 	@Override
@@ -111,6 +103,14 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 
 			this.setSourceAlreadyParsed(true);
 		}
+	}
+
+	private void sanitizeRequirements() {
+		getCachedRequirements().getRequirements().stream().forEach(req -> {
+			if (req.getVersion() == null || req.getVersion().getValue() == null || req.getVersion().getValue().trim().isEmpty()) {
+				req.setVersion(Version.UNKNOWN);
+			}
+		});
 	}
 
 	protected abstract URI getURI() throws URISyntaxException;

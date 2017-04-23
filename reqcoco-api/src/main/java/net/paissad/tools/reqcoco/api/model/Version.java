@@ -21,6 +21,16 @@ public class Version implements Serializable {
 
 	private static final long	serialVersionUID	= 1L;
 
+	/**
+	 * Any version, including unknown versions.
+	 */
+	public static final Version	ANY					= new Version("__any__");
+
+	/**
+	 * Unknown versions are <code>null</code>, or blanks.
+	 */
+	public static final Version	UNKNOWN				= new Version("__unknown__");
+
 	@XmlAttribute(required = true)
 	private String				value;
 
@@ -29,5 +39,9 @@ public class Version implements Serializable {
 
 	public Version() {
 		// default no-arg constructor
+	}
+
+	public Version(final String value) {
+		this.value = value;
 	}
 }

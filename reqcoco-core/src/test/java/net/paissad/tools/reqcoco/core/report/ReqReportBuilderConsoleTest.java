@@ -12,7 +12,7 @@ import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.core.TestUtil;
 
-public class ReqReportBuilderConsoleImplTest {
+public class ReqReportBuilderConsoleTest {
 
 	private ReqReportBuilderConsole reqReportBuilderConsole;
 

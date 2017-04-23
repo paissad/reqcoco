@@ -1,0 +1,54 @@
+package net.paissad.tools.reqcoco.core.report;
+
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collection;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import net.paissad.tools.reqcoco.api.exception.ReqParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
+import net.paissad.tools.reqcoco.api.model.Requirement;
+import net.paissad.tools.reqcoco.core.TestUtil;
+
+public class ReqReportBuilderHtmlTest {
+
+	private ReqReportBuilderHtml	reqReportBuilderHtml;
+
+	/** The directory where to save the report */
+	private Path					reportOutputPath;
+
+	@Before
+	public void setUp() throws Exception {
+		this.reportOutputPath = Files.createTempDirectory("__reqcoco_html_report__");
+		FileUtils.forceDeleteOnExit(this.reportOutputPath.toFile());
+		this.setUpByUsingUri(TestUtil.REQUIREMENTS_INPUT_FILE1_XML_URI);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		FileUtils.deleteQuietly(this.reportOutputPath.toFile());
+	}
+
+	@Test
+	public void testBuild() throws ReqReportBuilderException {
+		this.reqReportBuilderHtml.build();
+	}
+
+	@Test
+	public void testGetOutput() throws IOException {
+		Assert.assertNotNull(this.reqReportBuilderHtml.getOutput());
+	}
+
+	private void setUpByUsingUri(final URI uri) throws ReqParserException {
+		final Collection<Requirement> reqs = TestUtil.getRequirementsFromStub(uri, null);
+		this.reqReportBuilderHtml = new ReqReportBuilderHtml(reqs, this.reportOutputPath);
+	}
+
+}
