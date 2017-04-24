@@ -8,7 +8,7 @@
 
 **Build Status** <a target="_blank" href ="https://travis-ci.org/paissad/reqcoco"><img src="https://travis-ci.org/paissad/reqcoco.svg?branch=master" /></a>
 
-**Quality Gate** <a target=-"_blank" href="https://sonarqube.com/dashboard?id=net.paissad.tools.reqcoco%3Areqcoco-parent"><img alt="ReqCoCo Quality Gate" src="https://www.sonarqube.org/assets/logo-31ad3115b1b4b120f3d1efd63e6b13ac9f1f89437f0cf6881cc4d8b5603a52b4.svg" width="100px"></a>
+**Quality Gate** <a target="_blank" href="https://sonarqube.com/dashboard?id=net.paissad.tools.reqcoco%3Areqcoco-parent"><img alt="ReqCoCo Quality Gate" src="https://www.sonarqube.org/assets/logo-31ad3115b1b4b120f3d1efd63e6b13ac9f1f89437f0cf6881cc4d8b5603a52b4.svg" width="100px"></a>
 
 ----------
 
