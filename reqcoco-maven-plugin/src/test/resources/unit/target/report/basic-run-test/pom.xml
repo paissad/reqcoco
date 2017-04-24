@@ -14,7 +14,9 @@
         <artifactId>reqcoco-maven-plugin</artifactId>
         <version>1.2.3.4</version>
         <configuration>
-            <!-- Empty configuration -->
+          <source>${basedir}/src/test/resources/requirement-samples/file2.xml</source>
+          <outputdir>${project.build.directory}/custom-output-dir</outputdir>
+          <project implementation="net.paissad.tools.reqcoco.maven.plugin.stub.ReqCoCoProjectStub" />
         </configuration>
         <executions>
           <execution>
