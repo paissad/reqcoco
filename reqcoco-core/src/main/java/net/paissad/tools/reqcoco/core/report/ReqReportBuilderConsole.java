@@ -16,7 +16,7 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 
 	private static final Logger		LOGGER				= LoggerFactory.getLogger(ReqReportBuilderConsole.class);
 
-	private static final String		LOGGER_PREFIX_TAG	= String.format("%-15s - ", "[ConsoleReport]");
+	private static final String		LOGGER_PREFIX_TAG	= String.format("%-15s -", "[ConsoleReport]");
 
 	private static final Charset	UTF8				= Charset.forName("UTF-8");
 
@@ -30,11 +30,11 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 	public void run() throws ReqReportBuilderException {
 
 		if (getRequirements().isEmpty()) {
-			LOGGER.warn(LOGGER_PREFIX_TAG + "No requirements = no console report");
+			LOGGER.warn("{} No requirements = no console report", LOGGER_PREFIX_TAG);
 
 		} else {
 
-			LOGGER.info(LOGGER_PREFIX_TAG + "Starting to generate console report");
+			LOGGER.info("{} Starting to generate console report", LOGGER_PREFIX_TAG);
 
 			try {
 
@@ -59,7 +59,7 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 				throw new ReqReportBuilderException(errMsg, e);
 			}
 
-			LOGGER.info(LOGGER_PREFIX_TAG + "Finished generating console report");
+			LOGGER.info("Finished generating console report", LOGGER_PREFIX_TAG);
 		}
 	}
 

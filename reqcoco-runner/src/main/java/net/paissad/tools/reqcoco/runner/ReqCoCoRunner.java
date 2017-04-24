@@ -28,7 +28,7 @@ public class ReqCoCoRunner {
 
 	private static final Logger		LOGGER				= LoggerFactory.getLogger(ReqCoCoRunner.class);
 
-	private static final String		LOGGER_PREFIX_TAG	= String.format("%-15s - ", "[ReqCoCoRunner]");
+	private static final String		LOGGER_PREFIX_TAG	= String.format("%-15s -", "[ReqCoCoRunner]");
 
 	@Getter
 	private ReqCoCoRunnerOptions	options;
@@ -49,7 +49,7 @@ public class ReqCoCoRunner {
 		try {
 			parser = getRunner().getOptions().parseOptions(args);
 		} catch (CmdLineException e1) {
-			LOGGER.trace(LOGGER_PREFIX_TAG + "An error occured while parsing the options", e1);
+			LOGGER.trace(LOGGER_PREFIX_TAG + " An error occured while parsing the options", e1);
 			return getExitCode(ExitStatus.OPTIONS_PARSING_ERROR);
 		}
 
@@ -76,12 +76,12 @@ public class ReqCoCoRunner {
 
 		} catch (ReqSourceParserException e) {
 			String errMsg = "Error while parsing the source/input : " + e.getMessage();
-			LOGGER.error(LOGGER_PREFIX_TAG + errMsg, e);
+			LOGGER.error(LOGGER_PREFIX_TAG + " " + errMsg, e);
 			return getExitCode(ExitStatus.REQUIREMENTS_INPUT_PARSE_ERROR);
 
 		} catch (ReqReportBuilderException e) {
 			String errMsg = "Error while building the report : " + e.getMessage();
-			LOGGER.error(LOGGER_PREFIX_TAG + errMsg, e);
+			LOGGER.error(LOGGER_PREFIX_TAG + " " + errMsg, e);
 			return getExitCode(ExitStatus.BUILD_REPORT_ERROR);
 		}
 
@@ -103,10 +103,10 @@ public class ReqCoCoRunner {
 
 		for (ReqReportBuilder reportBuilder : reportBuilders) {
 
-			LOGGER.info(LOGGER_PREFIX_TAG + "Running report builder");
+			LOGGER.info("{} Running report builder", LOGGER_PREFIX_TAG);
 			reportBuilder.configure(requirements, null);
 			reportBuilder.run();
-			LOGGER.info(LOGGER_PREFIX_TAG + "Finished running report builder");
+			LOGGER.info("{} Finished running report builder", LOGGER_PREFIX_TAG);
 		}
 	}
 

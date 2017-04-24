@@ -39,7 +39,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 	private static final Logger		LOGGER							= LoggerFactory.getLogger(ReqReportBuilderHtml.class);
 
-	private static final String		LOGGER_PREFIX_TAG				= String.format("%-15s - ", "[HtmlReport]");
+	private static final String		LOGGER_PREFIX_TAG				= String.format("%-15s -", "[HtmlReport]");
 
 	private static final Charset	UTF8							= Charset.forName("UTF8");
 
@@ -83,14 +83,14 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	}
 
 	private void initTemplateFormatter() {
-		LOGGER.debug(LOGGER_PREFIX_TAG + "Initializing HTML template formatter");
+		LOGGER.debug("{} Initializing HTML template formatter", LOGGER_PREFIX_TAG);
 		this.templateConfig = new Configuration(Configuration.VERSION_2_3_26);
 		this.templateConfig.setDefaultEncoding("UTF-8");
 		this.templateConfig.setLocale(Locale.US);
 		this.templateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		this.templateConfig.setLogTemplateExceptions(false);
 		this.templateConfig.setClassForTemplateLoading(getClass(), TEMPLATES_REPORTS_HTML_LOCATION);
-		LOGGER.debug(LOGGER_PREFIX_TAG + "Finished initialization of HTML template formatter");
+		LOGGER.debug("{} Finished initialization of HTML template formatter", LOGGER_PREFIX_TAG);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		super.configure(requirements, config);
 
 		this.setHtmlReportFilePath(Paths.get(getReportOutputDirPath().toString(), getReportFilename()));
-		LOGGER.debug(LOGGER_PREFIX_TAG + "HTML report file path --> {}", getHtmlReportFilePath());
+		LOGGER.debug("{} HTML report file path --> {}", LOGGER_PREFIX_TAG, getHtmlReportFilePath());
 
 		try {
 			// We create the output directory before generating the HTML report and we copy the lib/ directory into it
@@ -115,17 +115,17 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		try (final Writer out = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(getHtmlReportFilePath().toFile()), 8192),
 		        UTF8)) {
 
-			LOGGER.info(LOGGER_PREFIX_TAG + "Starting to generate HTML report to the directory --> {}", this.getReportOutputDirPath());
+			LOGGER.info("{} Starting to generate HTML report to the directory --> {}", LOGGER_PREFIX_TAG, this.getReportOutputDirPath());
 
 			final Template template = this.templateConfig.getTemplate("template.html");
 
-			LOGGER.trace(LOGGER_PREFIX_TAG + "Unzipping HTML lib which is to be used for the HTML report file");
+			LOGGER.trace("{} Unzipping HTML lib which is to be used for the HTML report file", LOGGER_PREFIX_TAG);
 			ZipUtil.unpack(getClass().getResourceAsStream(TEMPLATES_REPORTS_HTML_LOCATION + "/lib.zip"), getReportOutputDirPath().toFile());
 
-			LOGGER.debug(LOGGER_PREFIX_TAG + "Replacing the tokens into the HTML report template ...");
+			LOGGER.debug("{} Replacing the tokens into the HTML report template ...", LOGGER_PREFIX_TAG);
 			template.process(getDataModel(), out);
 
-			LOGGER.info(LOGGER_PREFIX_TAG + "Finished generating HTML report");
+			LOGGER.info("{} Finished generating HTML report", LOGGER_PREFIX_TAG);
 
 		} catch (IOException | TemplateException e) {
 			String errMsg = "Error while building HTML report : " + e.getMessage();
@@ -144,7 +144,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	 */
 	private Map<String, Object> getDataModel() {
 
-		LOGGER.trace(LOGGER_PREFIX_TAG + "Building data model to use for the template");
+		LOGGER.trace("{} Building data model to use for the template", LOGGER_PREFIX_TAG);
 
 		final Map<String, Object> model = new HashMap<>();
 		final Map<String, Collection<Requirement>> requirementsMap = new HashMap<>();
@@ -187,7 +187,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		model.put("dataTests", dataTests.toString());
 		model.put("requirements", getRequirements());
 
-		LOGGER.trace(LOGGER_PREFIX_TAG + "Finished building data model for the template");
+		LOGGER.trace("{} Finished building data model for the template", LOGGER_PREFIX_TAG);
 
 		return model;
 	}
