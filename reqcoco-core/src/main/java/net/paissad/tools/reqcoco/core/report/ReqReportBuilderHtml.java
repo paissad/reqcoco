@@ -40,8 +40,6 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 	private static final String		TEMPLATES_REPORTS_HTML_LOCATION	= "/templates/reports/html";
 
-	private static final String		DEFAULT_REPORT_FILENAME			= "REPORT-requirements.html";
-
 	@Getter(value = AccessLevel.PRIVATE)
 	@Setter(value = AccessLevel.PRIVATE)
 	private Path					htmlReportFilePath;
@@ -75,7 +73,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	 */
 	public ReqReportBuilderHtml(final Path reportOutputDirPath, final String reportFilename) {
 		this.reportOutputDirPath = reportOutputDirPath;
-		this.reportFilename = StringUtils.isBlank(reportFilename) ? DEFAULT_REPORT_FILENAME : reportFilename;
+		this.reportFilename = StringUtils.isBlank(reportFilename) ? getDefaultReportFilename() : reportFilename;
 		initTemplateFormatter();
 	}
 
@@ -119,7 +117,11 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 			LOGGER.error(errMsg, e);
 			throw new ReqReportBuilderException(errMsg, e);
 		}
+	}
 
+	@Override
+	protected String getDefaulFileReporttExtension() {
+		return ".html";
 	}
 
 	/**

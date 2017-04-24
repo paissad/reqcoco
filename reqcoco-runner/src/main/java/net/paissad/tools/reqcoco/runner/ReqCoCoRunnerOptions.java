@@ -31,6 +31,9 @@ public class ReqCoCoRunnerOptions {
 	@Option(name = "--html-report", required = false, usage = "Whether or not to generate HTML reports into the specified output directory.")
 	private boolean			buildHtmlReport	= true;
 
+	@Option(name = "--report-filename", required = false, metaVar = "[name]", usage = "The name of the output file.")
+	private String			reportFieName;
+
 	@Option(name = "--log-level", required = false, metaVar = "[level]", usage = "Sets the log level. Possible values are ERROR|WARN|INFO|DEBUG|TRACE. Default value is 'INFO'.")
 	private String			logLevel;
 

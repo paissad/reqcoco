@@ -15,8 +15,13 @@ import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 
 public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 
+	/**
+	 * The default name of the file containing the report, without the extension.
+	 */
+	public static final String		DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION	= "REPORT-requirements";
+
 	@Getter(value = AccessLevel.PROTECTED)
-	private Collection<Requirement>	requirements	= new LinkedList<>();
+	private Collection<Requirement>	requirements								= new LinkedList<>();
 
 	@Getter
 	@Setter
@@ -109,5 +114,21 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 			};
 		}
 		return this.defaultReportConfig;
+	}
+
+	/**
+	 * @return The default name of the file containing the report WITH the extension.
+	 * @see #DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION
+	 * @see #getDefaulFileReporttExtension()
+	 */
+	protected String getDefaultReportFilename() {
+		return DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + getDefaulFileReporttExtension();
+	}
+
+	/**
+	 * @return The default expected extension to use for the report filename if needed.
+	 */
+	protected String getDefaulFileReporttExtension() {
+		return "";
 	}
 }
