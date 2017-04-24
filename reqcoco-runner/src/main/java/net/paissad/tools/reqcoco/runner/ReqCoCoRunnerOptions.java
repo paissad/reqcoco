@@ -7,9 +7,7 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.kohsuke.args4j.OptionHandlerFilter;
 import org.kohsuke.args4j.ParserProperties;
-import org.kohsuke.args4j.spi.OptionHandler;
 
 import lombok.Getter;
 import lombok.Setter;
