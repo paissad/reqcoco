@@ -11,6 +11,7 @@ import org.kohsuke.args4j.ParserProperties;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
 
 @Getter
 @Setter
@@ -31,10 +32,11 @@ public class ReqCoCoRunnerOptions {
 	@Option(name = "--html-report", required = false, usage = "Whether or not to generate HTML reports into the specified output directory.")
 	private boolean			buildHtmlReport	= true;
 
-	@Option(name = "--report-filename", required = false, metaVar = "[name]", usage = "The name of the output file.")
-	private String			reportFieName;
+	@Option(name = "--report-name", required = false, metaVar = "[name]", usage = "The name of the report file. The default value is "
+	        + AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION)
+	private String			reportName;
 
-	@Option(name = "--log-level", required = false, metaVar = "[level]", usage = "Sets the log level. Possible values are ERROR|WARN|INFO|DEBUG|TRACE. Default value is 'INFO'.")
+	@Option(name = "--log-level", required = false, metaVar = "[level]", usage = "Sets the log level. Possible values are OFF|ERROR|WARN|INFO|DEBUG|TRACE. Default value is 'INFO'.")
 	private String			logLevel;
 
 	@Argument

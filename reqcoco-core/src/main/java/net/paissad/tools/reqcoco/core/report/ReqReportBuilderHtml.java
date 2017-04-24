@@ -34,7 +34,12 @@ import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 
 public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
+	/** The default extension for the HTML report builder. */
+	public static final String		REPORT_FILE_DEFAULT_EXTENSION	= ".html";
+
 	private static final Logger		LOGGER							= LoggerFactory.getLogger(ReqReportBuilderHtml.class);
+
+	private static final String		LOGGER_PREFIX_TAG				= String.format("%-15s - ", "[HtmlReport]");
 
 	private static final Charset	UTF8							= Charset.forName("UTF8");
 
@@ -78,20 +83,30 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	}
 
 	private void initTemplateFormatter() {
-		LOGGER.debug("Initializing HTML template formatter");
+		LOGGER.debug(LOGGER_PREFIX_TAG + "Initializing HTML template formatter");
 		this.templateConfig = new Configuration(Configuration.VERSION_2_3_26);
 		this.templateConfig.setDefaultEncoding("UTF-8");
 		this.templateConfig.setLocale(Locale.US);
 		this.templateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		this.templateConfig.setLogTemplateExceptions(false);
 		this.templateConfig.setClassForTemplateLoading(getClass(), TEMPLATES_REPORTS_HTML_LOCATION);
-		LOGGER.debug("Finished initialization of HTML template formatter");
+		LOGGER.debug(LOGGER_PREFIX_TAG + "Finished initialization of HTML template formatter");
 	}
 
 	@Override
 	public void configure(final Collection<Requirement> requirements, final ReqReportConfig config) throws ReqReportBuilderException {
+
 		super.configure(requirements, config);
+
 		this.setHtmlReportFilePath(Paths.get(getReportOutputDirPath().toString(), getReportFilename()));
+		LOGGER.debug(LOGGER_PREFIX_TAG + "HTML report file path --> {}", getHtmlReportFilePath());
+
+		try {
+			// We create the output directory before generating the HTML report and we copy the lib/ directory into it
+			Files.createDirectories(getReportOutputDirPath());
+		} catch (IOException ioe) {
+			throw new ReqReportBuilderException("Error while creating parent directories which are supposed to contain the HTML report file", ioe);
+		}
 	}
 
 	@Override
@@ -100,17 +115,17 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		try (final Writer out = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(getHtmlReportFilePath().toFile()), 8192),
 		        UTF8)) {
 
-			LOGGER.info("Starting to generate HTML report");
+			LOGGER.info(LOGGER_PREFIX_TAG + "Starting to generate HTML report to the directory --> {}", this.getReportOutputDirPath());
 
 			final Template template = this.templateConfig.getTemplate("template.html");
 
-			// We create the output directory before generating the HTML report and we copy the lib/ directory into it
-			Files.createDirectories(getReportOutputDirPath());
+			LOGGER.trace(LOGGER_PREFIX_TAG + "Unzipping HTML lib which is to be used for the HTML report file");
 			ZipUtil.unpack(getClass().getResourceAsStream(TEMPLATES_REPORTS_HTML_LOCATION + "/lib.zip"), getReportOutputDirPath().toFile());
 
+			LOGGER.debug(LOGGER_PREFIX_TAG + "Replacing the tokens into the HTML report template ...");
 			template.process(getDataModel(), out);
 
-			LOGGER.info("Finished generating HTML report");
+			LOGGER.info(LOGGER_PREFIX_TAG + "Finished generating HTML report");
 
 		} catch (IOException | TemplateException e) {
 			String errMsg = "Error while building HTML report : " + e.getMessage();
@@ -121,13 +136,15 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 	@Override
 	protected String getDefaulFileReporttExtension() {
-		return ".html";
+		return REPORT_FILE_DEFAULT_EXTENSION;
 	}
 
 	/**
 	 * @return The data model to use for replacing the values in the HTML template.
 	 */
 	private Map<String, Object> getDataModel() {
+
+		LOGGER.trace(LOGGER_PREFIX_TAG + "Building data model to use for the template");
 
 		final Map<String, Object> model = new HashMap<>();
 		final Map<String, Collection<Requirement>> requirementsMap = new HashMap<>();
@@ -169,6 +186,8 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		model.put("dataCode", dataCode.toString());
 		model.put("dataTests", dataTests.toString());
 		model.put("requirements", getRequirements());
+
+		LOGGER.trace(LOGGER_PREFIX_TAG + "Finished building data model for the template");
 
 		return model;
 	}
