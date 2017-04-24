@@ -1,6 +1,5 @@
 package net.paissad.tools.reqcoco.core.report;
 
-import java.io.OutputStream;
 import java.util.Collection;
 
 import org.junit.Assert;
@@ -28,13 +27,8 @@ public class AbstractReqReportBuilderTest {
 			}
 
 			@Override
-			protected OutputStream getOutput() {
-				return null;
-			}
-
-			@Override
-			protected void build() throws ReqReportBuilderException {
-				// Do nothing ...
+			public void run() throws ReqReportBuilderException {
+				// Do nothing
 			}
 
 		};

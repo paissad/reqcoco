@@ -22,14 +22,14 @@ public class ReqReportBuilderConsoleTest {
 	}
 
 	@Test
-	public void testBuild() throws ReqReportBuilderException {
-		this.reqReportBuilderConsole.build();
+	public void testRun() throws ReqReportBuilderException {
+		this.reqReportBuilderConsole.run();
 	}
 
 	@Test
-	public void testBuildEmptyRequirements() throws ReqReportBuilderException, ReqSourceParserException {
+	public void testRunEmptyRequirements() throws ReqReportBuilderException, ReqSourceParserException {
 		this.setUpByUsingUri(TestUtil.REQUIREMENTS_INPUT_FILE_EMPTY_XML_URI);
-		this.reqReportBuilderConsole.build();
+		this.reqReportBuilderConsole.run();
 	}
 
 	@Test
@@ -37,9 +37,10 @@ public class ReqReportBuilderConsoleTest {
 		Assert.assertEquals(System.out, this.reqReportBuilderConsole.getOutput());
 	}
 
-	private void setUpByUsingUri(final URI uri) throws ReqSourceParserException {
+	private void setUpByUsingUri(final URI uri) throws ReqSourceParserException, ReqReportBuilderException {
 		Collection<Requirement> reqs = TestUtil.getRequirementsFromStub(uri, null);
-		this.reqReportBuilderConsole = new ReqReportBuilderConsole(reqs);
+		this.reqReportBuilderConsole = new ReqReportBuilderConsole();
+		this.reqReportBuilderConsole.configure(reqs, null);
 	}
 
 }

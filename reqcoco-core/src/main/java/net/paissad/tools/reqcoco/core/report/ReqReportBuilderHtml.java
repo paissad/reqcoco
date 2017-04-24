@@ -2,9 +2,9 @@ package net.paissad.tools.reqcoco.core.report;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
@@ -31,6 +31,7 @@ import lombok.Getter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
+import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 
 public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
@@ -58,24 +59,20 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	private String					reportFilename;
 
 	/**
-	 * @param requirements - The requirements to use for generating the report.
 	 * @param reportOutputDirPath - The directory where to generate the report.
 	 * @see #ReqReportBuilderHtml(Collection, Path, String)
 	 */
-	public ReqReportBuilderHtml(final Collection<Requirement> requirements, final Path reportOutputDirPath) {
-		this(requirements, reportOutputDirPath, null);
+	public ReqReportBuilderHtml(final Path reportOutputDirPath) {
+		this(reportOutputDirPath, null);
 	}
 
 	/**
-	 * @param requirements - The requirements to use for generating the report.
 	 * @param reportOutputDirPath - The directory where to generate the report.
 	 * @param reportFilename - The name of the output HTML output file to generate. If <code>null</code> or blank, the default name will be used.
 	 */
-	public ReqReportBuilderHtml(final Collection<Requirement> requirements, final Path reportOutputDirPath, final String reportFilename) {
-		getRequirements().addAll(requirements);
+	public ReqReportBuilderHtml(final Path reportOutputDirPath, final String reportFilename) {
 		this.reportOutputDirPath = reportOutputDirPath;
 		this.reportFilename = StringUtils.isBlank(reportFilename) ? DEFAULT_REPORT_FILENAME : reportFilename;
-		this.setReportConfig(getDefaultReportConfig());
 		initTemplateFormatter();
 	}
 
@@ -91,7 +88,22 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	}
 
 	@Override
-	protected void build() throws ReqReportBuilderException {
+	public void configure(final Collection<Requirement> requirements, final ReqReportConfig config) throws ReqReportBuilderException {
+
+		super.configure(requirements, config);
+
+		final File htmlReportFile = Paths.get(getReportOutputDirPath().toString(), getReportFilename()).toFile();
+
+		try {
+			this.setOutput(new BufferedOutputStream(new FileOutputStream(htmlReportFile)));
+
+		} catch (FileNotFoundException e) {
+			throw new ReqReportBuilderException("I/O error while building HTML report", e);
+		}
+	}
+
+	@Override
+	public void run() throws ReqReportBuilderException {
 
 		try (final Writer out = new OutputStreamWriter(getOutput(), UTF8)) {
 
@@ -162,12 +174,6 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		model.put("requirements", getRequirements());
 
 		return model;
-	}
-
-	@Override
-	protected OutputStream getOutput() throws IOException {
-		final File htmlReportFile = Paths.get(getReportOutputDirPath().toString(), getReportFilename()).toFile();
-		return new BufferedOutputStream(new FileOutputStream(htmlReportFile), 8192);
 	}
 
 }

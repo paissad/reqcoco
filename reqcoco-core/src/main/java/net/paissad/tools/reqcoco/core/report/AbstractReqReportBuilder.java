@@ -1,6 +1,5 @@
 package net.paissad.tools.reqcoco.core.report;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -25,20 +24,16 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 
 	private ReqReportConfig			defaultReportConfig;
 
+	@Getter(value = AccessLevel.PROTECTED)
+	@Setter(value = AccessLevel.PROTECTED)
+	private OutputStream			output;
+
 	@Override
-	public void run(Collection<Requirement> requirements, OutputStream out, final ReqReportConfig config) throws ReqReportBuilderException {
-		this.setReportConfig(config);
-		build();
+	public void configure(Collection<Requirement> requirements, ReqReportConfig config) throws ReqReportBuilderException {
+		getRequirements().addAll(requirements);
+		final ReqReportConfig cfg = config == null ? getDefaultReportConfig() : config;
+		this.setReportConfig(cfg);
 	}
-
-	/**
-	 * Builds the report.
-	 * 
-	 * @throws ReqReportBuilderException
-	 */
-	protected abstract void build() throws ReqReportBuilderException;
-
-	protected abstract OutputStream getOutput() throws IOException;
 
 	/**
 	 * @return The number of code marked as done for any version.

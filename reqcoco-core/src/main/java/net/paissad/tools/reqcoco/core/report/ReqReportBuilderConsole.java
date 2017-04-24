@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
+import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 
 public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 
@@ -18,13 +19,14 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 
 	private static final Charset	UTF8	= Charset.forName("UTF-8");
 
-	public ReqReportBuilderConsole(final Collection<Requirement> requirements) {
-		getRequirements().addAll(requirements);
-		this.setReportConfig(getDefaultReportConfig());
+	@Override
+	public void configure(final Collection<Requirement> requirements, final ReqReportConfig config) throws ReqReportBuilderException {
+		super.configure(requirements, config);
+		this.setOutput(System.out);
 	}
 
 	@Override
-	public void build() throws ReqReportBuilderException {
+	public void run() throws ReqReportBuilderException {
 
 		if (getRequirements().isEmpty()) {
 			LOGGER.warn("No requirements = no console report");
@@ -66,11 +68,6 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 		} catch (IOException e) {
 			LOGGER.error("Unable to print requirement having id {} : {}", req.getId(), e);
 		}
-	}
-
-	@Override
-	protected OutputStream getOutput() {
-		return System.out;
 	}
 
 }

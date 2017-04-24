@@ -66,6 +66,23 @@
             <target>1.8</target>
           </configuration>
         </plugin>
+        <plugin>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.3</version>
+          <configuration>
+            <tagNameFormat>v@{project.version}</tagNameFormat>
+            <releaseProfiles>release</releaseProfiles>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -153,6 +170,11 @@
         <groupId>org.zeroturnaround</groupId>
         <artifactId>zt-zip</artifactId>
         <version>1.11</version>
+      </dependency>
+      <dependency>
+        <groupId>args4j</groupId>
+        <artifactId>args4j</artifactId>
+        <version>2.33</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -37,8 +37,8 @@ public class ReqReportBuilderHtmlTest {
 	}
 
 	@Test
-	public void testBuild() throws ReqReportBuilderException {
-		this.reqReportBuilderHtml.build();
+	public void testRun() throws ReqReportBuilderException {
+		this.reqReportBuilderHtml.run();
 	}
 
 	@Test
@@ -46,9 +46,10 @@ public class ReqReportBuilderHtmlTest {
 		Assert.assertNotNull(this.reqReportBuilderHtml.getOutput());
 	}
 
-	private void setUpByUsingUri(final URI uri) throws ReqSourceParserException {
+	private void setUpByUsingUri(final URI uri) throws ReqSourceParserException, ReqReportBuilderException {
 		final Collection<Requirement> reqs = TestUtil.getRequirementsFromStub(uri, null);
-		this.reqReportBuilderHtml = new ReqReportBuilderHtml(reqs, this.reportOutputPath);
+		this.reqReportBuilderHtml = new ReqReportBuilderHtml(this.reportOutputPath);
+		this.reqReportBuilderHtml.configure(reqs, null);
 	}
 
 }
