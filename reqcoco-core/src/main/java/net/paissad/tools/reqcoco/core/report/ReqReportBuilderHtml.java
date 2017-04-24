@@ -156,6 +156,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		model.put("coverage_title", getReportConfig().getTitle());
 		model.put("code_coverage_diagram_name", getReportConfig().getCodeCoverageDiagramName());
 		model.put("tests_coverage_diagram_name", getReportConfig().getTestsCoverageDiagramName());
+		model.put("coverage_table_legend_name", getReportConfig().getRequirementsTableLegend());
 		model.put("dataCode", dataCode.toString());
 		model.put("dataTests", dataTests.toString());
 		model.put("requirements", getRequirements());
