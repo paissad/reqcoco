@@ -74,11 +74,6 @@ public class ReqCoCoRunnerOptions {
 		parser.printUsage(System.out);
 		System.out.println();
 
-		System.out.println("  Example: reqcoco-runner " + parser.printExample(new OptionHandlerFilter() {
-
-			public boolean select(@SuppressWarnings("rawtypes") final OptionHandler o) {
-				return !o.option.help();
-			}
-		}));
+		System.out.println("  Example: reqcoco-runner " + parser.printExample(filter -> !filter.option.help()));
 	}
 }
