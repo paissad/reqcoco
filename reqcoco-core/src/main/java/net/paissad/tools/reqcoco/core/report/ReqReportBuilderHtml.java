@@ -1,8 +1,6 @@
 package net.paissad.tools.reqcoco.core.report;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -28,6 +26,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
@@ -42,6 +41,10 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	private static final String		TEMPLATES_REPORTS_HTML_LOCATION	= "/templates/reports/html";
 
 	private static final String		DEFAULT_REPORT_FILENAME			= "REPORT-requirements.html";
+
+	@Getter(value = AccessLevel.PRIVATE)
+	@Setter(value = AccessLevel.PRIVATE)
+	private Path					htmlReportFilePath;
 
 	/**
 	 * The template configuration
@@ -89,23 +92,15 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 	@Override
 	public void configure(final Collection<Requirement> requirements, final ReqReportConfig config) throws ReqReportBuilderException {
-
 		super.configure(requirements, config);
-
-		final File htmlReportFile = Paths.get(getReportOutputDirPath().toString(), getReportFilename()).toFile();
-
-		try {
-			this.setOutput(new BufferedOutputStream(new FileOutputStream(htmlReportFile)));
-
-		} catch (FileNotFoundException e) {
-			throw new ReqReportBuilderException("I/O error while building HTML report", e);
-		}
+		this.setHtmlReportFilePath(Paths.get(getReportOutputDirPath().toString(), getReportFilename()));
 	}
 
 	@Override
 	public void run() throws ReqReportBuilderException {
 
-		try (final Writer out = new OutputStreamWriter(getOutput(), UTF8)) {
+		try (final Writer out = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(getHtmlReportFilePath().toFile()), 8192),
+		        UTF8)) {
 
 			LOGGER.info("Starting to generate HTML report");
 

@@ -43,7 +43,7 @@ public class ReqReportBuilderHtmlTest {
 
 	@Test
 	public void testGetOutput() throws IOException {
-		Assert.assertNotNull(this.reqReportBuilderHtml.getOutput());
+		Assert.assertNull(this.reqReportBuilderHtml.getOutput());
 	}
 
 	private void setUpByUsingUri(final URI uri) throws ReqSourceParserException, ReqReportBuilderException {
