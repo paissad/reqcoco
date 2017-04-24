@@ -90,6 +90,9 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 		if (uri == null) {
 			throw new NullPointerException("The URI to parse should is null");
 
+		} else if (uri.getScheme() == null) {
+			throw new NullPointerException("The scheme of the URI is null. Here is the URI --> " + uri.toString());
+
 		} else {
 			if (uri.getScheme().matches("(?i)^https{0,1}$")) {
 				this.setSourceType(SOURCE_TYPE.URL);
