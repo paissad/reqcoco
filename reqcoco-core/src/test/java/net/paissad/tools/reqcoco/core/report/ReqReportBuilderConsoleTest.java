@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.core.TestUtil;
@@ -27,7 +27,7 @@ public class ReqReportBuilderConsoleTest {
 	}
 
 	@Test
-	public void testRunEmptyRequirements() throws ReqReportBuilderException, ReqSourceParserException {
+	public void testRunEmptyRequirements() throws ReqReportBuilderException, ReqReportParserException {
 		this.setUpByUsingUri(TestUtil.REQUIREMENTS_INPUT_FILE_EMPTY_XML_URI);
 		this.reqReportBuilderConsole.run();
 	}
@@ -37,7 +37,7 @@ public class ReqReportBuilderConsoleTest {
 		Assert.assertEquals(System.out, this.reqReportBuilderConsole.getOutput());
 	}
 
-	private void setUpByUsingUri(final URI uri) throws ReqSourceParserException, ReqReportBuilderException {
+	private void setUpByUsingUri(final URI uri) throws ReqReportParserException, ReqReportBuilderException {
 		Collection<Requirement> reqs = TestUtil.getRequirementsFromStub(uri, null);
 		this.reqReportBuilderConsole = new ReqReportBuilderConsole();
 		this.reqReportBuilderConsole.configure(reqs, null);

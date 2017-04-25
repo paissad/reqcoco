@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
-import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.maven.plugin.util.PathUtils;
 
 public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
@@ -49,7 +49,7 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
 			Assert.assertNotNull("A MojoExecutionException was expected to be thrown !!!", e);
 			Throwable cause = e.getCause();
 			Assert.assertNotNull("The cause of the exception should not be null", cause);
-			Assert.assertTrue(ReqSourceParserException.class.equals(cause.getClass()));
+			Assert.assertTrue(ReqReportParserException.class.equals(cause.getClass()));
 			Assert.assertTrue(cause.getMessage().startsWith("Error while retrieving requirements from the source : "));
 		}
 

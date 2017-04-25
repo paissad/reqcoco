@@ -16,9 +16,9 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import lombok.Getter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
-import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.api.parser.ReqSourceParser;
+import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
 import net.paissad.tools.reqcoco.core.parser.simple.PathReqSourceParser;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
@@ -74,7 +74,7 @@ public class ReqCoCoRunner {
 			// Build the report(s)
 			runReportBuilders(reportBuilders, requirements);
 
-		} catch (ReqSourceParserException e) {
+		} catch (ReqReportParserException e) {
 			String errMsg = "Error while parsing the source/input : " + e.getMessage();
 			LOGGER.error(LOGGER_PREFIX_TAG + " " + errMsg, e);
 			return getExitCode(ExitStatus.REQUIREMENTS_INPUT_PARSE_ERROR);
@@ -88,9 +88,9 @@ public class ReqCoCoRunner {
 		return getExitCode(ExitStatus.OK);
 	}
 
-	private Collection<Requirement> parseInput(final ReqCoCoRunnerOptions options) throws ReqSourceParserException {
+	private Collection<Requirement> parseInput(final ReqCoCoRunnerOptions options) throws ReqReportParserException {
 
-		final ReqSourceParser parser = new PathReqSourceParser(getSourcePath(options), null);
+		final ReqReportParser parser = new PathReqSourceParser(getSourcePath(options), null);
 		return parser.getRequirements().getRequirements();
 	}
 

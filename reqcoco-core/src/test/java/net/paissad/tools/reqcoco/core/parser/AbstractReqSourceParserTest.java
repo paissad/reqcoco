@@ -14,16 +14,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.api.model.Version;
-import net.paissad.tools.reqcoco.api.parser.ReqSourceParser;
+import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.core.TestUtil;
 
 public class AbstractReqSourceParserTest {
 
-	private ReqSourceParser		requirementSourceParser;
+	private ReqReportParser		requirementSourceParser;
 
 	@Rule
 	public ExpectedException	thrown	= ExpectedException.none();
@@ -34,7 +34,7 @@ public class AbstractReqSourceParserTest {
 	}
 
 	@Test
-	public void testGetRequirements() throws ReqSourceParserException {
+	public void testGetRequirements() throws ReqReportParserException {
 		final Requirements reqs = requirementSourceParser.getRequirements();
 		Assert.assertNotNull(reqs);
 		Assert.assertEquals(3, reqs.getRequirements().stream().count());
@@ -43,12 +43,12 @@ public class AbstractReqSourceParserTest {
 	/**
 	 * The XML source does not have a well formatted content.
 	 * 
-	 * @throws ReqSourceParserException
+	 * @throws ReqReportParserException
 	 */
 	@Test
-	public void testGetRequirementsBadContent() throws ReqSourceParserException {
+	public void testGetRequirementsBadContent() throws ReqReportParserException {
 
-		thrown.expect(ReqSourceParserException.class);
+		thrown.expect(ReqReportParserException.class);
 		thrown.expectCause(Is.isA(UnmarshalException.class));
 		thrown.expectMessage("Error while retrieving requirements from the source : ");
 
@@ -57,7 +57,7 @@ public class AbstractReqSourceParserTest {
 	}
 
 	@Test
-	public void testGetRequirementsNotSupportedUriScheme() throws ReqSourceParserException, URISyntaxException {
+	public void testGetRequirementsNotSupportedUriScheme() throws ReqReportParserException, URISyntaxException {
 		thrown.expectCause(Is.isA(UnsupportedOperationException.class));
 		thrown.expectMessage("Unable to parse source from the scheme type --> foobar");
 		requirementSourceParser = TestUtil.initAbstractRequirementSourceParser(new URI("foobar://not_supported_scheme/resource.xml"), null);
@@ -65,13 +65,13 @@ public class AbstractReqSourceParserTest {
 	}
 
 	@Test
-	public void testGetRequirementsBadFormattedScheme() throws ReqSourceParserException, URISyntaxException {
+	public void testGetRequirementsBadFormattedScheme() throws ReqReportParserException, URISyntaxException {
 		thrown.expect(URISyntaxException.class);
 		TestUtil.initAbstractRequirementSourceParser(new URI("123badscheme://very_bad_scheme/resource.xml"), null);
 	}
 
 	@Test
-	public void testGetRequirementsNullUri() throws ReqSourceParserException, URISyntaxException {
+	public void testGetRequirementsNullUri() throws ReqReportParserException, URISyntaxException {
 		thrown.expectCause(Is.isA(NullPointerException.class));
 		thrown.expectMessage("The URI to parse should is null");
 		requirementSourceParser = TestUtil.initAbstractRequirementSourceParser(null, null);
@@ -79,7 +79,7 @@ public class AbstractReqSourceParserTest {
 	}
 
 	@Test
-	public void testGetRequirementsVersion() throws ReqSourceParserException {
+	public void testGetRequirementsVersion() throws ReqReportParserException {
 		final Version v1 = new Version();
 		v1.setValue("1.0");
 		Collection<Requirement> reqs = requirementSourceParser.getRequirements(v1);
@@ -97,7 +97,7 @@ public class AbstractReqSourceParserTest {
 		Assert.assertTrue(parser.getURI().toString().matches(Pattern.quote(TestUtil.REQUIREMENTS_INPUT_FILE1_XML_URI.toString())));
 	}
 
-	private void setUpByUsingUri(final URI uri) throws ReqSourceParserException {
+	private void setUpByUsingUri(final URI uri) throws ReqReportParserException {
 		this.requirementSourceParser = TestUtil.initAbstractRequirementSourceParser(uri, null);
 	}
 }

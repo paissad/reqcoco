@@ -5,9 +5,9 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Map;
 
-import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.api.parser.ReqSourceParser;
+import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.core.parser.AbstractReqSourceParser;
 
 public class TestUtil {
@@ -36,12 +36,12 @@ public class TestUtil {
 	private TestUtil() {
 	}
 
-	public static Collection<Requirement> getRequirementsFromStub(final URI uri, final Map<String, Object> options) throws ReqSourceParserException {
-		final ReqSourceParser parser = initAbstractRequirementSourceParser(uri, options);
+	public static Collection<Requirement> getRequirementsFromStub(final URI uri, final Map<String, Object> options) throws ReqReportParserException {
+		final ReqReportParser parser = initAbstractRequirementSourceParser(uri, options);
 		return parser.getRequirements().getRequirements();
 	}
 
-	public static ReqSourceParser initAbstractRequirementSourceParser(final URI uri, final Map<String, Object> options) {
+	public static ReqReportParser initAbstractRequirementSourceParser(final URI uri, final Map<String, Object> options) {
 		return new AbstractReqSourceParser() {
 
 			@Override

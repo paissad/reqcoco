@@ -18,9 +18,9 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
-import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.api.parser.ReqSourceParser;
+import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
 import net.paissad.tools.reqcoco.core.parser.AbstractReqSourceParser;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
@@ -74,7 +74,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 		try {
 
 			getLog().info("Build the requirements input parser from source : " + source);
-			final ReqSourceParser parser = buildRequirementsSourceParser();
+			final ReqReportParser parser = buildRequirementsSourceParser();
 
 			getLog().info("Retrieve the requirements by parsing the source ");
 			final Collection<Requirement> requirements = parser.getRequirements().getRequirements();
@@ -107,7 +107,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 
 			getLog().info("Finished generating requirements coverage report");
 
-		} catch (ReqSourceParserException e) {
+		} catch (ReqReportParserException e) {
 			String errMsg = "Error while parsing the requirements source/input : " + e.getMessage();
 			getLog().error(errMsg, e);
 			throw new MojoExecutionException(errMsg, e);
@@ -120,7 +120,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 
 	}
 
-	private ReqSourceParser buildRequirementsSourceParser() {
+	private ReqReportParser buildRequirementsSourceParser() {
 		return new AbstractReqSourceParser() {
 
 			@Override

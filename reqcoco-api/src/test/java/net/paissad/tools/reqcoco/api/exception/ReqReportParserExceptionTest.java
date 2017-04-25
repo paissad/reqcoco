@@ -5,16 +5,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class ReqSourceParserExceptionTest {
+public class ReqReportParserExceptionTest {
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
-	public void testReqSourceParserException() throws ReqSourceParserException {
-		thrown.expect(ReqSourceParserException.class);
+	public void testReqSourceParserException() throws ReqReportParserException {
+		thrown.expect(ReqReportParserException.class);
 		thrown.expectCause(Is.isA(NullPointerException.class));
 		thrown.expectMessage("bbb");
-		throw new ReqSourceParserException("bbb", new NullPointerException());
+		throw new ReqReportParserException("bbb", new NullPointerException());
 	}
 }

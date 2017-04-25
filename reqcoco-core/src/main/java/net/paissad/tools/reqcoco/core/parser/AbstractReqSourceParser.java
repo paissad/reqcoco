@@ -18,13 +18,13 @@ import org.slf4j.LoggerFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.paissad.tools.reqcoco.api.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.api.model.Version;
-import net.paissad.tools.reqcoco.api.parser.ReqSourceParser;
+import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 
-public abstract class AbstractReqSourceParser implements ReqSourceParser {
+public abstract class AbstractReqSourceParser implements ReqReportParser {
 
 	private static final Logger	LOGGER				= LoggerFactory.getLogger(AbstractReqSourceParser.class);
 
@@ -41,7 +41,7 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 	private Requirements		cachedRequirements;
 
 	@Override
-	public Requirements getRequirements() throws ReqSourceParserException {
+	public Requirements getRequirements() throws ReqReportParserException {
 
 		try {
 
@@ -75,12 +75,12 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 		} catch (Exception e) {
 			String errMsg = "Error while retrieving requirements from the source : " + e.getMessage();
 			LOGGER.error(errMsg, e);
-			throw new ReqSourceParserException(errMsg, e);
+			throw new ReqReportParserException(errMsg, e);
 		}
 	}
 
 	@Override
-	public Collection<Requirement> getRequirements(final Version version) throws ReqSourceParserException {
+	public Collection<Requirement> getRequirements(final Version version) throws ReqReportParserException {
 		return Requirements.getByVersion(getRequirements().getRequirements(), version.getValue());
 	}
 
