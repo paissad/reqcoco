@@ -125,7 +125,10 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 
 			@Override
 			protected URI getURI() throws URISyntaxException {
-				final URI uri = URI.create(source);
+				// Hack : give a chance and try to normalize the source if the file exists (usually on windows operating systems ...)
+				String normalizedSource = source.replace('\\', '/');
+				normalizedSource = new File(normalizedSource).exists() ? new File(normalizedSource).toURI().toString() : normalizedSource;
+				final URI uri = URI.create(normalizedSource);
 				return uri.getScheme() != null ? uri : Paths.get(source).toFile().toURI();
 			}
 
@@ -133,6 +136,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 			protected Map<String, Object> getOptions() {
 				return null;
 			}
+
 		};
 	}
 }
