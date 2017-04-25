@@ -14,10 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import net.paissad.tools.reqcoco.runner.util.PathUtils;
 
 public class ReqCoCoRunnerTest {
 
@@ -63,6 +60,19 @@ public class ReqCoCoRunnerTest {
 	}
 
 	@Test
+	public void testMainChangeReportName() throws URISyntaxException {
+		List<String> args = getArgs(null);
+		args.add("--log-level");
+		args.add("OFF");
+		args.add("--report-name");
+		args.add("custom_project_name");
+		Assert.assertEquals(ExitStatus.OK.getCode(), runner.proxyMain(args.toArray(new String[args.size()])));
+		Assert.assertEquals("OFF", runner.getOptions().getLogLevel());
+		Assert.assertTrue("The HTML report name is wrong",
+		        Files.exists(Paths.get(this.reportOutputDirPath.toString(), "html/custom_project_name.html")));
+	}
+
+	@Test
 	public void testMainNoHtmlButConsoleReport() throws URISyntaxException {
 		List<String> args = getArgs(null);
 		args.add("--html-report");
@@ -81,12 +91,11 @@ public class ReqCoCoRunnerTest {
 		Assert.assertEquals(ExitStatus.REQUIREMENTS_INPUT_PARSE_ERROR.getCode(), runner.proxyMain(args.toArray(new String[args.size()])));
 	}
 
-	@Ignore
-	public void testMainOutputdirIsNotWritable() throws URISyntaxException, IOException {
-		// FIXME : try to simulate a non writable directory so this test can pass correctly
-		this.reportOutputDirPath = Paths.get(reportOutputDirPath.toString(), "subdir");
-		Files.createDirectory(reportOutputDirPath);
-		PathUtils.removeWritePerms(reportOutputDirPath.getParent());
+	@Test
+	public void testMainOutputdirIsActuallyAFile() throws URISyntaxException, IOException {
+
+		FileUtils.deleteQuietly(this.reportOutputDirPath.toFile());
+		Files.createFile(reportOutputDirPath);
 		List<String> args = getArgs(null);
 		args.add("--log-level");
 		args.add("OFF");
