@@ -17,6 +17,11 @@ public interface ReqGeneratorConfig {
 	URI getSourceRequirements();
 
 	/**
+	 * @return The parser to use for retrieving the list of declared requirements.
+	 */
+	ReqSourceParser getSourceParser();
+
+	/**
 	 * @return The {@link URI} to the place containing the source code to parse.
 	 */
 	URI getSourceCodePath();
