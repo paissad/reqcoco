@@ -31,7 +31,7 @@ public interface ReqGeneratorConfig {
 	/**
 	 * @return The configuration which tells how to parse the <strong>source code</strong> in order to check the requirements.
 	 */
-	TagConfig getCodeTagConfig();
+	TagConfig getSourceCodeTagConfig();
 
 	/**
 	 * @return The path (directory or file) containing the tests code to parse.

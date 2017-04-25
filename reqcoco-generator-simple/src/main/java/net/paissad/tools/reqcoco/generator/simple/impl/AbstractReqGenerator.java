@@ -73,7 +73,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 				LOGGER.error(errMsg);
 				throw new ReqGeneratorExecutionException(errMsg, null);
 			}
-			parseCodeAndUpdateRequirements(declaredRequirements, sourceCodePath, SOURCE_CODE_TYPE.CODE);
+			parseCodeAndUpdateRequirements(declaredRequirements, sourceCodePath, CODE_TYPE.SOURCE);
 
 			LOGGER.info("Parsing the tests code in order to compute the tests coverage");
 			final Path testsCodePath = config.getTestsCodePath();
@@ -83,7 +83,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 				LOGGER.error(errMsg);
 				throw new ReqGeneratorExecutionException(errMsg, null);
 			}
-			parseCodeAndUpdateRequirements(declaredRequirements, testsCodePath, SOURCE_CODE_TYPE.TESTS);
+			parseCodeAndUpdateRequirements(declaredRequirements, testsCodePath, CODE_TYPE.TEST);
 
 			final Path coverageOutputPath = getConfig().getCoverageOutput();
 			LOGGER.info("Generating the coverage report to --> {}" + coverageOutputPath);
@@ -109,7 +109,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 		}
 	}
 
-	private void parseCodeAndUpdateRequirements(final Collection<Requirement> requirements, final Path path, final SOURCE_CODE_TYPE type)
+	private void parseCodeAndUpdateRequirements(final Collection<Requirement> requirements, final Path path, final CODE_TYPE type)
 	        throws IOException {
 
 		Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
@@ -119,11 +119,11 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 				TagConfig tagConfig = null;
 
 				switch (type) {
-				case CODE:
-					tagConfig = getConfig().getCodeTagConfig();
+				case SOURCE:
+					tagConfig = getConfig().getSourceCodeTagConfig();
 					break;
 
-				case TESTS:
+				case TEST:
 					tagConfig = getConfig().getTestsTagConfig();
 					break;
 
@@ -172,8 +172,8 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 		return new StringBuilder().append("^").append(str.replace("*", ".*")).append("$").toString();
 	}
 
-	private enum SOURCE_CODE_TYPE {
-		CODE, TESTS;
+	private enum CODE_TYPE {
+		SOURCE, TEST;
 	}
 
 }
