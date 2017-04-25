@@ -68,7 +68,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			LOGGER.info("Parsing the source code in order to compute the code coverage");
 			final Path sourceCodePath = config.getSourceCodePath();
 
-			if (Files.notExists(sourceCodePath)) {
+			if (!sourceCodePath.toFile().exists()) {
 				String errMsg = "The path to lookup for code coverage does not exist : " + sourceCodePath;
 				LOGGER.error(errMsg);
 				throw new ReqGeneratorExecutionException(errMsg, null);
@@ -78,7 +78,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			LOGGER.info("Parsing the tests code in order to compute the tests coverage");
 			final Path testsCodePath = config.getTestsCodePath();
 
-			if (Files.notExists(testsCodePath)) {
+			if (!testsCodePath.toFile().exists()) {
 				String errMsg = "The path to lookup for tests coverage does not exist : " + testsCodePath;
 				LOGGER.error(errMsg);
 				throw new ReqGeneratorExecutionException(errMsg, null);
@@ -86,7 +86,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			parseCodeAndUpdateRequirements(declaredRequirements, testsCodePath, SOURCE_CODE_TYPE.TESTS);
 
 			final Path coverageOutputPath = getConfig().getCoverageOutput();
-			LOGGER.info("Generating the coverage report to --> " + coverageOutputPath);
+			LOGGER.info("Generating the coverage report to --> {}" + coverageOutputPath);
 
 			final Requirements rootReqs = new Requirements();
 			rootReqs.setRequirements(declaredRequirements);
