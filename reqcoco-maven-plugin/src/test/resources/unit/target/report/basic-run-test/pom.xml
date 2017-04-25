@@ -16,7 +16,7 @@
         <configuration>
           <source>${basedir}/src/test/resources/requirement-samples/file2.xml</source>
           <!-- Should not be hardcoded, but ... for now, that's the deal ;) -->
-          <outputdir>${basedir}/target/custom-output-dir</outputdir>
+          <outputdir>${basedir}/target/__hardcoded_test_dir__/custom-output-dir</outputdir>
           <htmlreport>true</htmlreport>
           <project implementation="net.paissad.tools.reqcoco.maven.plugin.stub.ReqCoCoProjectStub" />
         </configuration>
