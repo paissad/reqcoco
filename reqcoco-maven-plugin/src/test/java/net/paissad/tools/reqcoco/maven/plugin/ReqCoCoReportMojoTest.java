@@ -26,7 +26,7 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
 
 	@Test
 	public void testExecuteBasicRun() throws Exception {
-		final String pluginPom = getBasedir() + "/src/test/resources/unit/target/report/basic-run-test/pom.xml";
+		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/basic-run-test/pom.xml";
 		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
 		Assert.assertNotNull(mojo);
 		mojo.execute();
@@ -35,7 +35,7 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
 	@Test
 	public void testExecuteNonExistentInput() throws Exception {
 
-		final String pluginPom = getBasedir() + "/src/test/resources/unit/target/report/non-existent-input/pom.xml";
+		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/non-existent-input/pom.xml";
 		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
 		Assert.assertNotNull(mojo);
 
@@ -66,7 +66,7 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
 
 		Files.createDirectories(outputDirPath);
 
-		final String pluginPom = getBasedir() + "/src/test/resources/unit/target/report/unable-create-outputdir-test/pom.xml";
+		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/unable-create-outputdir-test/pom.xml";
 		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
 		Assert.assertNotNull(mojo);
 

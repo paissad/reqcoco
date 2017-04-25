@@ -50,6 +50,6 @@ public class ReqCoCoProjectStub extends MavenProjectStub {
 	}
 
 	public File getBasedir() {
-		return new File(super.getBasedir(), "src/test/resources/unit/target/report/basic-run-test/");
+		return new File(super.getBasedir(), "src/test/resources/unit/maventarget/report/basic-run-test/");
 	}
 }

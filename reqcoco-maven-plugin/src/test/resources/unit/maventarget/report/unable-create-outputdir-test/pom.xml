@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>net.paissad.tools.reqcoco-test</groupId>
+  <artifactId>reqcoco-maven-plugin-test</artifactId>
+  <version>9.8.7.6</version>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>net.paissad.tools.reqcoco</groupId>
+        <artifactId>reqcoco-maven-plugin</artifactId>
+        <version>1.2.3.4</version>
+        <configuration>
+          <source>${basedir}/src/test/resources/requirement-samples/file2.xml</source>
+          <!-- Should not be hardcoded, but ... for now, that's the deal ;) -->
+          <outputdir>${basedir}/target/__hardcoded_test_dir__/unmodifiable-output-dir</outputdir>
+          <htmlreport>true</htmlreport>
+          <project implementation="net.paissad.tools.reqcoco.maven.plugin.stub.ReqCoCoProjectStub" />
+        </configuration>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
