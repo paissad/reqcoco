@@ -13,7 +13,7 @@ public interface ReqGenerator {
 
 	/**
 	 * <p>
-	 * Executes the generator.
+	 * Executes the generator in order to create the requirements coverage reports standard XML file.
 	 * </p>
 	 * <p>
 	 * The method {@link #configure(ReqGeneratorConfig)} should be executed before.

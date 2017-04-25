@@ -3,6 +3,8 @@ package net.paissad.tools.reqcoco.generator.simple.api;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This interface represents the minimum configuration of the generator needed before execution.
@@ -22,24 +24,35 @@ public interface ReqGeneratorConfig {
 	ReqSourceParser getSourceParser();
 
 	/**
-	 * @return The {@link URI} to the place containing the source code to parse.
+	 * @return The path (directory or file) containing the source code to parse.
 	 */
-	URI getSourceCodePath();
+	Path getSourceCodePath();
 
 	/**
-	 * @return The regular expression rule to use for extracting a requirement tag from the source code.
+	 * @return The configuration which tells how to parse the <strong>source code</strong> in order to check the requirements.
 	 */
-	String getRequirementSourceTag();
+	TagConfig getCodeTagConfig();
 
 	/**
-	 * @return The {@link URI} to the place containing the tests code to parse.
+	 * @return The path (directory or file) containing the tests code to parse.
 	 */
-	URI getTestsCodePath();
+	Path getTestsCodePath();
 
 	/**
-	 * @return The regular expression rule to use for extracting a requirement tag from the tests code.
+	 * @return The configuration which tells how to parse the <strong>tests code</strong> in order to check the requirements.
 	 */
-	String getRequirementTestTag();
+	TagConfig getTestsTagConfig();
+
+	/**
+	 * @return The list of files to include to the source code and test code parsing. Only files which match this expression or strict names will be
+	 *         parsed. Should not be <code>null</code> or empty if an effective report is expected.
+	 */
+	List<String> getFileIncludes();
+
+	/**
+	 * @return The list of files to exclude to the source code and test code parsing. Can be <code>null</code> or empty.
+	 */
+	List<String> getFileExcludes();
 
 	/**
 	 * @return The path to output file to generate which contains the requirements coverage report.
@@ -47,7 +60,13 @@ public interface ReqGeneratorConfig {
 	Path getCoverageOutput();
 
 	/**
-	 * @return The list of the IDs of the requirements to mark as ignored.
+	 * @return The list of the IDs of the requirements to mark as ignored. Can be <code>null</code> or empty.
 	 */
 	Collection<String> getIgnoreList();
+
+	/**
+	 * @return The extra options that can be used for many things such as during the parsing of the source of declared requirements. Can be
+	 *         <code>null</code>.
+	 */
+	Map<String, Object> getExtraOptions();
 }

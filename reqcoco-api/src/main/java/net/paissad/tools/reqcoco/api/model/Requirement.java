@@ -17,7 +17,7 @@ import lombok.ToString;
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter
-@ToString(of = { "id", "name", "shortDescription", "version", "codeDone", "codeAuthor", "testDone", "testAuthor" })
+@ToString(of = { "id", "name", "shortDescription", "version", "codeDone", "codeAuthor", "testDone", "testAuthor", "ignore" })
 public class Requirement implements Serializable {
 
 	private static final long	serialVersionUID	= 1L;
@@ -28,6 +28,9 @@ public class Requirement implements Serializable {
 
 	@XmlElement(required = true, nillable = false)
 	private String				name;
+
+	@XmlAttribute
+	private boolean				ignore;
 
 	@XmlElement(required = true, nillable = false)
 	private String				shortDescription;
@@ -44,11 +47,17 @@ public class Requirement implements Serializable {
 	@XmlElement(nillable = true)
 	private String				codeAuthor;
 
+	@XmlElement(nillable = true)
+	private String				codeAuthorComment;
+
 	@XmlElement(required = true, nillable = false)
 	private boolean				testDone;
 
 	@XmlElement(nillable = true)
 	private String				testAuthor;
+
+	@XmlElement(nillable = true)
+	private String				testAuthorComment;
 
 	@XmlElement(nillable = true)
 	private String				link;
