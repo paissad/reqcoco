@@ -218,6 +218,7 @@
     <module>reqcoco-core</module>
     <module>reqcoco-maven-plugin</module>
     <module>reqcoco-runner</module>
+    <module>reqcoco-generator-simple</module>
   </modules>
 
 </project>
