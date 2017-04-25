@@ -26,11 +26,11 @@ public class ReqCoCoRunnerOptions {
 	@Option(name = "--in", required = true, metaVar = "<file>", usage = "Source (file or url) containing the requirements to parse.")
 	private String			requirementSource;
 
-	@Option(name = "--console-report", required = false, usage = "Whether or not to generate reports onto the standard console output.")
-	private boolean			buildConsoleReport;
+	@Option(name = "--console-report", required = false, usage = "Whether or not to generate reports onto the standard console output. Default value is 'false'.")
+	private String			buildConsoleReport;
 
-	@Option(name = "--html-report", required = false, usage = "Whether or not to generate HTML reports into the specified output directory.")
-	private boolean			buildHtmlReport	= true;
+	@Option(name = "--html-report", required = false, usage = "Whether or not to generate HTML reports into the specified output directory. Default value is 'true'.")
+	private String			buildHtmlReport	= "true";
 
 	@Option(name = "--report-name", required = false, metaVar = "[name]", usage = "The name of the report file. The default value is "
 	        + AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION)

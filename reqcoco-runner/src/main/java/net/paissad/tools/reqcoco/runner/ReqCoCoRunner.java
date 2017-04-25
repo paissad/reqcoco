@@ -118,11 +118,11 @@ public class ReqCoCoRunner {
 
 		final List<ReqReportBuilder> reportBuilders = new LinkedList<>();
 
-		if (options.isBuildConsoleReport()) {
+		if (Boolean.valueOf(options.getBuildConsoleReport())) {
 			reportBuilders.add(new ReqReportBuilderConsole());
 		}
 
-		if (options.isBuildHtmlReport()) {
+		if (Boolean.valueOf(options.getBuildHtmlReport())) {
 
 			Path htmlReportOutputDirPath = Paths.get(getReportOutputDirPath(options).toString(), "html");
 

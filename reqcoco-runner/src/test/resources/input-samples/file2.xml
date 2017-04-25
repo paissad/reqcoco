@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<requirements>
+  <requirement id="1">
+    <name>req_name</name>
+    <shortDescription>short desc</shortDescription>
+    <fullDescription>very long desc ..</fullDescription>
+    <version value="1.0">
+      <revision value="r1" />
+    </version>
+    <codeDone>true</codeDone>
+    <testDone>true</testDone>
+  </requirement>
+  <requirement id="2">
+    <name>req_name_2</name>
+    <shortDescription>short desc ... test specials chars &amp; &apos; &quot; &lt;  &gt;... </shortDescription>
+    <fullDescription>very long desc number 2 ... aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</fullDescription>
+    <version value="1.1">
+      <revision value="r2" />
+    </version>
+    <codeDone>true</codeDone>
+    <testDone>false</testDone>
+    <link>http://github.com/paissad/reqcoco</link>
+  </requirement>
+  <requirement id="3">
+    <name>req_name_3</name>
+    <shortDescription>short desc 3</shortDescription>
+    <fullDescription>very long desc number 3 ...</fullDescription>
+    <version value="1.0">
+      <revision value="r2" />
+    </version>
+    <codeDone>false</codeDone>
+    <testDone>false</testDone>
+  </requirement>
+  <requirement id="4">
+    <name>req_name_4</name>
+    <shortDescription>short desc</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <version value="1.0">
+      <revision value="r2" />
+    </version>
+    <codeDone>true</codeDone>
+    <testDone>true</testDone>
+  </requirement>
+  <requirement id="5">
+    <name>req_name_5</name>
+    <shortDescription>short desc</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <version value="1.0">
+      <revision value="r2" />
+    </version>
+    <codeDone>true</codeDone>
+    <testDone>false</testDone>
+  </requirement>
+  <requirement id="6">
+    <name>req_name_6</name>
+    <shortDescription>short desc </shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <version value="1.0">
+      <revision value="r2" />
+    </version>
+    <codeDone>false</codeDone>
+    <testDone>false</testDone>
+  </requirement>
+  <requirement id="7">
+    <name>req_name_7</name>
+    <shortDescription>short desc </shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <version value="1.1">
+      <revision value="r3" />
+    </version>
+    <codeDone>true</codeDone>
+    <testDone>false</testDone>
+  </requirement>
+  <requirement id="8">
+    <name>req_name_8</name>
+    <shortDescription>short desc 8</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <version value="1.0">
+      <revision value="r4" />
+    </version>
+    <codeDone>true</codeDone>
+    <testDone>true</testDone>
+  </requirement>
+  <requirement id="9">
+    <name>req_name_9</name>
+    <shortDescription>short desc 10</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <version value="1.0">
+      <revision value="r2" />
+    </version>
+    <codeDone>false</codeDone>
+    <testDone>true</testDone>
+  </requirement>
+  <requirement id="10">
+    <name>req_name_10</name>
+    <shortDescription>short desc 10</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <version value="1.1">
+      <revision value="r4" />
+    </version>
+    <codeDone>true</codeDone>
+    <testDone>true</testDone>
+  </requirement>
+</requirements>
