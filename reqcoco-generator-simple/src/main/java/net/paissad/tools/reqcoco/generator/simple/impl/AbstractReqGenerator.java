@@ -97,7 +97,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			parseCodeAndUpdateRequirements(declaredRequirements, testsCodePath, CODE_TYPE.TEST);
 
 			final Path coverageOutputPath = getConfig().getCoverageOutput();
-			LOGGER.info("Generating the coverage report to --> {}" + coverageOutputPath);
+			LOGGER.info("Generating the coverage report to --> {}", coverageOutputPath);
 
 			final Requirements rootReqs = new Requirements();
 			rootReqs.setRequirements(declaredRequirements);
