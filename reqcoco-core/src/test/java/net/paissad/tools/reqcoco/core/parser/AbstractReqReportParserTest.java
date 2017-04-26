@@ -36,7 +36,7 @@ public class AbstractReqReportParserTest {
 	public void testGetRequirements() throws ReqReportParserException {
 		final Requirements reqs = requirementSourceParser.getRequirements();
 		Assert.assertNotNull(reqs);
-		Assert.assertEquals(3, reqs.getRequirements().stream().count());
+		Assert.assertEquals(5, reqs.getRequirements().stream().count());
 	}
 
 	/**
