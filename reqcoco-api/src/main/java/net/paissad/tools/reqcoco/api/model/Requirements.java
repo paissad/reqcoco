@@ -25,7 +25,7 @@ public class Requirements implements Serializable {
 	private Collection<Requirement>	requirements;
 
 	public Requirements() {
-		this.requirements = new LinkedList<>();
+		this.setRequirements(new LinkedList<>());
 	}
 
 	/**

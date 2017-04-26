@@ -11,13 +11,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @XmlRootElement(name = "requirement")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Getter
 @Setter
-@ToString(of = { "id", "shortDescription", "version", "revision", "codeDone", "codeAuthor", "testDone", "testAuthor", "ignore" })
 public class Requirement implements Serializable {
 
 	private static final long	serialVersionUID	= 1L;
@@ -66,6 +64,37 @@ public class Requirement implements Serializable {
 
 	public Requirement() {
 		// default no-arg constructor
+	}
+
+	public Requirement(String id, String version, String revision) {
+		this.id = id;
+		this.version = version;
+		this.revision = revision;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Requirement [id=");
+		builder.append(id);
+		builder.append(", ignore=");
+		builder.append(ignore);
+		builder.append(", shortDescription=");
+		builder.append(shortDescription);
+		builder.append(", version=");
+		builder.append(version);
+		builder.append(", revision=");
+		builder.append(revision);
+		builder.append(", codeDone=");
+		builder.append(codeDone);
+		builder.append(", codeAuthor=");
+		builder.append(codeAuthor);
+		builder.append(", testDone=");
+		builder.append(testDone);
+		builder.append(", testAuthor=");
+		builder.append(testAuthor);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

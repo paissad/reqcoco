@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
+import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 import net.paissad.tools.reqcoco.core.TestUtil;
 
 public class AbstractReqReportBuilderTest {
@@ -35,6 +36,40 @@ public class AbstractReqReportBuilderTest {
 	}
 
 	@Test
+	public void testConfigure() throws ReqReportBuilderException {
+		this.abstractRequirementReportBuilder.configure(requirements, null);
+		Assert.assertNotNull(this.abstractRequirementReportBuilder.getReportConfig());
+		Assert.assertTrue(this.abstractRequirementReportBuilder.getDefaultReportConfig() == this.abstractRequirementReportBuilder.getReportConfig());
+	}
+
+	@Test
+	public void testConfigureWithNonNullConfig() throws ReqReportBuilderException {
+		this.abstractRequirementReportBuilder.configure(requirements, new ReqReportConfig() {
+		});
+		Assert.assertFalse(this.abstractRequirementReportBuilder.getDefaultReportConfig() == this.abstractRequirementReportBuilder.getReportConfig());
+	}
+
+	@Test
+	public void testGetCodeDoneCount() {
+		Assert.assertEquals(2, this.abstractRequirementReportBuilder.getCodeDoneCount());
+	}
+
+	@Test
+	public void testGetCodeDoneCountV1_0() {
+		Assert.assertEquals(1, this.abstractRequirementReportBuilder.getCodeDoneCount("1.0"));
+	}
+
+	@Test
+	public void testGetTestsDoneCount() {
+		Assert.assertEquals(1, this.abstractRequirementReportBuilder.getTestsDoneCount());
+	}
+
+	@Test
+	public void testGetTestsDoneCountV1_1() {
+		Assert.assertEquals(0, this.abstractRequirementReportBuilder.getTestsDoneCount("1.1"));
+	}
+
+	@Test
 	public void testGetCodeDoneRatioAnyVersion() {
 		Assert.assertEquals(2f / 3f, this.abstractRequirementReportBuilder.getCodeDoneRatio(), 0.0001);
 	}
@@ -57,6 +92,26 @@ public class AbstractReqReportBuilderTest {
 	@Test
 	public void testGetRequirements() {
 		Assert.assertEquals(this.requirements, this.abstractRequirementReportBuilder.getRequirements());
+	}
+
+	@Test
+	public void testGetDefaultReportConfig() {
+		Assert.assertNotNull(this.abstractRequirementReportBuilder.getDefaultReportConfig());
+		this.abstractRequirementReportBuilder.setReportConfig(null);
+		Assert.assertNotNull(this.abstractRequirementReportBuilder.getDefaultReportConfig());
+	}
+
+	@Test
+	public void testGetDefaultReportFilename() {
+		Assert.assertEquals(
+		        AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION
+		                + abstractRequirementReportBuilder.getDefaultFileReporttExtension(),
+		        this.abstractRequirementReportBuilder.getDefaultReportFilename());
+	}
+
+	@Test
+	public void testGetDefaulFileReporttExtension() {
+		Assert.assertEquals("", this.abstractRequirementReportBuilder.getDefaultFileReporttExtension());
 	}
 
 }

@@ -135,7 +135,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	}
 
 	@Override
-	protected String getDefaulFileReporttExtension() {
+	protected String getDefaultFileReporttExtension() {
 		return REPORT_FILE_DEFAULT_EXTENSION;
 	}
 
