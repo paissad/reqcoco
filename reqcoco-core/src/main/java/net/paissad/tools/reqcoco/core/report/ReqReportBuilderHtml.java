@@ -165,7 +165,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 			final Collection<Requirement> reqs = requirementsMap.get(version);
 
 			// This variable holds the number of declared requirements which are ignored for coverage.
-			long reqsIgnoredCount = 0;
+			long reqsIgnoredCount = getIgnoredRequirementsCount(version);
 
 			long codeDoneCount = getCodeDoneCount(version);
 			long codeUndoneCount = reqs.size() - codeDoneCount;

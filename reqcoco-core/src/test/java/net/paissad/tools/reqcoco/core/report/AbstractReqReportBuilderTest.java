@@ -88,6 +88,17 @@ public class AbstractReqReportBuilderTest {
 	public void testGetTestDoneRatioV1_0() {
 		Assert.assertEquals(1f / 2f, this.abstractRequirementReportBuilder.getTestDoneRatio("1.0"), 0.0001);
 	}
+	
+	@Test
+	public void testGetIgnoredRequirementsCount() {
+		Assert.assertEquals(2, this.abstractRequirementReportBuilder.getIgnoredRequirementsCount());
+	}
+	
+	@Test
+	public void testGetIgnoredRequirementsCountByVersion() {
+		Assert.assertEquals(2, this.abstractRequirementReportBuilder.getIgnoredRequirementsCount("1.0"));
+		Assert.assertEquals(0, this.abstractRequirementReportBuilder.getIgnoredRequirementsCount("1.1"));
+	}
 
 	@Test
 	public void testGetRequirements() {

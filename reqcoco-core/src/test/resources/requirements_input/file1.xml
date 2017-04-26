@@ -18,4 +18,16 @@
     <codeDone>false</codeDone>
     <testDone>false</testDone>
   </requirement>
+  <requirement id="req_name_XX" version="1.0" revision="r7" ignore="true">
+    <shortDescription>short desc 11</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <codeDone>true</codeDone>
+    <testDone>true</testDone>
+  </requirement>
+  <requirement id="req_name_YY" version="1.0" revision="r1" ignore="true">
+    <shortDescription>short desc 12</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <codeDone>false</codeDone>
+    <testDone>false</testDone>
+  </requirement>
 </requirements>

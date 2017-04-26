@@ -17,6 +17,7 @@
     <fullDescription>very long desc number 3 ...</fullDescription>
     <codeDone>false</codeDone>
     <testDone>false</testDone>
+    <link>https://github.com/paissad/reqcoco</link>
   </requirement>
   <requirement id="req_name_4" version="1.0" revision="r2">
     <name>req_name_4</name>
@@ -55,7 +56,7 @@
   </requirement>
   <requirement id="req_name_9" version="1.0" revision="r2">
     <name>req_name_9</name>
-    <shortDescription>short desc 10</shortDescription>
+    <shortDescription>short desc 9</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>false</codeDone>
     <testDone>true</testDone>
@@ -66,5 +67,19 @@
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>true</testDone>
+  </requirement>
+  <requirement id="req_name_11" version="1.0" revision="r7" ignore=true>
+    <name>req_name_11</name>
+    <shortDescription>short desc 11</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <codeDone>true</codeDone>
+    <testDone>true</testDone>
+  </requirement>
+  <requirement id="req_name_11" version="1.0" revision="r1" ignore=true>
+    <name>req_name_12</name>
+    <shortDescription>short desc 12</shortDescription>
+    <fullDescription>very long desc ...</fullDescription>
+    <codeDone>false</codeDone>
+    <testDone>false</testDone>
   </requirement>
 </requirements>

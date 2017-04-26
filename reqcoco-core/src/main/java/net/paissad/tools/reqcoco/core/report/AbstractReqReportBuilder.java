@@ -44,7 +44,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	 * @return The number of code marked as done for any version.
 	 */
 	protected long getCodeDoneCount() {
-		return getRequirements().stream().filter(Requirement::isCodeDone).count();
+		return getRequirements().stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count();
 	}
 
 	/**
@@ -52,7 +52,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	 * @return The number of code marked as done for the specified version.
 	 */
 	protected long getCodeDoneCount(final String versionValue) {
-		return getRequirementByVersionValue(versionValue).stream().filter(Requirement::isCodeDone).count();
+		return getRequirementByVersion(versionValue).stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count();
 	}
 
 	/**
@@ -60,7 +60,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	 */
 	protected Float getCodeDoneRatio() {
 		final Collection<Requirement> reqs = getRequirements();
-		return reqs.stream().filter(Requirement::isCodeDone).count() / (float) reqs.size();
+		return reqs.stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count() / (float) reqs.size();
 	}
 
 	/**
@@ -68,15 +68,15 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	 * @return The ratio of requirements for which the codes are marked as done !
 	 */
 	protected Float getCodeDoneRatio(final String versionValue) {
-		final Collection<Requirement> reqs = getRequirementByVersionValue(versionValue);
-		return reqs.stream().filter(Requirement::isCodeDone).count() / (float) reqs.size();
+		final Collection<Requirement> reqs = getRequirementByVersion(versionValue);
+		return reqs.stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count() / (float) reqs.size();
 	}
 
 	/**
 	 * @return The number of tests marked as done for any version
 	 */
 	protected long getTestsDoneCount() {
-		return getRequirements().stream().filter(Requirement::isTestDone).count();
+		return getRequirements().stream().filter(req -> !req.isIgnore() && req.isTestDone()).count();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	 * @return The number of tests marked as done for the specified version.
 	 */
 	protected long getTestsDoneCount(final String versionValue) {
-		return getRequirementByVersionValue(versionValue).stream().filter(Requirement::isTestDone).count();
+		return getRequirementByVersion(versionValue).stream().filter(req -> !req.isIgnore() && req.isTestDone()).count();
 	}
 
 	/**
@@ -92,7 +92,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	 */
 	protected Float getTestDoneRatio() {
 		final Collection<Requirement> reqs = getRequirements();
-		return reqs.stream().filter(Requirement::isTestDone).count() / (float) reqs.size();
+		return reqs.stream().filter(req -> !req.isIgnore() && req.isTestDone()).count() / (float) reqs.size();
 	}
 
 	/**
@@ -100,11 +100,28 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	 * @return The ratio of requirements for which the tests are marked as done !
 	 */
 	protected Float getTestDoneRatio(final String versionValue) {
-		final Collection<Requirement> reqs = getRequirementByVersionValue(versionValue);
-		return reqs.stream().filter(Requirement::isTestDone).count() / (float) reqs.size();
+		final Collection<Requirement> reqs = getRequirementByVersion(versionValue);
+		return reqs.stream().filter(req -> !req.isIgnore() && req.isTestDone()).count() / (float) reqs.size();
 	}
 
-	protected Collection<Requirement> getRequirementByVersionValue(final String versionValue) {
+	/**
+	 * @return The number of declared/input requirements which are marked as to be ignored for the coverage report.
+	 */
+	protected long getIgnoredRequirementsCount() {
+		final Collection<Requirement> reqs = getRequirements();
+		return reqs.stream().filter(Requirement::isIgnore).count();
+	}
+
+	/**
+	 * @param version - The version to use for filtering.
+	 * @return The number of declared/input requirements which are marked as to be ignored for the coverage report.
+	 */
+	protected long getIgnoredRequirementsCount(final String version) {
+		final Collection<Requirement> reqs = getRequirementByVersion(version);
+		return reqs.stream().filter(Requirement::isIgnore).count();
+	}
+
+	protected Collection<Requirement> getRequirementByVersion(final String versionValue) {
 		return Requirements.getByVersion(getRequirements(), versionValue);
 	}
 
