@@ -13,6 +13,7 @@ public class ReqCodeTagTest {
 		this.reqTag = new ReqCodeTag();
 		this.reqTag.setId("req_3");
 		this.reqTag.setVersion("1.2");
+		this.reqTag.setRevision("r7");
 		this.reqTag.setAuthor("myAuthor");
 		this.reqTag.setComment("My comment");
 	}
@@ -25,6 +26,11 @@ public class ReqCodeTagTest {
 	@Test
 	public void testGetVersion() {
 		Assert.assertEquals("1.2", this.reqTag.getVersion());
+	}
+
+	@Test
+	public void testGetRevision() {
+		Assert.assertEquals("r7", this.reqTag.getRevision());
 	}
 
 	@Test
