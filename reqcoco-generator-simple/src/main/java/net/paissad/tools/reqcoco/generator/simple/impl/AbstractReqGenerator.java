@@ -1,13 +1,19 @@
 package net.paissad.tools.reqcoco.generator.simple.impl;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -20,20 +26,25 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
+import net.paissad.tools.reqcoco.api.model.Revision;
+import net.paissad.tools.reqcoco.api.model.Version;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGeneratorConfig;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.generator.simple.api.TagConfig;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqTag;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserException;
 
 public abstract class AbstractReqGenerator implements ReqGenerator {
 
-	private static final Logger	LOGGER	= LoggerFactory.getLogger(AbstractReqGenerator.class);
+	private static final Logger		LOGGER	= LoggerFactory.getLogger(AbstractReqGenerator.class);
+
+	private static final Charset	UTF8	= Charset.forName("UTF-8");
 
 	@Getter(value = AccessLevel.PROTECTED)
-	private ReqGeneratorConfig	config;
+	private ReqGeneratorConfig		config;
 
 	@Override
 	public void configure(ReqGeneratorConfig cfg) throws ReqGeneratorConfigException {
@@ -109,32 +120,22 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 		}
 	}
 
-	private void parseCodeAndUpdateRequirements(final Collection<Requirement> requirements, final Path path, final CODE_TYPE type)
+	private void parseCodeAndUpdateRequirements(final Collection<Requirement> requirements, final Path path, final CODE_TYPE codeType)
 	        throws IOException {
 
 		Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
-				// TODO : code the tag parsing ...
-				TagConfig tagConfig = null;
-
-				switch (type) {
-				case SOURCE:
-					tagConfig = getConfig().getSourceCodeTagConfig();
-					break;
-
-				case TEST:
-					tagConfig = getConfig().getTestsTagConfig();
-					break;
-
-				default:
-					break;
-				}
 
 				if (mustParseFile(path)) {
-					
+
 					LOGGER.trace("Parsing file {}", path);
-					// TODO: parse the file and check for requirements ...
+					final Collection<ReqTag> tags = getTagsFromFile(path, codeType);
+					requirements.parallelStream().forEach(req -> tags.stream().forEach(tag -> {
+						if (isRequirementMatchTag(req, tag)) {
+							updateRequirementFromTag(req, tag, codeType);
+						}
+					}));
 				}
 
 				return FileVisitResult.CONTINUE;
@@ -143,15 +144,138 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	}
 
 	/**
-	 * @param path - A file.
+	 * @param file - The file to parse.
+	 * @param codeType
+	 * @return The list of the tags retrieved from the file passed in argument.
+	 * @throws IOException
+	 */
+	private Collection<ReqTag> getTagsFromFile(final Path file, final CODE_TYPE codeType) throws IOException {
+
+		final Collection<ReqTag> reqTags = new LinkedList<>();
+
+		ReqTagConfig tagConfig = null;
+
+		switch (codeType) {
+		case SOURCE:
+			tagConfig = getConfig().getSourceCodeTagConfig();
+			break;
+
+		case TEST:
+			tagConfig = getConfig().getTestsTagConfig();
+			break;
+
+		default:
+			throw new UnsupportedOperationException("Unable to parse code for the type : " + codeType);
+		}
+
+		final Pattern patternTag = Pattern.compile(tagConfig.getCompleteRegex());
+		final Pattern patternId = Pattern.compile(tagConfig.getIdRegex());
+		final Pattern patternVersion = Pattern.compile(tagConfig.getVersionRegex());
+		final Pattern patternRevision = Pattern.compile(tagConfig.getRevisionRegex());
+		final Pattern patternAuthor = Pattern.compile(tagConfig.getAuthorRegex());
+		final Pattern patternComment = Pattern.compile(tagConfig.getCommentRegex());
+
+		try (BufferedReader reader = Files.newBufferedReader(file, UTF8)) {
+
+			reader.lines().filter(line -> patternTag.matcher(line).find()).forEach(line -> {
+				// At this step, the line matched the patter tag predicate, we can start the retrieval of the tag(s) and parts of the tag(s)
+				// TOOD : code the tag retrieval
+				final Matcher matcherTag = patternTag.matcher(line);
+				while (matcherTag.find()) {
+
+					final String tag = matcherTag.group();
+
+					final String id = patternId.matcher(tag).group();
+
+					final Version version = new Version(patternVersion.matcher(tag).group());
+
+					if (version.getValue() == null) {
+						String warnMsg = "No version is specified into the " + codeType.name().toLowerCase(Locale.US) + " code for the requirement '"
+						        + id + "'";
+						LOGGER.warn(warnMsg);
+					}
+
+					final String revisionValue = patternRevision.matcher(tag).group();
+					if (revisionValue != null) {
+						version.setRevision(new Revision());
+						version.getRevision().setValue(revisionValue);
+					}
+
+					final String author = patternAuthor.matcher(tag).group();
+
+					final String comment = patternComment.matcher(tag).group();
+
+					// Build the req tag object
+					final ReqTag reqTag = new ReqTag();
+					reqTag.setId(id);
+					reqTag.setVersion(version);
+					reqTag.setAuthor(author);
+					reqTag.setComment(comment);
+
+					reqTags.add(reqTag);
+				}
+			});
+
+		} catch (IOException e) {
+			String errMsg = "An error occured while parsing/retrieving requirement tags from the file --> " + file;
+			LOGGER.error(errMsg, e);
+			throw new IOException(errMsg, e);
+		}
+
+		return reqTags;
+	}
+
+	/**
+	 * Update the requirement passed in argument from the informations contained into the tag.
+	 * 
+	 * @param requirement - The requiremet to update.
+	 * @param tag - The tag
+	 * @param codeType
+	 */
+	private void updateRequirementFromTag(final Requirement requirement, final ReqTag tag, CODE_TYPE codeType) {
+
+		switch (codeType) {
+		case SOURCE:
+			requirement.setCodeDone(true);
+			requirement.setCodeAuthor(tag.getAuthor());
+			requirement.setCodeAuthorComment(tag.getComment());
+			break;
+
+		case TEST:
+			requirement.setTestDone(true);
+			requirement.setTestAuthor(tag.getAuthor());
+			requirement.setTestAuthorComment(tag.getComment());
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * @param requirement - The declared requirement from the parsed source.
+	 * @param tag - A tag from the code (source or tests)
+	 * @return <code>true</code> if the (id, version and revision) matched betweend the requirement and the tag.
+	 */
+	private boolean isRequirementMatchTag(final Requirement requirement, final ReqTag tag) {
+
+		boolean matched = requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
+		if (matched && requirement.getVersion().getRevision() != null) {
+			matched = requirement.getVersion().getRevision().equals(tag.getVersion().getRevision());
+		}
+		return matched;
+	}
+
+	/**
+	 * @param file - A file.
 	 * @return <code>true</code> if the file is included and not excluded.
 	 */
-	private boolean mustParseFile(final Path path) {
+	private boolean mustParseFile(final Path file) {
 
 		for (final String include : getConfig().getFileIncludes()) {
 			final String includeRegex = buildIncludeOrExcludeRegex(include);
-			if (path.getFileName().toString().matches(includeRegex)) {
-				return !isFileExcluded(path);
+			if (file.getFileName().toString().matches(includeRegex)) {
+				return !isFileExcluded(file);
 			}
 		}
 		return false;
