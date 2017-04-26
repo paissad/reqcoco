@@ -6,9 +6,9 @@ import java.nio.file.Path;
 import java.util.Map;
 
 import lombok.Getter;
-import net.paissad.tools.reqcoco.core.parser.AbstractReqSourceParser;
+import net.paissad.tools.reqcoco.core.parser.AbstractReqReportParser;
 
-public class PathReqSourceParser extends AbstractReqSourceParser {
+public class PathReqReportParser extends AbstractReqReportParser {
 
 	@Getter
 	private Path				path;
@@ -16,7 +16,7 @@ public class PathReqSourceParser extends AbstractReqSourceParser {
 	@Getter
 	private Map<String, Object>	options;
 
-	public PathReqSourceParser(final Path path, final Map<String, Object> options) {
+	public PathReqReportParser(final Path path, final Map<String, Object> options) {
 		this.path = path;
 		this.options = options;
 	}

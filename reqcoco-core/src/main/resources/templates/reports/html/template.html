@@ -133,8 +133,7 @@ rect:hover {
                     <tr>
                         <th data-sortable="true" data-halign="center" data-align="center">Id</th>
                         <th data-sortable="true" data-halign="center" data-align="center">Version</th>
-                        <th data-halign="center" data-align="center" data-visible="false">Revision</th>
-                        <th data-sortable="true" data-align="center" data-align="center" data-switchable="false">Name</th>
+                        <th data-halign="center" data-align="center">Revision</th>
                         <th data-halign="center" data-align="left">Short Description</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-cell-style="cellDoneStatusStyle">Code</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-visible="false"><span
@@ -186,10 +185,10 @@ rect:hover {
 <script>
 function dashboard(id, fData){
     var barColor = 'steelblue';
-    function segColor(c){ return {Done:"#5CB85C", Undone:"#D9534F", Skipped:"#F0AD4E"}[c]; }
+    function segColor(c){ return {Done:"#5CB85C", Undone:"#D9534F", Ignored:"#F0AD4E"}[c]; }
     
     // compute total for each version.
-    fData.forEach(function(d){d.total=d.freq.Done+d.freq.Undone+d.freq.Skipped;});
+    fData.forEach(function(d){d.total=d.freq.Done+d.freq.Undone+d.freq.Ignored;});
     
     // function to handle histogram.
     function histoGram(fD){
@@ -369,7 +368,7 @@ function dashboard(id, fData){
     }
     
     // calculate total frequency by segment for all version.
-    var tF = ['Done','Undone','Skipped'].map(function(d){ 
+    var tF = ['Done','Undone','Ignored'].map(function(d){ 
         return {type:d, freq: d3.sum(fData.map(function(t){ return t.freq[d];}))}; 
     });    
     

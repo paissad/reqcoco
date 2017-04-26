@@ -10,9 +10,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PathReqSourceParserTest {
+public class PathReqReportParserTest {
 
-	private PathReqSourceParser	pathReqSourceParser;
+	private PathReqReportParser	pathReqSourceParser;
 
 	private Path				path;
 
@@ -22,7 +22,7 @@ public class PathReqSourceParserTest {
 	public void setUp() throws Exception {
 		path = Paths.get(".");
 		this.options = new HashMap<>();
-		this.pathReqSourceParser = new PathReqSourceParser(this.path, this.options);
+		this.pathReqSourceParser = new PathReqReportParser(this.path, this.options);
 	}
 
 	@Test

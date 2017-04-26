@@ -22,7 +22,7 @@ import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
-import net.paissad.tools.reqcoco.core.parser.AbstractReqSourceParser;
+import net.paissad.tools.reqcoco.core.parser.AbstractReqReportParser;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
 
 @Mojo(name = "report", defaultPhase = LifecyclePhase.SITE, requiresProject = true, threadSafe = true, requiresDependencyResolution = ResolutionScope.RUNTIME)
@@ -121,7 +121,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 	}
 
 	private ReqReportParser buildRequirementsSourceParser() {
-		return new AbstractReqSourceParser() {
+		return new AbstractReqReportParser() {
 
 			@Override
 			protected URI getURI() throws URISyntaxException {

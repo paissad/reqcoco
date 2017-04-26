@@ -24,9 +24,9 @@ import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 
-public abstract class AbstractReqSourceParser implements ReqReportParser {
+public abstract class AbstractReqReportParser implements ReqReportParser {
 
-	private static final Logger	LOGGER				= LoggerFactory.getLogger(AbstractReqSourceParser.class);
+	private static final Logger	LOGGER				= LoggerFactory.getLogger(AbstractReqReportParser.class);
 
 	@Getter(value = AccessLevel.PRIVATE)
 	@Setter(value = AccessLevel.PRIVATE)

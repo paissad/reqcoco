@@ -20,7 +20,7 @@ import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.core.TestUtil;
 
-public class AbstractReqSourceParserTest {
+public class AbstractReqReportParserTest {
 
 	private ReqReportParser		requirementSourceParser;
 
@@ -89,7 +89,7 @@ public class AbstractReqSourceParserTest {
 
 	@Test
 	public void testGetURI() throws URISyntaxException {
-		final AbstractReqSourceParser parser = (AbstractReqSourceParser) requirementSourceParser;
+		final AbstractReqReportParser parser = (AbstractReqReportParser) requirementSourceParser;
 		Assert.assertTrue(parser.getURI().toString().matches(Pattern.quote(TestUtil.REQUIREMENTS_INPUT_FILE1_XML_URI.toString())));
 	}
 

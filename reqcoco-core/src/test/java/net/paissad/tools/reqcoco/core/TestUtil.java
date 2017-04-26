@@ -8,7 +8,7 @@ import java.util.Map;
 import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
-import net.paissad.tools.reqcoco.core.parser.AbstractReqSourceParser;
+import net.paissad.tools.reqcoco.core.parser.AbstractReqReportParser;
 
 public class TestUtil {
 
@@ -42,7 +42,7 @@ public class TestUtil {
 	}
 
 	public static ReqReportParser initAbstractRequirementSourceParser(final URI uri, final Map<String, Object> options) {
-		return new AbstractReqSourceParser() {
+		return new AbstractReqReportParser() {
 
 			@Override
 			protected URI getURI() throws URISyntaxException {

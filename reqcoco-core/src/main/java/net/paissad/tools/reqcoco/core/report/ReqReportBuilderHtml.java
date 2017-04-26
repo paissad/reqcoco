@@ -164,18 +164,19 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 			// We retrieve all requirements for this version
 			final Collection<Requirement> reqs = requirementsMap.get(version);
 
+			// This variable holds the number of declared requirements which are ignored for coverage.
+			long reqsIgnoredCount = 0;
+
 			long codeDoneCount = getCodeDoneCount(version);
 			long codeUndoneCount = reqs.size() - codeDoneCount;
-			long codeSkippedCount = 0;
 
 			long testsDoneCount = getTestsDoneCount(version);
 			long testsUndoneCount = reqs.size() - testsDoneCount;
-			long testsSkippedCount = 0;
 
-			final String dataSetEntryFormat = "{Version:'Version %s',freq:{Done:%s, Undone:%s, Skipped:%s}},\n";
+			final String dataSetEntryFormat = "{Version:'Version %s',freq:{Done:%s, Undone:%s, Ignored:%s}},\n";
 
-			dataCode.append(String.format(dataSetEntryFormat, version, codeDoneCount, codeUndoneCount, codeSkippedCount));
-			dataTests.append(String.format(dataSetEntryFormat, version, testsDoneCount, testsUndoneCount, testsSkippedCount));
+			dataCode.append(String.format(dataSetEntryFormat, version, codeDoneCount, codeUndoneCount, reqsIgnoredCount));
+			dataTests.append(String.format(dataSetEntryFormat, version, testsDoneCount, testsUndoneCount, reqsIgnoredCount));
 
 		});
 

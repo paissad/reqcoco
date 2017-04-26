@@ -17,6 +17,7 @@
     <fullDescription>very long desc number 3 ...</fullDescription>
     <codeDone>false</codeDone>
     <testDone>false</testDone>
+    <link>https://github.com/paissad/reqcoco</link>
   </requirement>
   <requirement id="req_name_4" version="1.0" revision="r2">
     <name>req_name_4</name>

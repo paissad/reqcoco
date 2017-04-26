@@ -20,7 +20,7 @@ import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
-import net.paissad.tools.reqcoco.core.parser.simple.PathReqSourceParser;
+import net.paissad.tools.reqcoco.core.parser.simple.PathReqReportParser;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
 
@@ -90,7 +90,7 @@ public class ReqCoCoRunner {
 
 	private Collection<Requirement> parseInput(final ReqCoCoRunnerOptions options) throws ReqReportParserException {
 
-		final ReqReportParser parser = new PathReqSourceParser(getSourcePath(options), null);
+		final ReqReportParser parser = new PathReqReportParser(getSourcePath(options), null);
 		return parser.getRequirements().getRequirements();
 	}
 
