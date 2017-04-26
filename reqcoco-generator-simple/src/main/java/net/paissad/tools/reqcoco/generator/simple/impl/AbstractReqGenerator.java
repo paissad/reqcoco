@@ -160,7 +160,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			break;
 
 		case TEST:
-			tagConfig = getConfig().getTestsTagConfig();
+			tagConfig = getConfig().getTestsCodeTagConfig();
 			break;
 
 		default:

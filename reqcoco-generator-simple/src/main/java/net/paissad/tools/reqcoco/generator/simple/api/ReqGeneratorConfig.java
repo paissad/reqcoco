@@ -41,7 +41,7 @@ public interface ReqGeneratorConfig {
 	/**
 	 * @return The configuration which tells how to parse the <strong>tests code</strong> in order to check the requirements.
 	 */
-	ReqTagConfig getTestsTagConfig();
+	ReqTagConfig getTestsCodeTagConfig();
 
 	/**
 	 * @return The list of files to include to the source code and test code parsing. Only files which match this expression or strict names will be
