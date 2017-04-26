@@ -9,6 +9,7 @@ notifications:
 cache:
   directories:
   - $HOME/.m2
+  - $HOME/.sonar
 addons:
   sonarqube:
     organization: paissad
