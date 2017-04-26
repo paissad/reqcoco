@@ -6,7 +6,7 @@ import net.paissad.tools.reqcoco.api.model.Version;
 
 @Getter
 @Setter
-public class ReqTag {
+public class ReqCodeTag {
 
 	/** The id of the requirement which is coded. */
 	private String	id;

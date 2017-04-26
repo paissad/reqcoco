@@ -30,7 +30,7 @@ import net.paissad.tools.reqcoco.api.model.Version;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGeneratorConfig;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.generator.simple.api.ReqTag;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTag;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
@@ -129,7 +129,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 				if (mustParseFile(path)) {
 
 					LOGGER.trace("Parsing file {}", path);
-					final Collection<ReqTag> tags = getTagsFromFile(path, codeType);
+					final Collection<ReqCodeTag> tags = getTagsFromFile(path, codeType);
 					requirements.parallelStream().forEach(req -> tags.stream().forEach(tag -> {
 						if (isRequirementMatchTag(req, tag)) {
 							updateRequirementFromTag(req, tag, codeType);
@@ -148,9 +148,9 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	 * @return The list of the tags retrieved from the file passed in argument.
 	 * @throws IOException
 	 */
-	private Collection<ReqTag> getTagsFromFile(final Path file, final CODE_TYPE codeType) throws IOException {
+	private Collection<ReqCodeTag> getTagsFromFile(final Path file, final CODE_TYPE codeType) throws IOException {
 
-		final Collection<ReqTag> reqTags = new LinkedList<>();
+		final Collection<ReqCodeTag> reqTags = new LinkedList<>();
 
 		ReqTagConfig tagConfig = null;
 
@@ -225,7 +225,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 					}
 
 					// Build the req tag object
-					final ReqTag reqTag = new ReqTag();
+					final ReqCodeTag reqTag = new ReqCodeTag();
 					reqTag.setId(id);
 					reqTag.setVersion(version);
 					reqTag.setAuthor(author);
@@ -251,7 +251,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	 * @param tag - The tag
 	 * @param codeType
 	 */
-	private void updateRequirementFromTag(final Requirement requirement, final ReqTag tag, CODE_TYPE codeType) {
+	private void updateRequirementFromTag(final Requirement requirement, final ReqCodeTag tag, CODE_TYPE codeType) {
 
 		switch (codeType) {
 		case SOURCE:
@@ -276,7 +276,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	 * @param tag - A tag from the code (source or tests)
 	 * @return <code>true</code> if the (id, version and revision) matched betweend the requirement and the tag.
 	 */
-	private boolean isRequirementMatchTag(final Requirement requirement, final ReqTag tag) {
+	private boolean isRequirementMatchTag(final Requirement requirement, final ReqCodeTag tag) {
 
 		boolean matched = requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
 		if (matched && requirement.getVersion().getRevision() != null) {

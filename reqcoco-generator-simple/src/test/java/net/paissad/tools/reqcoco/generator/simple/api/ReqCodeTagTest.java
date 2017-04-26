@@ -6,13 +6,13 @@ import org.junit.Test;
 
 import net.paissad.tools.reqcoco.api.model.Version;
 
-public class ReqTagTest {
+public class ReqCodeTagTest {
 
-	private ReqTag reqTag;
+	private ReqCodeTag reqTag;
 
 	@Before
 	public void setUp() throws Exception {
-		this.reqTag = new ReqTag();
+		this.reqTag = new ReqCodeTag();
 		this.reqTag.setId("req_3");
 		this.reqTag.setVersion(new Version("1.2"));
 		this.reqTag.setAuthor("myAuthor");
