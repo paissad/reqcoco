@@ -11,7 +11,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -177,7 +176,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 		try (BufferedReader reader = Files.newBufferedReader(file, UTF8)) {
 
-			reader.lines().filter(line -> patternTag.matcher(line).find()).forEach(line -> {
+			reader.lines().filter(patternTag.asPredicate()).forEach(line -> {
 				// At this step, the line matched the patter tag predicate, we can start the retrieval of the tag(s) and parts of the tag(s)
 				// TOOD : code the tag retrieval
 				final Matcher matcherTag = patternTag.matcher(line);
@@ -185,25 +184,45 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 					final String tag = matcherTag.group();
 
-					final String id = patternId.matcher(tag).group();
-
-					final Version version = new Version(patternVersion.matcher(tag).group());
-
-					if (version.getValue() == null) {
-						String warnMsg = "No version is specified into the " + codeType.name().toLowerCase(Locale.US) + " code for the requirement '"
-						        + id + "'";
-						LOGGER.warn(warnMsg);
+					// Retrieve the 'id' part of the tag
+					String id = null;
+					if (patternId.matcher(tag).find()) {
+						id = patternId.matcher(tag).group(1);
+					} else {
+						LOGGER.error("No id defined for requirement tag --> {}", tag);
 					}
 
-					final String revisionValue = patternRevision.matcher(tag).group();
+					// Retrieve the 'version' part of the tag
+					Version version = null;
+					if (patternVersion.matcher(tag).find()) {
+						version = new Version(patternVersion.matcher(tag).group(1));
+					} else {
+						LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tag, Version.UNKNOWN.getValue());
+					}
+
+					// Retrieve the 'revision' part of the tag
+					String revisionValue = null;
+					if (patternRevision.matcher(tag).find()) {
+						revisionValue = patternRevision.matcher(tag).group(1);
+					}
+
+					// Update the version if a revision is set
 					if (revisionValue != null) {
 						version.setRevision(new Revision());
 						version.getRevision().setValue(revisionValue);
 					}
 
-					final String author = patternAuthor.matcher(tag).group();
+					// Retrieve the 'author' part of the tag
+					String author = null;
+					if (patternAuthor.matcher(tag).find()) {
+						author = patternAuthor.matcher(tag).group(1);
+					}
 
-					final String comment = patternComment.matcher(tag).group();
+					// Retrieve the 'comment' part of the tag
+					String comment = null;
+					if (patternComment.matcher(tag).find()) {
+						patternComment.matcher(tag).group(1);
+					}
 
 					// Build the req tag object
 					final ReqTag reqTag = new ReqTag();
