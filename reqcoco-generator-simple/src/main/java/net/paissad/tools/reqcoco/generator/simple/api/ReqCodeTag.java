@@ -2,7 +2,6 @@ package net.paissad.tools.reqcoco.generator.simple.api;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.paissad.tools.reqcoco.api.model.Version;
 
 /**
  * This class represent the tag which is placed into a code (source or test).
@@ -17,7 +16,10 @@ public class ReqCodeTag {
 	private String	id;
 
 	/** The version of the requirement which is coded. */
-	private Version	version;
+	private String	version;
+
+	/** The revision of the requirement which is coded */
+	private String	revision;
 
 	/** The author of the requirement coded. */
 	private String	author;

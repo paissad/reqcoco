@@ -30,13 +30,12 @@ public class Requirements implements Serializable {
 
 	/**
 	 * @param requirements - The requirements to filter by version.
-	 * @param versionValue - The version value to use for filtering.
+	 * @param version - The version value to use for filtering.
 	 * @return The collection of requirements having the specified version value.
 	 * @exception NullPointerException If either the requirements, or version value passed is <code>null</code>.
 	 */
-	public static Collection<Requirement> getByVersion(final Collection<Requirement> requirements, final String versionValue) {
-		return requirements.stream().filter(req -> req.getVersion() != null && versionValue.equals(req.getVersion().getValue()))
-		        .collect(Collectors.toList());
+	public static Collection<Requirement> getByVersion(final Collection<Requirement> requirements, final String version) {
+		return requirements.stream().filter(req -> req.getVersion().equals(version)).collect(Collectors.toList());
 	}
 
 }

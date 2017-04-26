@@ -25,12 +25,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
-import net.paissad.tools.reqcoco.api.model.Revision;
-import net.paissad.tools.reqcoco.api.model.Version;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTag;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGeneratorConfig;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTag;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
@@ -193,23 +191,17 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 					}
 
 					// Retrieve the 'version' part of the tag
-					Version version = null;
+					String version = null;
 					if (patternVersion.matcher(tag).find()) {
-						version = new Version(patternVersion.matcher(tag).group(1));
+						version = patternVersion.matcher(tag).group(1);
 					} else {
-						LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tag, Version.UNKNOWN.getValue());
+						LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tag, Requirement.VERSION_UNKNOWN);
 					}
 
 					// Retrieve the 'revision' part of the tag
-					String revisionValue = null;
+					String revision = null;
 					if (patternRevision.matcher(tag).find()) {
-						revisionValue = patternRevision.matcher(tag).group(1);
-					}
-
-					// Update the version if a revision is set
-					if (revisionValue != null) {
-						version.setRevision(new Revision());
-						version.getRevision().setValue(revisionValue);
+						revision = patternRevision.matcher(tag).group(1);
 					}
 
 					// Retrieve the 'author' part of the tag
@@ -228,6 +220,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 					final ReqCodeTag reqTag = new ReqCodeTag();
 					reqTag.setId(id);
 					reqTag.setVersion(version);
+					reqTag.setRevision(revision);
 					reqTag.setAuthor(author);
 					reqTag.setComment(comment);
 
@@ -278,11 +271,8 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	 */
 	private boolean isRequirementMatchTag(final Requirement requirement, final ReqCodeTag tag) {
 
-		boolean matched = requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
-		if (matched && requirement.getVersion().getRevision() != null) {
-			matched = requirement.getVersion().getRevision().equals(tag.getVersion().getRevision());
-		}
-		return matched;
+		return requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion())
+		        && requirement.getRevision().equals(tag.getRevision());
 	}
 
 	/**

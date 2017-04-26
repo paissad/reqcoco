@@ -4,8 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.api.model.Version;
-
 public class ReqCodeTagTest {
 
 	private ReqCodeTag reqTag;
@@ -14,7 +12,7 @@ public class ReqCodeTagTest {
 	public void setUp() throws Exception {
 		this.reqTag = new ReqCodeTag();
 		this.reqTag.setId("req_3");
-		this.reqTag.setVersion(new Version("1.2"));
+		this.reqTag.setVersion("1.2");
 		this.reqTag.setAuthor("myAuthor");
 		this.reqTag.setComment("My comment");
 	}
@@ -26,7 +24,7 @@ public class ReqCodeTagTest {
 
 	@Test
 	public void testGetVersion() {
-		Assert.assertEquals("1.2", this.reqTag.getVersion().getValue());
+		Assert.assertEquals("1.2", this.reqTag.getVersion());
 	}
 
 	@Test

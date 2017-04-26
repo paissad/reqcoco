@@ -17,7 +17,6 @@ import org.junit.rules.ExpectedException;
 import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
-import net.paissad.tools.reqcoco.api.model.Version;
 import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.core.TestUtil;
 
@@ -80,14 +79,11 @@ public class AbstractReqSourceParserTest {
 
 	@Test
 	public void testGetRequirementsVersion() throws ReqReportParserException {
-		final Version v1 = new Version();
-		v1.setValue("1.0");
-		Collection<Requirement> reqs = requirementSourceParser.getRequirements(v1);
+
+		Collection<Requirement> reqs = requirementSourceParser.getRequirements("1.0");
 		Assert.assertEquals(2, reqs.size());
 
-		final Version v1_1 = new Version();
-		v1_1.setValue("1.1");
-		reqs = requirementSourceParser.getRequirements(v1_1);
+		reqs = requirementSourceParser.getRequirements("1.1");
 		Assert.assertEquals(1, reqs.size());
 	}
 

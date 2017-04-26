@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,6 @@ import lombok.Setter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
-import net.paissad.tools.reqcoco.api.model.Version;
 import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 
 public abstract class AbstractReqSourceParser implements ReqReportParser {
@@ -80,8 +80,8 @@ public abstract class AbstractReqSourceParser implements ReqReportParser {
 	}
 
 	@Override
-	public Collection<Requirement> getRequirements(final Version version) throws ReqReportParserException {
-		return Requirements.getByVersion(getRequirements().getRequirements(), version.getValue());
+	public Collection<Requirement> getRequirements(final String version) throws ReqReportParserException {
+		return Requirements.getByVersion(getRequirements().getRequirements(), version);
 	}
 
 	@Override
@@ -109,11 +109,8 @@ public abstract class AbstractReqSourceParser implements ReqReportParser {
 	}
 
 	private void sanitizeRequirements() {
-		getCachedRequirements().getRequirements().stream().forEach(req -> {
-			if (req.getVersion() == null || req.getVersion().getValue() == null || req.getVersion().getValue().trim().isEmpty()) {
-				req.setVersion(Version.UNKNOWN);
-			}
-		});
+		getCachedRequirements().getRequirements().stream().filter(req -> StringUtils.isBlank(req.getVersion()))
+		        .forEach(req -> req.setVersion(Requirement.VERSION_UNKNOWN));
 	}
 
 	protected abstract URI getURI() throws URISyntaxException;

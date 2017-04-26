@@ -153,7 +153,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		final StringBuilder dataTests = new StringBuilder();
 
 		// Retrieves available version values
-		final Stream<String> versions = getRequirements().stream().map(req -> req.getVersion().getValue()).distinct();
+		final Stream<String> versions = getRequirements().stream().map(Requirement::getVersion).distinct();
 
 		versions.forEach(version -> {
 

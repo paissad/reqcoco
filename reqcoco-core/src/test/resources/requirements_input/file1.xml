@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <requirements>
-  <requirement id="1">
-    <name>req_name</name>
+  <requirement id="req_name" version="1.0" revision="r1">
     <shortDescription>short desc</shortDescription>
     <fullDescription>very long desc ..</fullDescription>
-    <version value="1.0">
-      <revision value="r1" />
-    </version>
     <codeDone>true</codeDone>
     <testDone>true</testDone>
   </requirement>
-  <requirement id="2">
-    <name>req_name_2</name>
+  <requirement id="req_name_2" version="1.1" revision="r2">
     <shortDescription>short desc</shortDescription>
     <fullDescription>very long desc number 2 ...</fullDescription>
-    <version value="1.1">
-      <revision value="r2" />
-    </version>
     <codeDone>true</codeDone>
     <testDone>false</testDone>
   </requirement>
-  <requirement id="3">
-    <name>req_name_3</name>
+  <requirement id="req_name_3" version="1.0" revision="r2">
     <shortDescription>short desc 3</shortDescription>
     <fullDescription>very long desc number 3 ...</fullDescription>
-    <version value="1.0">
-      <revision value="r2" />
-    </version>
     <codeDone>false</codeDone>
     <testDone>false</testDone>
   </requirement>

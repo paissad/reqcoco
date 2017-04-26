@@ -8,7 +8,6 @@ import java.util.Map;
 import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
-import net.paissad.tools.reqcoco.api.model.Version;
 
 public interface ReqReportParser {
 
@@ -16,6 +15,6 @@ public interface ReqReportParser {
 
 	Requirements getRequirements() throws ReqReportParserException;
 
-	Collection<Requirement> getRequirements(final Version version) throws ReqReportParserException;
+	Collection<Requirement> getRequirements(final String version) throws ReqReportParserException;
 
 }
