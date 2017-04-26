@@ -4,6 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import net.paissad.tools.reqcoco.api.model.Version;
 
+/**
+ * This class represent the tag which is placed into a code (source or test).
+ * 
+ * @author paissad
+ */
 @Getter
 @Setter
 public class ReqCodeTag {
