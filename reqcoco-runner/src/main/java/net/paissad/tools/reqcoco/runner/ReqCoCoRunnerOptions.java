@@ -26,14 +26,14 @@ public class ReqCoCoRunnerOptions {
 	@Option(name = "--in", required = true, metaVar = "<file>", usage = "Source (file or url) containing the requirements to parse.")
 	private String			requirementSource;
 
-	@Option(name = "--console-report", required = false, usage = "Whether or not to generate reports onto the standard console output. Default value is 'false'.")
+	@Option(name = "--console-report", required = false, metaVar = "[true|false]", usage = "Whether or not to generate reports onto the standard console output.")
 	private String			buildConsoleReport;
 
-	@Option(name = "--html-report", required = false, usage = "Whether or not to generate HTML reports into the specified output directory. Default value is 'true'.")
+	@Option(name = "--html-report", required = false, metaVar = "[true|false]", usage = "Whether or not to generate HTML reports into the specified output directory.")
 	private String			buildHtmlReport	= "true";
 
-	@Option(name = "--report-name", required = false, metaVar = "[name]", usage = "The name of the report file. The default value is "
-	        + AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION)
+	@Option(name = "--report-name", required = false, metaVar = "[name]", usage = "The name of the report file. The default value is '"
+	        + AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + "'")
 	private String			reportName;
 
 	@Option(name = "--log-level", required = false, metaVar = "[level]", usage = "Sets the log level. Possible values are OFF|ERROR|WARN|INFO|DEBUG|TRACE. Default value is 'INFO'.")
