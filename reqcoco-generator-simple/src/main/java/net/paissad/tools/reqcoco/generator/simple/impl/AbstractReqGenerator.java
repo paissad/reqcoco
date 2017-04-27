@@ -176,7 +176,6 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 			reader.lines().filter(patternTag.asPredicate()).forEach(line -> {
 				// At this step, the line matched the patter tag predicate, we can start the retrieval of the tag(s) and parts of the tag(s)
-				// TOOD : code the tag retrieval
 				final Matcher matcherTag = patternTag.matcher(line);
 				while (matcherTag.find()) {
 
