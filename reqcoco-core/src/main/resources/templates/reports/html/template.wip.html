@@ -152,13 +152,17 @@ rect:hover {
                         <td>${req.version}</td>
                         <td>${req.revision}</td>
                         <td>${req.shortDescription}</td>
-                        <td>${req.codeDone?string('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}
-                        </td>
+                        <#if !req.ignore>
+                            <td>${req.codeDone?then('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}</td>
+                        <#else>
+                            <td><span class="glyphicon glyphicon-exclamation-sign"></span></td>
+                        </#if>
                         <td>${req.codeAuthor!'N/A'}</td>
-                        <td>${req.testDone?string('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}
-
-
-                        
+                        <#if !req.ignore>
+                            <td>${req.testDone?then('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}
+                        <#else>
+                            <td><span class="glyphicon glyphicon-exclamation-sign"></span></td>
+                        </#if>
                         <td>${req.testAuthor!'N/A'}</td>
                         <td>${req.link!''}</td>
                     </tr>
@@ -409,6 +413,10 @@ function cellDoneStatusStyle(value, row, index) {
   } else if (value && value.includes("glyphicon-remove")) {
       return {
           classes: 'danger'
+      };
+  } else if (value && value.includes("glyphicon-exclamation-sign")) {
+      return {
+          classes: 'warning'
       };
   }
   return {};
