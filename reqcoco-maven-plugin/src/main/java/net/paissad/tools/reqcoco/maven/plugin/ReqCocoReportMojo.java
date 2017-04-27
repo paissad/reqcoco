@@ -90,7 +90,9 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 			if (htmlreport) {
 
 				getLog().info("Initializing the HTML requirements coverage report builder");
-				reportFilename = (reportname == null) ? reportFilename : reportFilename + ReqReportBuilderHtml.REPORT_FILE_DEFAULT_EXTENSION;
+				if (reportname != null) {
+					reportFilename = reportname + ReqReportBuilderHtml.REPORT_FILE_DEFAULT_EXTENSION;
+				}
 
 				final ReqReportBuilderHtml htmlReqBuilder = (reportFilename == null) ? new ReqReportBuilderHtml(reportOutputDirPath)
 				        : new ReqReportBuilderHtml(reportOutputDirPath, reportFilename);

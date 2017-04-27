@@ -16,12 +16,17 @@ import net.paissad.tools.reqcoco.maven.plugin.util.PathUtils;
 
 public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
 
+	private Path hardcoded_outputdir;;
+
 	protected void setUp() throws Exception {
 		super.setUp();
+		hardcoded_outputdir = Paths.get(System.getProperty("user.dir"), "target/__hardcoded_test_dir__/custom-output-dir").normalize();
+		FileUtils.forceDeleteOnExit(hardcoded_outputdir.toFile());
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
+		FileUtils.deleteQuietly(hardcoded_outputdir.toFile());
 	}
 
 	@Test
@@ -30,6 +35,26 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
 		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
 		Assert.assertNotNull(mojo);
 		mojo.execute();
+		Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.html").toFile().exists());
+	}
+
+	@Test
+	public void testExecuteNoHtmlReport() throws Exception {
+		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/no-html-report-test/pom.xml";
+		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+		Assert.assertNotNull(mojo);
+		mojo.execute();
+		Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.html").toFile().exists());
+	}
+
+	@Test
+	public void testExecuteCustomReportName() throws Exception {
+		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/custom-report-name-test/pom.xml";
+		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+		Assert.assertNotNull(mojo);
+		mojo.execute();
+		Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.html").toFile().exists());
+		Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "new_report_name.html").toFile().exists());
 	}
 
 	@Test
