@@ -155,16 +155,28 @@ rect:hover {
                         <#if !req.ignore>
                             <td>${req.codeDone?then('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}</td>
                         <#else>
-                            <td><span class="glyphicon glyphicon-exclamation-sign"></span></td>
+                            <td data-toggle="tooltip" title="This requirement is marked as to be ignored"><span class="glyphicon glyphicon-exclamation-sign"></span></td>
                         </#if>
-                        <td>${req.codeAuthor!'N/A'}</td>
+                        <#if req.codeAuthor?has_content>
+                            <td>${req.codeAuthor}</td>
+                        <#else>
+                            <td data-toggle="tooltip" title="No author for this source code !">N/A</td>
+                        </#if>
                         <#if !req.ignore>
                             <td>${req.testDone?then('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}
                         <#else>
-                            <td><span class="glyphicon glyphicon-exclamation-sign"></span></td>
+                            <td data-toggle="tooltip" title="This requirement is marked as to be ignored"><span class="glyphicon glyphicon-exclamation-sign"></span></td>
                         </#if>
-                        <td>${req.testAuthor!'N/A'}</td>
-                        <td>${req.link!''}</td>
+                        <#if req.testAuthor?has_content>
+                            <td>${req.testAuthor}</td>
+                        <#else>
+                            <td data-toggle="tooltip" title="No author for this test code !">N/A</td>
+                        </#if>
+                        <#if req.link?has_content>
+                            <td data-toggle="tooltip" title="Link to the place where the requirement was declared at the first place">${req.link}</td>
+                        <#else>
+                            <td></td>
+                        </#if>
                     </tr>
                     </#list>
                 </tbody>
@@ -428,6 +440,14 @@ function fieldLinkFormatter(value) {
         return '';
     }
 }
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();  
+    $('#lst_art_adm').on('all.bs.table', function (e, name, args) {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();  
+    });
+});
 </script>
 
 <script>

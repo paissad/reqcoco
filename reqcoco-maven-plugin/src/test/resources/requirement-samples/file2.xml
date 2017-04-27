@@ -4,6 +4,7 @@
     <shortDescription>short desc</shortDescription>
     <fullDescription>very long desc ..</fullDescription>
     <codeDone>true</codeDone>
+    <codeAuthor>developer1</codeAuthor>
     <testDone>true</testDone>
   </requirement>
   <requirement id="req_name_2" version="1.1" revision="r2">
@@ -24,6 +25,7 @@
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>true</testDone>
+    <testAuthor>tester 1</testAuthor>
   </requirement>
   <requirement id="req_name_5" version="1.0" revision="r2">
     <shortDescription>short desc</shortDescription>
