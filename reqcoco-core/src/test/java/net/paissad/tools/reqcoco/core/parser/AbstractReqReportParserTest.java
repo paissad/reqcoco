@@ -81,7 +81,7 @@ public class AbstractReqReportParserTest {
 	public void testGetRequirementsVersion() throws ReqReportParserException {
 
 		Collection<Requirement> reqs = requirementSourceParser.getRequirements("1.0");
-		Assert.assertEquals(2, reqs.size());
+		Assert.assertEquals(4, reqs.size());
 
 		reqs = requirementSourceParser.getRequirements("1.1");
 		Assert.assertEquals(1, reqs.size());

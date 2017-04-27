@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <requirements>
-  <requirement id="req_name" version="1.0" revision="r1">
+  <requirement id="req_name_1" version="1.0" revision="r1">
     <shortDescription>short desc</shortDescription>
     <fullDescription>very long desc ..</fullDescription>
     <codeDone>true</codeDone>
@@ -67,7 +67,7 @@
     <codeDone>true</codeDone>
     <testDone>true</testDone>
   </requirement>
-  <requirement id="req_name_11" version="1.0" revision="r1" ignore="true">
+  <requirement id="req_name_12" version="1.0" revision="r1" ignore="true">
     <shortDescription>short desc 12</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>false</codeDone>
