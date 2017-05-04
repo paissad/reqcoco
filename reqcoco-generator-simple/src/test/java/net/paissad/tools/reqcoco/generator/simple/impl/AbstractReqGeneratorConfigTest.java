@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
+import net.paissad.tools.reqcoco.generator.simple.impl.tag.SimpleReqDeclTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.impl.tag.SimpleReqTagSourceConfig;
 
 public class AbstractReqGeneratorConfigTest {
@@ -43,6 +44,12 @@ public class AbstractReqGeneratorConfigTest {
 				return null;
 			}
 		};
+	}
+
+	@Test
+	public void testGetDeclTagConfig() {
+		Assert.assertNotNull(this.config.getDeclTagConfig());
+		Assert.assertTrue(this.config.getDeclTagConfig() instanceof SimpleReqDeclTagConfig);
 	}
 
 	@Test

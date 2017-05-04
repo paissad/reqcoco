@@ -1,13 +1,13 @@
 package net.paissad.tools.reqcoco.generator.simple.impl.tag;
 
-import net.paissad.tools.reqcoco.generator.simple.api.ReqTagConfig;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTagConfig;
 
 /**
- * Default and simple implementation of {@link ReqTagConfig}.
+ * Default and simple implementation of {@link ReqCodeTagConfig}.
  * 
  * @author paissad
  */
-public abstract class AbstractReqTagConfig implements ReqTagConfig {
+public abstract class AbstractReqCodeTagConfig implements ReqCodeTagConfig {
 
 	@Override
 	public String getIdRegex() {

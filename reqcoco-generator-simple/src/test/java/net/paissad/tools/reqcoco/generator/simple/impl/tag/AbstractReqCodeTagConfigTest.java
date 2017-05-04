@@ -9,9 +9,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class AbstractReqTagConfigTest {
+public class AbstractReqCodeTagConfigTest {
 
-	private AbstractReqTagConfig	tagConfig;
+	private AbstractReqCodeTagConfig	tagConfig;
 
 	/** A string representing a well formatted tag */
 	private String					tagStub;
@@ -21,7 +21,7 @@ public class AbstractReqTagConfigTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.tagConfig = new AbstractReqTagConfig() {
+		this.tagConfig = new AbstractReqCodeTagConfig() {
 
 			@Override
 			public String getCompleteRegex() {

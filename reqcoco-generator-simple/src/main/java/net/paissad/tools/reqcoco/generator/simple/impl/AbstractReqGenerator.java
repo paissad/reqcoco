@@ -29,7 +29,7 @@ import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTag;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGeneratorConfig;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.generator.simple.api.ReqTagConfig;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserException;
@@ -61,7 +61,8 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			final ReqSourceParser sourceParser = getConfig().getSourceParser();
 
 			LOGGER.info("Retrieving declared requirements by parsing the source {}", sourceOfDeclaredReqs);
-			final Collection<Requirement> declaredRequirements = sourceParser.parse(sourceOfDeclaredReqs, getConfig().getExtraOptions());
+			final Collection<Requirement> declaredRequirements = sourceParser.parse(sourceOfDeclaredReqs, getConfig().getDeclTagConfig(),
+			        getConfig().getExtraOptions());
 
 			LOGGER.info("Tagging the requirements to ignore for the code and test coverage");
 			final Collection<String> ignoreList = getConfig().getIgnoreList();
@@ -150,7 +151,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 		final Collection<ReqCodeTag> reqTags = new LinkedList<>();
 
-		ReqTagConfig tagConfig = null;
+		ReqCodeTagConfig tagConfig = null;
 
 		switch (codeType) {
 		case SOURCE:

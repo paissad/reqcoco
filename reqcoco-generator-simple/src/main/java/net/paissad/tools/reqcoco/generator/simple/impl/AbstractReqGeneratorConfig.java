@@ -9,7 +9,9 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGeneratorConfig;
-import net.paissad.tools.reqcoco.generator.simple.api.ReqTagConfig;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTagConfig;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqDeclTagConfig;
+import net.paissad.tools.reqcoco.generator.simple.impl.tag.SimpleReqDeclTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.impl.tag.SimpleReqTagSourceConfig;
 import net.paissad.tools.reqcoco.generator.simple.impl.tag.SimpleReqTagTestConfig;
 
@@ -17,9 +19,11 @@ import net.paissad.tools.reqcoco.generator.simple.impl.tag.SimpleReqTagTestConfi
 @Setter
 public abstract class AbstractReqGeneratorConfig implements ReqGeneratorConfig {
 
-	private ReqTagConfig		sourceCodeTagConfig;
+	private ReqDeclTagConfig	declTagConfig;
 
-	private ReqTagConfig		testsCodeTagConfig;
+	private ReqCodeTagConfig	sourceCodeTagConfig;
+
+	private ReqCodeTagConfig	testsCodeTagConfig;
 
 	private Collection<String>	ignoreList;
 
@@ -30,6 +34,7 @@ public abstract class AbstractReqGeneratorConfig implements ReqGeneratorConfig {
 	private Map<String, Object>	extraOptions;
 
 	public AbstractReqGeneratorConfig() {
+		this.setDeclTagConfig(new SimpleReqDeclTagConfig());
 		this.setSourceCodeTagConfig(new SimpleReqTagSourceConfig());
 		this.setTestsCodeTagConfig(new SimpleReqTagTestConfig());
 		this.setIgnoreList(new ArrayList<>());

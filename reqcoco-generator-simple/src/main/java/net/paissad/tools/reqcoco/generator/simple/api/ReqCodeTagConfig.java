@@ -1,6 +1,11 @@
 package net.paissad.tools.reqcoco.generator.simple.api;
 
-public interface ReqTagConfig {
+/**
+ * The configuration (regexes mainly) to be used for the tag to be placed into the code (source code or test code).
+ * 
+ * @author paissad
+ */
+public interface ReqCodeTagConfig {
 
 	/**
 	 * <strong>IMPORTANT : </strong> The regex should be defined so that <code>Matcher.group(1)</code> should return the value.

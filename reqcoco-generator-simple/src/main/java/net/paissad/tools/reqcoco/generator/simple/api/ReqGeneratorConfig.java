@@ -24,6 +24,11 @@ public interface ReqGeneratorConfig {
 	ReqSourceParser getSourceParser();
 
 	/**
+	 * @return The configuration which tell how to parse the source where all requirements are declared.
+	 */
+	ReqDeclTagConfig getDeclTagConfig();
+
+	/**
 	 * @return The path (directory or file) containing the source code to parse.
 	 */
 	Path getSourceCodePath();
@@ -31,7 +36,7 @@ public interface ReqGeneratorConfig {
 	/**
 	 * @return The configuration which tells how to parse the <strong>source code</strong> in order to check the requirements.
 	 */
-	ReqTagConfig getSourceCodeTagConfig();
+	ReqCodeTagConfig getSourceCodeTagConfig();
 
 	/**
 	 * @return The path (directory or file) containing the tests code to parse.
@@ -41,7 +46,7 @@ public interface ReqGeneratorConfig {
 	/**
 	 * @return The configuration which tells how to parse the <strong>tests code</strong> in order to check the requirements.
 	 */
-	ReqTagConfig getTestsCodeTagConfig();
+	ReqCodeTagConfig getTestsCodeTagConfig();
 
 	/**
 	 * @return The list of files to include to the source code and test code parsing. Only files which match this expression or strict names will be
