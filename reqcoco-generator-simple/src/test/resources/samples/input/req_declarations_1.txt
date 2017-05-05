@@ -9,4 +9,8 @@
 @Req (version = "1.0", revision = "r1", id = "req_8", summary = "Disordored spirit :D")
 This following line has 2 declared requirements ...
 @Req(id = "req_9", version = "1.0", revision = "myRev", summary = "1st req on this line") @Req(version = "1.1", revision = "r1", id = "req_10", summary = "2nd req on the same line ...")
+@Req(id = "", version = "1.0", revision = "r1", summary = "empty id")
+@Req(version = "1.0", revision = "r1", summary = "no id defined at all !")
+@Req(id = "req_11", revision = "r1", summary = "no version defined at all !")
+@Req(id = "req_12", version = "", revision = "r1", summary = "empty version")
 ...

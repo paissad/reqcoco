@@ -2,14 +2,18 @@ package net.paissad.tools.reqcoco.generator.simple.impl.parser;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqDeclTagConfig;
@@ -26,6 +30,9 @@ public class FileReqSourceParserTest {
 
 	private Map<String, Object>	options;
 
+	@Rule
+	public ExpectedException	thrown	= ExpectedException.none();
+
 	@Before
 	public void setUp() throws Exception {
 		this.reqSourceParser = new FileReqSourceParser();
@@ -40,7 +47,7 @@ public class FileReqSourceParserTest {
 
 		final Collection<Requirement> declaredRequirements = reqSourceParser.parse(uri, declTagConfig, options);
 		Assert.assertNotNull(declaredRequirements);
-		Assert.assertEquals(9, declaredRequirements.size());
+		Assert.assertEquals(13, declaredRequirements.size());
 
 		final Collection<Requirement> requirementsReq5 = getRequirementsHavingId("req_5", declaredRequirements);
 		Assert.assertEquals(1, requirementsReq5.size());
@@ -48,6 +55,15 @@ public class FileReqSourceParserTest {
 		Assert.assertEquals("1.1", req5.getVersion());
 		Assert.assertEquals("r2", req5.getRevision());
 		Assert.assertEquals("There is some other content not processed ...", req5.getShortDescription());
+	}
+
+	@Test
+	public void testParseUnexistentFile() throws ReqSourceParserException {
+
+		this.uri = Paths.get("i_bet_this_file_does_not_exit").toUri();
+		thrown.expect(Is.isA(ReqSourceParserException.class));
+		thrown.expectMessage("I/O error while parsing the source for retrieving the declared requirements");
+		reqSourceParser.parse(uri, declTagConfig, options);
 	}
 
 	private URI getUriForStub(final String stubResource) throws URISyntaxException {
