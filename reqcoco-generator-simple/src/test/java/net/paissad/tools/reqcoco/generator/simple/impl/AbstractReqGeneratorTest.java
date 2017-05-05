@@ -61,7 +61,7 @@ public class AbstractReqGeneratorTest {
 	}
 
 	private ReqGeneratorConfig getConfigStub() {
-		return new AbstractReqGeneratorConfig() {
+		final ReqGeneratorConfig config = new AbstractReqGeneratorConfig() {
 
 			@Override
 			public Path getSourceCodePath() {
@@ -100,6 +100,9 @@ public class AbstractReqGeneratorTest {
 				return coverageOutputReportFile;
 			}
 		};
+		config.getFileIncludes().add("*.txt");
+		config.getFileExcludes().add("*.bin");
+		return config;
 	}
 
 }

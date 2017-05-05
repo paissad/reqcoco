@@ -128,10 +128,10 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			@Override
 			public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
 
-				if (mustParseFile(path)) {
+				if (mustParseFile(file)) {
 
-					LOGGER.trace("Parsing file {}", path);
-					final Collection<ReqCodeTag> tags = getTagsFromFile(path, codeType);
+					LOGGER.trace("Parsing file {}", file);
+					final Collection<ReqCodeTag> tags = getTagsFromFile(file, codeType);
 					requirements.parallelStream().forEach(req -> tags.stream().forEach(tag -> {
 						if (isRequirementMatchTag(req, tag)) {
 							updateRequirementFromTag(req, tag, codeType);
@@ -179,7 +179,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 				final Matcher matcherTag = patternTag.matcher(line);
 				while (matcherTag.find()) {
 					final String tagAsString = matcherTag.group();
-					reqTags.add(buildTagFromDeclaration(tagConfig, tagAsString));
+					reqTags.add(buildTagFromCodeDeclaration(tagConfig, tagAsString));
 				}
 			});
 
@@ -192,7 +192,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 		return reqTags;
 	}
 
-	private ReqCodeTag buildTagFromDeclaration(final ReqCodeTagConfig tagConfig, final String tagAsString) {
+	private ReqCodeTag buildTagFromCodeDeclaration(final ReqCodeTagConfig tagConfig, final String tagAsString) {
 
 		// Retrieve the 'id' part of the tag
 		final String id = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getIdRegex(), 1);
