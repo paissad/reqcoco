@@ -23,7 +23,7 @@ public class SimpleReqTagSourceConfigTest {
 	public void setUp() throws Exception {
 		this.tagConfig = new SimpleReqTagSourceConfig();
 		this.stub = "FOOBAR ... @ReqSourceCode( id = \"req_1\", version = \"1.0\", revision = \"r1\",  author = \"myAuthor\",  comment = \"myComment\", whatever ...) i don't my the rest ...";
-		this.stub += "@ReqSourceCode( id = \"req_2\", version = \"1.1\", revision = \"r2\",  author = \"myAuthor2\",  comment = \"myComment2\")";
+		this.stub += "@ReqSourceCode ( id = \"req_2\", version = \"1.1\", revision = \"r2\",  author = \"myAuthor2\",  comment = \"myComment2\")";
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class SimpleReqTagSourceConfigTest {
 		matcherTag.find();
 		final String extractedTag2 = matcherTag.group();
 		Assert.assertEquals(
-		        "@ReqSourceCode( id = \"req_2\", version = \"1.1\", revision = \"r2\",  author = \"myAuthor2\",  comment = \"myComment2\")",
+		        "@ReqSourceCode ( id = \"req_2\", version = \"1.1\", revision = \"r2\",  author = \"myAuthor2\",  comment = \"myComment2\")",
 		        extractedTag2);
 
 	}

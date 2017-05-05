@@ -11,27 +11,27 @@ public abstract class AbstractReqCodeTagConfig implements ReqCodeTagConfig {
 
 	@Override
 	public String getIdRegex() {
-		return "@Req.*?Code\\(.*id\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req.*?Code\\s*\\(.*id\\s*=\\s*\"(.*?)\\\".*";
 	}
 
 	@Override
 	public String getVersionRegex() {
-		return "@Req.*?Code\\(.*version\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req.*?Code\\s*\\(.*version\\s*=\\s*\"(.*?)\\\".*";
 	}
 
 	@Override
 	public String getRevisionRegex() {
-		return "@Req.*?Code\\(.*revision\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req.*?Code\\s*\\(.*revision\\s*=\\s*\"(.*?)\\\".*";
 	}
 
 	@Override
 	public String getAuthorRegex() {
-		return "@Req.*?Code\\(.*author\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req.*?Code\\s*\\(.*author\\s*=\\s*\"(.*?)\\\".*";
 	}
 
 	@Override
 	public String getCommentRegex() {
-		return "@Req.*?Code\\(.*comment\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req.*?Code\\s*\\(.*comment\\s*=\\s*\"(.*?)\\\".*";
 	}
 
 }

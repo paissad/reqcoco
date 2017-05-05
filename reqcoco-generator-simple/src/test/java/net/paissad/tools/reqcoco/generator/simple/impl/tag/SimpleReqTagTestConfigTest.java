@@ -22,7 +22,7 @@ public class SimpleReqTagTestConfigTest {
 	public void setUp() throws Exception {
 		this.tagConfig = new SimpleReqTagTestConfig();
 		this.tagStub = "FOOBAR ... @ReqTestCode( id = \"req_1\", version = \"1.0\", revision = \"r1\",  author = \"myAuthor\",  comment = \"myComment\", whatever ...) i don't my the rest ...";
-		this.tagStub += "@ReqTestCode( id = \"req_2\", version = \"1.1\", revision = \"r2\",  author = \"myAuthor2\",  comment = \"myComment2\")";
+		this.tagStub += "@ReqTestCode	( id = \"req_2\", version = \"1.1\", revision = \"r2\",  author = \"myAuthor2\",  comment = \"myComment2\")";
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class SimpleReqTagTestConfigTest {
 		matcherTag.find();
 		final String extractedTag2 = matcherTag.group();
 		Assert.assertEquals(
-		        "@ReqTestCode( id = \"req_2\", version = \"1.1\", revision = \"r2\",  author = \"myAuthor2\",  comment = \"myComment2\")",
+		        "@ReqTestCode	( id = \"req_2\", version = \"1.1\", revision = \"r2\",  author = \"myAuthor2\",  comment = \"myComment2\")",
 		        extractedTag2);
 
 	}

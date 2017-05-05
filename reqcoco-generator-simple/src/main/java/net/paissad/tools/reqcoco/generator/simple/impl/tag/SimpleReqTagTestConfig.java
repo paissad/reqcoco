@@ -4,6 +4,6 @@ public class SimpleReqTagTestConfig extends AbstractReqCodeTagConfig {
 
 	@Override
 	public String getCompleteRegex() {
-		return "(@ReqTestCode\\(\\s*.*?\\))";
+		return "(@ReqTestCode\\s*\\(\\s*.*?\\))";
 	}
 }
