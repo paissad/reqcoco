@@ -6,7 +6,7 @@ public class SimpleReqDeclTagConfig implements ReqDeclTagConfig {
 
 	@Override
 	public String getCompleteRegex() {
-		return "(@Req\\(\\s*.*?\\))";
+		return "(@Req\\s*\\(\\s*.*?\\))";
 	}
 
 	@Override
