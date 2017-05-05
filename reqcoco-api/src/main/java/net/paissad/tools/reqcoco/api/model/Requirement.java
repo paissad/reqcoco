@@ -29,10 +29,10 @@ public class Requirement implements Serializable {
 	@XmlAttribute
 	private boolean				ignore;
 
-	@XmlElement(required = true, nillable = false)
+	@XmlElement(required = true)
 	private String				shortDescription;
 
-	@XmlElement(nillable = true)
+	@XmlElement
 	private String				fullDescription;
 
 	@XmlAttribute(required = true)
@@ -41,25 +41,25 @@ public class Requirement implements Serializable {
 	@XmlAttribute(required = true)
 	private String				revision;
 
-	@XmlElement(required = true, nillable = false)
+	@XmlElement(required = true)
 	private boolean				codeDone;
 
-	@XmlElement(nillable = true)
+	@XmlElement
 	private String				codeAuthor;
 
-	@XmlElement(nillable = true)
+	@XmlElement
 	private String				codeAuthorComment;
 
-	@XmlElement(required = true, nillable = false)
+	@XmlElement(required = true)
 	private boolean				testDone;
 
-	@XmlElement(nillable = true)
+	@XmlElement
 	private String				testAuthor;
 
-	@XmlElement(nillable = true)
+	@XmlElement
 	private String				testAuthorComment;
 
-	@XmlElement(nillable = true)
+	@XmlElement
 	private String				link;
 
 	public Requirement() {

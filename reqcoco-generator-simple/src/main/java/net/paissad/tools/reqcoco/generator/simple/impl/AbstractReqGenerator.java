@@ -33,6 +33,7 @@ import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.generator.simple.util.ReqTagUtil;
 
 public abstract class AbstractReqGenerator implements ReqGenerator {
 
@@ -102,6 +103,8 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 			final JAXBContext jaxbContext = JAXBContext.newInstance(Requirements.class);
 			final Marshaller marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 			marshaller.marshal(rootReqs, coverageOutputPath.toFile());
 
 			LOGGER.info("Finished executing the generator. The coverage report output is --> {}", coverageOutputPath);
@@ -151,27 +154,23 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 		final Collection<ReqCodeTag> reqTags = new LinkedList<>();
 
-		ReqCodeTagConfig tagConfig = null;
+		ReqCodeTagConfig tagConfigTmp = null;
 
 		switch (codeType) {
 		case SOURCE:
-			tagConfig = getConfig().getSourceCodeTagConfig();
+			tagConfigTmp = getConfig().getSourceCodeTagConfig();
 			break;
 
 		case TEST:
-			tagConfig = getConfig().getTestsCodeTagConfig();
+			tagConfigTmp = getConfig().getTestsCodeTagConfig();
 			break;
 
 		default:
 			throw new UnsupportedOperationException("Unable to parse code for the type : " + codeType);
 		}
 
+		final ReqCodeTagConfig tagConfig = tagConfigTmp; // hack in order to have a final variable
 		final Pattern patternTag = Pattern.compile(tagConfig.getCompleteRegex());
-		final Pattern patternId = Pattern.compile(tagConfig.getIdRegex());
-		final Pattern patternVersion = Pattern.compile(tagConfig.getVersionRegex());
-		final Pattern patternRevision = Pattern.compile(tagConfig.getRevisionRegex());
-		final Pattern patternAuthor = Pattern.compile(tagConfig.getAuthorRegex());
-		final Pattern patternComment = Pattern.compile(tagConfig.getCommentRegex());
 
 		try (BufferedReader reader = Files.newBufferedReader(file, UTF8)) {
 
@@ -179,52 +178,8 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 				// At this step, the line matched the patter tag predicate, we can start the retrieval of the tag(s) and parts of the tag(s)
 				final Matcher matcherTag = patternTag.matcher(line);
 				while (matcherTag.find()) {
-
-					final String tag = matcherTag.group();
-
-					// Retrieve the 'id' part of the tag
-					String id = null;
-					if (patternId.matcher(tag).find()) {
-						id = patternId.matcher(tag).group(1);
-					} else {
-						LOGGER.error("No id defined for requirement tag --> {}", tag);
-					}
-
-					// Retrieve the 'version' part of the tag
-					String version = null;
-					if (patternVersion.matcher(tag).find()) {
-						version = patternVersion.matcher(tag).group(1);
-					} else {
-						LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tag, Requirement.VERSION_UNKNOWN);
-					}
-
-					// Retrieve the 'revision' part of the tag
-					String revision = null;
-					if (patternRevision.matcher(tag).find()) {
-						revision = patternRevision.matcher(tag).group(1);
-					}
-
-					// Retrieve the 'author' part of the tag
-					String author = null;
-					if (patternAuthor.matcher(tag).find()) {
-						author = patternAuthor.matcher(tag).group(1);
-					}
-
-					// Retrieve the 'comment' part of the tag
-					String comment = null;
-					if (patternComment.matcher(tag).find()) {
-						patternComment.matcher(tag).group(1);
-					}
-
-					// Build the req tag object
-					final ReqCodeTag reqTag = new ReqCodeTag();
-					reqTag.setId(id);
-					reqTag.setVersion(version);
-					reqTag.setRevision(revision);
-					reqTag.setAuthor(author);
-					reqTag.setComment(comment);
-
-					reqTags.add(reqTag);
+					final String tagAsString = matcherTag.group();
+					reqTags.add(buildTagFromDeclaration(tagConfig, tagAsString));
 				}
 			});
 
@@ -235,6 +190,40 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 		}
 
 		return reqTags;
+	}
+
+	private ReqCodeTag buildTagFromDeclaration(final ReqCodeTagConfig tagConfig, final String tagAsString) {
+
+		// Retrieve the 'id' part of the tag
+		final String id = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getIdRegex(), 1);
+		if (id == null) {
+			LOGGER.error("No id defined for requirement tag --> {}", tagAsString);
+		}
+
+		// Retrieve the 'version' part of the tag
+		final String version = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getVersionRegex(), 1);
+		if (version == null) {
+			LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tagAsString, Requirement.VERSION_UNKNOWN);
+		}
+
+		// Retrieve the 'revision' part of the tag
+		final String revision = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getRevisionRegex(), 1);
+
+		// Retrieve the 'author' part of the tag
+		final String author = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getAuthorRegex(), 1);
+
+		// Retrieve the 'comment' part of the tag
+		final String comment = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getCommentRegex(), 1);
+
+		// Build the req tag object
+		final ReqCodeTag reqTag = new ReqCodeTag();
+		reqTag.setId(id);
+		reqTag.setVersion(version);
+		reqTag.setRevision(revision);
+		reqTag.setAuthor(author);
+		reqTag.setComment(comment);
+
+		return reqTag;
 	}
 
 	/**

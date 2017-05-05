@@ -60,7 +60,7 @@ public interface ReqGeneratorConfig {
 	List<String> getFileExcludes();
 
 	/**
-	 * @return The path to output file to generate which contains the requirements coverage report.
+	 * @return The path to the output file to generate which will contain the requirements coverage XML report.
 	 */
 	Path getCoverageOutput();
 
