@@ -20,6 +20,7 @@ import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqDeclTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.generator.simple.util.ReqTagUtil;
 
 public class FileReqSourceParser implements ReqSourceParser {
 
@@ -37,10 +38,6 @@ public class FileReqSourceParser implements ReqSourceParser {
 			final Set<Requirement> declaredRequirements = new HashSet<>();
 
 			final Pattern patternTag = Pattern.compile(declTagConfig.getCompleteRegex());
-			final Pattern patternId = Pattern.compile(declTagConfig.getIdRegex());
-			final Pattern patternVersion = Pattern.compile(declTagConfig.getVersionRegex());
-			final Pattern patternRevision = Pattern.compile(declTagConfig.getRevisionRegex());
-			final Pattern patternSummary = Pattern.compile(declTagConfig.getSummaryRegex());
 
 			lines.parallel().filter(patternTag.asPredicate()).forEach(line -> {
 
@@ -50,32 +47,22 @@ public class FileReqSourceParser implements ReqSourceParser {
 					final String tag = matcherTag.group();
 
 					// Retrieve the 'id' part of the tag
-					String id = null;
-					if (patternId.matcher(tag).find()) {
-						id = patternId.matcher(tag).group(1);
-					} else {
+					final String id = ReqTagUtil.extractFieldValue(tag, declTagConfig.getIdRegex(), 1);
+					if (id == null) {
 						LOGGER.error("No id defined for requirement tag --> {}", tag);
 					}
 
 					// Retrieve the 'version' part of the tag
-					String version = null;
-					if (patternVersion.matcher(tag).find()) {
-						version = patternVersion.matcher(tag).group(1);
-					} else {
+					final String version = ReqTagUtil.extractFieldValue(tag, declTagConfig.getVersionRegex(), 1);
+					if (version == null) {
 						LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tag, Requirement.VERSION_UNKNOWN);
 					}
 
 					// Retrieve the 'revision' part of the tag
-					String revision = null;
-					if (patternRevision.matcher(tag).find()) {
-						revision = patternRevision.matcher(tag).group(1);
-					}
+					final String revision = ReqTagUtil.extractFieldValue(tag, declTagConfig.getRevisionRegex(), 1);
 
 					// Retrieve the 'summary' part of the tag
-					String summary = null;
-					if (patternSummary.matcher(tag).find()) {
-						patternSummary.matcher(tag).group(1);
-					}
+					final String summary = ReqTagUtil.extractFieldValue(tag, declTagConfig.getSummaryRegex(), 1);
 
 					final Requirement req = new Requirement(id, version, revision);
 					req.setShortDescription(summary);
