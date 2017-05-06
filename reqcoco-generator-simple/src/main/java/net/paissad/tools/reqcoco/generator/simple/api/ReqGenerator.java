@@ -1,5 +1,8 @@
 package net.paissad.tools.reqcoco.generator.simple.api;
 
+import java.util.Collection;
+
+import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
 
@@ -19,7 +22,8 @@ public interface ReqGenerator {
 	 * The method {@link #configure(ReqGeneratorConfig)} should be executed before.
 	 * </p>
 	 * 
+	 * @return The requirements after computation between the declared requirements and the requirements into the source/tests code.
 	 * @throws ReqGeneratorExecutionException If an error occurs during the execution.
 	 */
-	void run() throws ReqGeneratorExecutionException;
+	Collection<Requirement> run() throws ReqGeneratorExecutionException;
 }

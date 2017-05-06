@@ -65,7 +65,7 @@ public interface ReqGeneratorConfig {
 	Path getCoverageOutput();
 
 	/**
-	 * @return The list of the IDs of the requirements to mark as ignored. Can be <code>null</code> or empty.
+	 * @return The list of the IDs of the requirements to mark as ignored. Can be empty but not <code>null</code>.
 	 */
 	Collection<String> getIgnoreList();
 

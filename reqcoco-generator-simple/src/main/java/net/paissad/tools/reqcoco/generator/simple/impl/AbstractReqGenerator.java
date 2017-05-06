@@ -47,7 +47,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	}
 
 	@Override
-	public void run() throws ReqGeneratorExecutionException {
+	public Collection<Requirement> run() throws ReqGeneratorExecutionException {
 
 		try {
 
@@ -64,7 +64,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 			LOGGER.info("Tagging the requirements to ignore for the code and test coverage");
 			final Collection<String> ignoreList = getConfig().getIgnoreList();
-			if (ignoreList != null && !ignoreList.isEmpty()) {
+			if (!ignoreList.isEmpty()) {
 				declaredRequirements.parallelStream().forEach(req -> {
 					if (ignoreList.contains(req.getId())) {
 						req.setIgnore(true);
@@ -72,21 +72,21 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 				});
 			}
 
-			LOGGER.info("Parsing the source code in order to compute the code coverage");
+			LOGGER.info("Parsing the source code in order to compute the source code coverage");
 			final Path sourceCodePath = config.getSourceCodePath();
 
 			if (!sourceCodePath.toFile().exists()) {
-				String errMsg = "The path to lookup for code coverage does not exist : " + sourceCodePath;
+				String errMsg = "The path to lookup for source code coverage does not exist : " + sourceCodePath;
 				LOGGER.error(errMsg);
 				throw new ReqGeneratorExecutionException(errMsg, null);
 			}
 			parseCodeAndUpdateRequirements(declaredRequirements, sourceCodePath, CODE_TYPE.SOURCE);
 
-			LOGGER.info("Parsing the tests code in order to compute the tests coverage");
+			LOGGER.info("Parsing the tests code in order to compute the tests code coverage");
 			final Path testsCodePath = config.getTestsCodePath();
 
 			if (!testsCodePath.toFile().exists()) {
-				String errMsg = "The path to lookup for tests coverage does not exist : " + testsCodePath;
+				String errMsg = "The path to lookup for tests code coverage does not exist : " + testsCodePath;
 				LOGGER.error(errMsg);
 				throw new ReqGeneratorExecutionException(errMsg, null);
 			}
@@ -98,8 +98,10 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 			LOGGER.info("Finished executing the generator. The coverage report output is --> {}", coverageOutputPath);
 
+			return declaredRequirements;
+
 		} catch (ReqSourceParserException | IOException e) {
-			String errMsg = "Error while parsing the source of declared requirements ";
+			String errMsg = "Error while parsing the source of declared requirements";
 			LOGGER.error(errMsg, e);
 			throw new ReqGeneratorExecutionException(errMsg, e);
 
