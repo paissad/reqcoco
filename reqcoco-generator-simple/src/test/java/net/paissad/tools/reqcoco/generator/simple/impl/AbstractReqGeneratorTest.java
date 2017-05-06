@@ -100,7 +100,7 @@ public class AbstractReqGeneratorTest {
 				return coverageOutputReportFile;
 			}
 		};
-		config.getFileIncludes().add("*.txt");
+		config.getFileIncludes().add("*");
 		config.getFileExcludes().add("*.bin");
 		return config;
 	}

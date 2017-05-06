@@ -181,11 +181,6 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 					reqTags.add(buildTagFromCodeDeclaration(tagConfig, tagAsString));
 				}
 			});
-
-		} catch (IOException e) {
-			String errMsg = "An error occured while parsing/retrieving requirement tags from the file --> " + file;
-			LOGGER.error(errMsg, e);
-			throw new IOException(errMsg, e);
 		}
 
 		return reqTags;
@@ -261,15 +256,11 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	private boolean isRequirementMatchTag(final Requirement requirement, final ReqCodeTag tag) {
 
 		if (!StringUtils.isBlank(requirement.getId())) {
-			if (!StringUtils.isBlank(requirement.getVersion())) {
-				boolean match = requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
-				if (match && !StringUtils.isBlank(requirement.getRevision())) {
-					match = requirement.getRevision().equals(tag.getRevision());
-				}
-				return match;
-			} else {
-				return false; // version is blank from the source /!\ Should not happen though /!\
+			boolean match = requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
+			if (match && !StringUtils.isBlank(requirement.getRevision())) {
+				match = requirement.getRevision().equals(tag.getRevision());
 			}
+			return match;
 		} else {
 			return false; // id is blank from the source !
 		}
