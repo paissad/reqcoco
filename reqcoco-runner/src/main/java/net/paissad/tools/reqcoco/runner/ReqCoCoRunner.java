@@ -1,11 +1,15 @@
 package net.paissad.tools.reqcoco.runner;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
@@ -16,13 +20,16 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import lombok.Getter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
-import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.api.parser.ReqReportParser;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
-import net.paissad.tools.reqcoco.core.parser.simple.PathReqReportParser;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqGenerator;
+import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
+import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
+import net.paissad.tools.reqcoco.generator.simple.impl.AbstractReqGenerator;
+import net.paissad.tools.reqcoco.generator.simple.impl.SimpleReqGeneratorConfig;
+import net.paissad.tools.reqcoco.generator.simple.impl.parser.FileReqSourceParser;
 
 public class ReqCoCoRunner {
 
@@ -63,35 +70,53 @@ public class ReqCoCoRunner {
 			setLoggingLevel(getRunner().getOptions().getLogLevel());
 		}
 
+		File temporaryCoverageFile = null;
+
 		try {
 
-			// Parse the input
-			final Collection<Requirement> requirements = parseInput(getOptions());
+			temporaryCoverageFile = Files.createTempFile(getClass().getSimpleName() + "-", "-intermediate-coverage-report.xml").toFile();
+			final ReqGenerator reqCoverageGenerator = new AbstractReqGenerator() {
+			};
 
-			// Get the report builders
+			// Set the config to use for the generator
+			final SimpleReqGeneratorConfig coverageGeneratorCfg = new SimpleReqGeneratorConfig();
+			coverageGeneratorCfg.setSourceRequirements(Paths.get(getOptions().getRequirementSource()).toUri());
+			coverageGeneratorCfg.setCoverageOutput(temporaryCoverageFile.toPath());
+			coverageGeneratorCfg.setSourceCodePath(Paths.get(getOptions().getSourceCodePath()));
+			coverageGeneratorCfg.setTestsCodePath(Paths.get(getOptions().getTestsCodePath()));
+			coverageGeneratorCfg.setSourceParser(new FileReqSourceParser());
+
+			// TODO: Add the possibility to set includes, excludes & ignoreList without hardcoding !!!
+
+			coverageGeneratorCfg.getFileIncludes().add("*.txt");
+			coverageGeneratorCfg.getFileExcludes().add("*.bin");
+			coverageGeneratorCfg.getIgnoreList().add("req_2");
+
+			// Parse the input and build the temporary XML coverage report file
+			reqCoverageGenerator.configure(coverageGeneratorCfg);
+			final Collection<Requirement> requirements = reqCoverageGenerator.run();
+
+			// Get the human readable report builders
 			final Collection<ReqReportBuilder> reportBuilders = getReportBuilders(getOptions());
 
-			// Build the report(s)
+			// Build the human readable reports
 			runReportBuilders(reportBuilders, requirements);
 
-		} catch (ReqReportParserException e) {
-			String errMsg = "Error while parsing the source/input : " + e.getMessage();
+		} catch (IOException e) {
+			String errMsg = "Error while creating the temporary/intermediate coverage report : " + e.getMessage();
 			LOGGER.error(LOGGER_PREFIX_TAG + " " + errMsg, e);
-			return getExitCode(ExitStatus.REQUIREMENTS_INPUT_PARSE_ERROR);
+			return getExitCode(ExitStatus.I_O_ERROR);
 
-		} catch (ReqReportBuilderException e) {
+		} catch (ReqGeneratorConfigException | ReqGeneratorExecutionException | ReqReportBuilderException e) {
 			String errMsg = "Error while building the report : " + e.getMessage();
 			LOGGER.error(LOGGER_PREFIX_TAG + " " + errMsg, e);
 			return getExitCode(ExitStatus.BUILD_REPORT_ERROR);
+
+		} finally {
+			FileUtils.deleteQuietly(temporaryCoverageFile);
 		}
 
 		return getExitCode(ExitStatus.OK);
-	}
-
-	private Collection<Requirement> parseInput(final ReqCoCoRunnerOptions options) throws ReqReportParserException {
-
-		final ReqReportParser parser = new PathReqReportParser(getSourcePath(options), null);
-		return parser.getRequirements().getRequirements();
 	}
 
 	private ReqCoCoRunner getRunner() {
@@ -134,14 +159,6 @@ public class ReqCoCoRunner {
 		}
 
 		return reportBuilders;
-	}
-
-	/**
-	 * @param options
-	 * @return The path to the input source containing the requirements to parse.
-	 */
-	private Path getSourcePath(final ReqCoCoRunnerOptions options) {
-		return Paths.get(options.getRequirementSource());
 	}
 
 	/**

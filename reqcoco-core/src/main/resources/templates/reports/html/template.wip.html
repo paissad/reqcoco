@@ -150,8 +150,8 @@ rect:hover {
                     <tr>
                         <td>${req.id}</td>
                         <td>${req.version}</td>
-                        <td>${req.revision}</td>
-                        <td>${req.shortDescription}</td>
+                        <td>${req.revision!''}</td>
+                        <td>${req.shortDescription!''}</td>
                         <#if !req.ignore>
                             <td>${req.codeDone?then('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}</td>
                         <#else>

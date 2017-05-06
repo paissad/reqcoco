@@ -22,7 +22,8 @@ public class ReqCoCoRunnerOptionsTest {
 	@Before
 	public void setUp() throws Exception {
 		this.options = new ReqCoCoRunnerOptions();
-		options.parseOptions("--in", "/path/to/source", "--out", "/path/to/outputdir", "--log-level", "dummyLogLevel", "arg1", "arg2");
+		options.parseOptions("--input", "/path/to/source", "--out", "/path/to/outputdir", "--source-code-path", "/path/to/sourcecode",
+		        "--tests-code-path", "/path/to/testcode", "--log-level", "dummyLogLevel", "arg1", "arg2");
 		parser = new CmdLineParser(this);
 	}
 
@@ -41,7 +42,7 @@ public class ReqCoCoRunnerOptionsTest {
 	@Test
 	public void testParseOptionsMissingRequiredOutput() throws CmdLineException {
 		thrown.expect(CmdLineException.class);
-		options.parseOptions("--in", "/path/to/source");
+		options.parseOptions("--input", "/path/to/source");
 	}
 
 	@Test
@@ -62,6 +63,16 @@ public class ReqCoCoRunnerOptionsTest {
 	@Test
 	public void testGetRequirementSource() {
 		Assert.assertEquals("/path/to/source", options.getRequirementSource());
+	}
+
+	@Test
+	public void testGetSourceCodePath() {
+		Assert.assertEquals("/path/to/sourcecode", options.getSourceCodePath());
+	}
+
+	@Test
+	public void testGetTestsCodePath() {
+		Assert.assertEquals("/path/to/testcode", options.getTestsCodePath());
 	}
 
 	@Test

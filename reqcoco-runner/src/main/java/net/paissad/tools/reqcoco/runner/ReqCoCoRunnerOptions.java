@@ -23,8 +23,14 @@ public class ReqCoCoRunnerOptions {
 	@Option(name = "--out", required = true, metaVar = "<dir>", usage = "Directory where to store the coverage reports.")
 	private String			outputFolder;
 
-	@Option(name = "--in", required = true, metaVar = "<file>", usage = "Source (file or url) containing the requirements to parse.")
+	@Option(name = "--input", required = true, metaVar = "<input>", usage = "Source (file or uri) containing the requirements to parse.")
 	private String			requirementSource;
+
+	@Option(name = "--source-code-path", required = true, metaVar = "<sourceCodePath>", usage = "The path to the source code.")
+	private String			sourceCodePath;
+
+	@Option(name = "--tests-code-path", required = true, metaVar = "<testsCodePath>", usage = "The path to the tests code.")
+	private String			testsCodePath;
 
 	@Option(name = "--console-report", required = false, metaVar = "[true|false]", usage = "Whether or not to generate reports onto the standard console output.")
 	private String			buildConsoleReport;

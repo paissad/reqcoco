@@ -20,12 +20,18 @@ public class ReqCoCoRunnerTest {
 
 	private ReqCoCoRunner	runner;
 
+	private Path			sourceCodePath;
+
+	private Path			testsCodePath;
+
 	private Path			reportOutputDirPath;
 
 	@Before
 	public void setUp() throws Exception {
 
 		this.runner = new ReqCoCoRunner();
+		this.sourceCodePath = Paths.get(getClass().getResource("/input-samples/code/source").toURI());
+		this.testsCodePath = Paths.get(getClass().getResource("/input-samples/code/test").toURI());
 		this.reportOutputDirPath = Files.createTempDirectory("_reqcocorunner_output_");
 		FileUtils.forceDeleteOnExit(this.reportOutputDirPath.toFile());
 	}
@@ -36,22 +42,22 @@ public class ReqCoCoRunnerTest {
 	}
 
 	@Test
-	public void testMainWrongOptionGiven() {
-		List<String> args = getSetupArgs();
+	public void testMainWrongOptionGiven() throws URISyntaxException {
+		List<String> args = getSetupArgs(null);
 		args.add("--very-bad-option");
 		Assert.assertEquals(ExitStatus.OPTIONS_PARSING_ERROR.getCode(), runner.proxyMain(args.toArray(new String[args.size()])));
 	}
 
 	@Test
-	public void testMainHelpOptionGiven() {
-		List<String> args = getSetupArgs();
+	public void testMainHelpOptionGiven() throws URISyntaxException {
+		List<String> args = getSetupArgs(null);
 		args.add("-h");
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.proxyMain(args.toArray(new String[args.size()])));
 	}
 
 	@Test
 	public void testMainNominalCaseOK() throws URISyntaxException {
-		List<String> args = getArgs(null);
+		List<String> args = getSetupArgs(null);
 		args.add("--log-level");
 		args.add("OFF");
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.proxyMain(args.toArray(new String[args.size()])));
@@ -61,7 +67,7 @@ public class ReqCoCoRunnerTest {
 
 	@Test
 	public void testMainChangeReportName() throws URISyntaxException {
-		List<String> args = getArgs(null);
+		List<String> args = getSetupArgs(null);
 		args.add("--log-level");
 		args.add("OFF");
 		args.add("--report-name");
@@ -74,7 +80,7 @@ public class ReqCoCoRunnerTest {
 
 	@Test
 	public void testMainNoHtmlButConsoleReport() throws URISyntaxException {
-		List<String> args = getArgs(null);
+		List<String> args = getSetupArgs(null);
 		args.add("--html-report");
 		args.add("false");
 		args.add("--console-report");
@@ -84,37 +90,27 @@ public class ReqCoCoRunnerTest {
 	}
 
 	@Test
-	public void testMainInputSourceIsBad() throws URISyntaxException {
-		List<String> args = getArgs("file_with_bad_content.xml");
-		args.add("--log-level");
-		args.add("OFF");
-		Assert.assertEquals(ExitStatus.REQUIREMENTS_INPUT_PARSE_ERROR.getCode(), runner.proxyMain(args.toArray(new String[args.size()])));
-	}
-
-	@Test
 	public void testMainOutputdirIsActuallyAFile() throws URISyntaxException, IOException {
 
 		FileUtils.deleteQuietly(this.reportOutputDirPath.toFile());
 		Files.createFile(reportOutputDirPath);
-		List<String> args = getArgs(null);
+		List<String> args = getSetupArgs(null);
 		args.add("--log-level");
 		args.add("OFF");
 		Assert.assertEquals(ExitStatus.BUILD_REPORT_ERROR.getCode(), runner.proxyMain(args.toArray(new String[args.size()])));
 	}
 
-	private List<String> getArgs(final String testResource) throws URISyntaxException {
-
-		String f = StringUtils.isBlank(testResource) ? "file2.xml" : testResource;
-		String sourcePath = Paths.get(getClass().getResource("/input-samples/" + f).toURI()).toString();
-
-		return new ArrayList<>(Arrays.asList(new String[] { "--in", sourcePath, "--out", this.reportOutputDirPath.toString() }));
-	}
-
 	/**
 	 * @return Default options to use for all tests during setUp().
+	 * @throws URISyntaxException
 	 */
-	private List<String> getSetupArgs() {
-		return new ArrayList<>(Arrays.asList(new String[] { "--in", "/path/to/source", "--out", this.reportOutputDirPath.toString() }));
+	private List<String> getSetupArgs(final String testResource) throws URISyntaxException {
+
+		String f = StringUtils.isBlank(testResource) ? "req_declarations_1.txt" : testResource;
+		String sourceDeclarationPath = Paths.get(getClass().getResource("/input-samples/" + f).toURI()).toString();
+
+		return new ArrayList<>(Arrays.asList(new String[] { "--input", sourceDeclarationPath, "--out", this.reportOutputDirPath.toString(),
+		        "--source-code-path", this.sourceCodePath.toString(), "--tests-code-path", this.testsCodePath.toString() }));
 	}
 
 }
