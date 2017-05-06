@@ -132,6 +132,11 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 				return FileVisitResult.CONTINUE;
 			}
+
+			@Override
+			public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException {
+				return mustParseFile(dir) ? FileVisitResult.CONTINUE : FileVisitResult.SKIP_SUBTREE;
+			}
 		});
 	}
 
