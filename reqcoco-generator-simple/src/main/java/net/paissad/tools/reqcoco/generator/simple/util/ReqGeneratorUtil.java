@@ -10,10 +10,7 @@ import javax.xml.bind.Marshaller;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 
-public class ReqGeneratorUtil {
-
-	private ReqGeneratorUtil() {
-	}
+public interface ReqGeneratorUtil {
 
 	/**
 	 * @param requirements - The requirements (computed between declaration source and code (source/test)) for which we need to generate the report.

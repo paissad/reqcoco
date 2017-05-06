@@ -3,10 +3,7 @@ package net.paissad.tools.reqcoco.generator.simple.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ReqTagUtil {
-
-	private ReqTagUtil() {
-	}
+public interface ReqTagUtil {
 
 	// TODO : write unit tests !
 	/**
