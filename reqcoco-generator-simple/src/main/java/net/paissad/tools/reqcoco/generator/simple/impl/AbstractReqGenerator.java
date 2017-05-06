@@ -14,9 +14,7 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTag;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGenerator;
@@ -34,6 +31,7 @@ import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.generator.simple.util.ReqGeneratorUtil;
 import net.paissad.tools.reqcoco.generator.simple.util.ReqTagUtil;
 
 public abstract class AbstractReqGenerator implements ReqGenerator {
@@ -96,15 +94,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 			final Path coverageOutputPath = getConfig().getCoverageOutput();
 			LOGGER.info("Generating the coverage report to --> {}", coverageOutputPath);
-
-			final Requirements rootReqs = new Requirements();
-			rootReqs.setRequirements(declaredRequirements);
-
-			final JAXBContext jaxbContext = JAXBContext.newInstance(Requirements.class);
-			final Marshaller marshaller = jaxbContext.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			marshaller.marshal(rootReqs, coverageOutputPath.toFile());
+			ReqGeneratorUtil.generateXmlCoverageReport(declaredRequirements, coverageOutputPath);
 
 			LOGGER.info("Finished executing the generator. The coverage report output is --> {}", coverageOutputPath);
 
