@@ -110,7 +110,8 @@ public class ReqCoCoRunnerTest {
 		String sourceDeclarationPath = Paths.get(getClass().getResource("/input-samples/" + f).toURI()).toString();
 
 		return new ArrayList<>(Arrays.asList(new String[] { "--input", sourceDeclarationPath, "--out", this.reportOutputDirPath.toString(),
-		        "--source-code-path", this.sourceCodePath.toString(), "--tests-code-path", this.testsCodePath.toString() }));
+		        "--source-code-path", this.sourceCodePath.toString(), "--tests-code-path", this.testsCodePath.toString(), "--includes", "*.txt",
+		        "--ignores", "req_2" }));
 	}
 
 }

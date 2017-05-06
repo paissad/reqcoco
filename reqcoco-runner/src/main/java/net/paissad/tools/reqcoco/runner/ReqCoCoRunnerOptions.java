@@ -32,6 +32,15 @@ public class ReqCoCoRunnerOptions {
 	@Option(name = "--tests-code-path", required = true, metaVar = "<testsCodePath>", usage = "The path to the tests code.")
 	private String			testsCodePath;
 
+	@Option(name = "--includes", required = false, metaVar = "[includes]", usage = "Comma separated list of files to include.")
+	private String			filesInclude;
+
+	@Option(name = "--excludes", required = false, metaVar = "[excludes]", usage = "Comma separated list of files to exclude.")
+	private String			filesExclude;
+
+	@Option(name = "--ignores", required = false, metaVar = "[ignores]", usage = "Comma separated list of requirement IDs to ignore.")
+	private String			ignores;
+
 	@Option(name = "--console-report", required = false, metaVar = "[true|false]", usage = "Whether or not to generate reports onto the standard console output.")
 	private String			buildConsoleReport;
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,11 +87,15 @@ public class ReqCoCoRunner {
 			coverageGeneratorCfg.setTestsCodePath(Paths.get(getOptions().getTestsCodePath()));
 			coverageGeneratorCfg.setSourceParser(new FileReqSourceParser());
 
-			// TODO: Add the possibility to set includes, excludes & ignoreList without hardcoding !!!
+			final String includes = StringUtils.isBlank(getOptions().getFilesInclude()) ? "*" : getOptions().getFilesInclude(); // Include all files
+			                                                                                                                    // by default
+			final String excludes = StringUtils.isBlank(getOptions().getFilesExclude()) ? "" : getOptions().getFilesExclude(); // Exclude nothing by
+			                                                                                                                   // default
+			final String ignores = StringUtils.isBlank(getOptions().getIgnores()) ? "" : getOptions().getIgnores();
 
-			coverageGeneratorCfg.getFileIncludes().add("*.txt");
-			coverageGeneratorCfg.getFileExcludes().add("*.bin");
-			coverageGeneratorCfg.getIgnoreList().add("req_2");
+			coverageGeneratorCfg.getFileIncludes().addAll(Arrays.asList(includes.split(",")));
+			coverageGeneratorCfg.getFileExcludes().addAll(Arrays.asList(excludes.split(",")));
+			coverageGeneratorCfg.getIgnoreList().addAll(Arrays.asList(ignores.split(",")));
 
 			// Parse the input and build the temporary XML coverage report file
 			reqCoverageGenerator.configure(coverageGeneratorCfg);

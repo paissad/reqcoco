@@ -23,7 +23,8 @@ public class ReqCoCoRunnerOptionsTest {
 	public void setUp() throws Exception {
 		this.options = new ReqCoCoRunnerOptions();
 		options.parseOptions("--input", "/path/to/source", "--out", "/path/to/outputdir", "--source-code-path", "/path/to/sourcecode",
-		        "--tests-code-path", "/path/to/testcode", "--log-level", "dummyLogLevel", "arg1", "arg2");
+		        "--tests-code-path", "/path/to/testcode", "--log-level", "dummyLogLevel", "--includes", "*.txt,*.java", "--excludes", "*.bin",
+		        "--ignores", "req_88,req_77", "arg1", "arg2");
 		parser = new CmdLineParser(this);
 	}
 
@@ -73,6 +74,21 @@ public class ReqCoCoRunnerOptionsTest {
 	@Test
 	public void testGetTestsCodePath() {
 		Assert.assertEquals("/path/to/testcode", options.getTestsCodePath());
+	}
+
+	@Test
+	public void testGetFilesInclude() {
+		Assert.assertEquals("*.txt,*.java", options.getFilesInclude());
+	}
+
+	@Test
+	public void testGetFilesExclude() {
+		Assert.assertEquals("*.bin", options.getFilesExclude());
+	}
+
+	@Test
+	public void testGetIgnores() {
+		Assert.assertEquals("req_88,req_77", options.getIgnores());
 	}
 
 	@Test
