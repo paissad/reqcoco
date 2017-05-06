@@ -3,7 +3,7 @@ package net.paissad.tools.reqcoco.generator.simple.impl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +18,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,10 +27,10 @@ import lombok.Getter;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTag;
+import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqGeneratorConfig;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.generator.simple.api.ReqCodeTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserException;
@@ -37,12 +38,10 @@ import net.paissad.tools.reqcoco.generator.simple.util.ReqTagUtil;
 
 public abstract class AbstractReqGenerator implements ReqGenerator {
 
-	private static final Logger		LOGGER	= LoggerFactory.getLogger(AbstractReqGenerator.class);
-
-	private static final Charset	UTF8	= Charset.forName("UTF-8");
+	private static final Logger	LOGGER	= LoggerFactory.getLogger(AbstractReqGenerator.class);
 
 	@Getter(value = AccessLevel.PROTECTED)
-	private ReqGeneratorConfig		config;
+	private ReqGeneratorConfig	config;
 
 	@Override
 	public void configure(ReqGeneratorConfig cfg) throws ReqGeneratorConfigException {
@@ -172,7 +171,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 		final ReqCodeTagConfig tagConfig = tagConfigTmp; // hack in order to have a final variable
 		final Pattern patternTag = Pattern.compile(tagConfig.getCompleteRegex());
 
-		try (BufferedReader reader = Files.newBufferedReader(file, UTF8)) {
+		try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 
 			reader.lines().filter(patternTag.asPredicate()).forEach(line -> {
 				// At this step, the line matched the patter tag predicate, we can start the retrieval of the tag(s) and parts of the tag(s)
@@ -201,9 +200,10 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 		}
 
 		// Retrieve the 'version' part of the tag
-		final String version = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getVersionRegex(), 1);
+		String version = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getVersionRegex(), 1);
 		if (version == null) {
 			LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tagAsString, Requirement.VERSION_UNKNOWN);
+			version = Requirement.VERSION_UNKNOWN;
 		}
 
 		// Retrieve the 'revision' part of the tag
@@ -260,8 +260,19 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	 */
 	private boolean isRequirementMatchTag(final Requirement requirement, final ReqCodeTag tag) {
 
-		return requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion())
-		        && requirement.getRevision().equals(tag.getRevision());
+		if (!StringUtils.isBlank(requirement.getId())) {
+			if (!StringUtils.isBlank(requirement.getVersion())) {
+				boolean match = requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
+				if (match && !StringUtils.isBlank(requirement.getRevision())) {
+					match = requirement.getRevision().equals(tag.getRevision());
+				}
+				return match;
+			} else {
+				return false; // version is blank from the source /!\ Should not happen though /!\
+			}
+		} else {
+			return false; // id is blank from the source !
+		}
 	}
 
 	/**
