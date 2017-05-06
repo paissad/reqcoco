@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,14 +49,15 @@ public class FileReqSourceParser implements ReqSourceParser {
 
 					// Retrieve the 'id' part of the tag
 					final String id = ReqTagUtil.extractFieldValue(tag, declTagConfig.getIdRegex(), 1);
-					if (id == null) {
+					if (StringUtils.isBlank(id)) {
 						LOGGER.error("No id defined for requirement tag --> {}", tag);
 					}
 
 					// Retrieve the 'version' part of the tag
-					final String version = ReqTagUtil.extractFieldValue(tag, declTagConfig.getVersionRegex(), 1);
-					if (version == null) {
+					String version = ReqTagUtil.extractFieldValue(tag, declTagConfig.getVersionRegex(), 1);
+					if (StringUtils.isBlank(version)) {
 						LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tag, Requirement.VERSION_UNKNOWN);
+						version = Requirement.VERSION_UNKNOWN;
 					}
 
 					// Retrieve the 'revision' part of the tag
