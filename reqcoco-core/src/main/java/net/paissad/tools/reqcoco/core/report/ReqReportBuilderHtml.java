@@ -168,10 +168,10 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 			long reqsIgnoredCount = getIgnoredRequirementsCount(version);
 
 			long codeDoneCount = getCodeDoneCount(version);
-			long codeUndoneCount = reqs.size() - codeDoneCount;
+			long codeUndoneCount = reqs.size() - codeDoneCount - reqsIgnoredCount;
 
 			long testsDoneCount = getTestsDoneCount(version);
-			long testsUndoneCount = reqs.size() - testsDoneCount;
+			long testsUndoneCount = reqs.size() - testsDoneCount - reqsIgnoredCount;
 
 			final String dataSetEntryFormat = "{Version:'Version %s',freq:{Done:%s, Undone:%s, Ignored:%s}},\n";
 
