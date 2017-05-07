@@ -66,7 +66,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 	/**
 	 * @param reportOutputDirPath - The directory where to generate the report.
-	 * @see #ReqReportBuilderHtml(Collection, Path, String)
+	 * @see #ReqReportBuilderHtml(Path, String)
 	 */
 	public ReqReportBuilderHtml(final Path reportOutputDirPath) {
 		this(reportOutputDirPath, null);

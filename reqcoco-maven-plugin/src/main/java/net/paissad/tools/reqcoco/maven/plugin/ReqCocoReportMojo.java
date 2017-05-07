@@ -74,7 +74,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 		try {
 
 			getLog().info("Build the requirements input parser from source : " + source);
-			final ReqReportParser parser = buildRequirementsSourceParser();
+			final ReqReportParser parser = buildRequirementsReportParser();
 
 			getLog().info("Retrieve the requirements by parsing the source ");
 			final Collection<Requirement> requirements = parser.getRequirements().getRequirements();
@@ -122,7 +122,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 
 	}
 
-	private ReqReportParser buildRequirementsSourceParser() {
+	private ReqReportParser buildRequirementsReportParser() {
 		return new AbstractReqReportParser() {
 
 			@Override

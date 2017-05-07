@@ -10,7 +10,7 @@ public interface ReqGenerator {
 
 	/**
 	 * @param cfg - The configuration to use
-	 * @throws ReqGeneratorExecutionException If an error occurs during the configuration.
+	 * @throws ReqGeneratorConfigException If an error occurs during the configuration.
 	 */
 	void configure(final ReqGeneratorConfig cfg) throws ReqGeneratorConfigException;
 

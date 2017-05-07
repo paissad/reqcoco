@@ -85,7 +85,7 @@ public class ReqCoCoRunnerOptions {
 	/**
 	 * Prints the usage.
 	 * 
-	 * @param parser : the options & arguments parser
+	 * @param parser - The command line parser.
 	 */
 	public static void printUsage(final CmdLineParser parser) {
 		System.out.println("reqcoco-runner [options...] arguments...");
