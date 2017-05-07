@@ -132,7 +132,7 @@ rect:hover {
                 <thead>
                     <tr>
                         <th data-sortable="true" data-halign="center" data-align="center">Id</th>
-                        <th data-sortable="true" data-halign="center" data-align="center">Version</th>
+                        <th data-sortable="true" data-halign="center" data-align="center" data-cell-style="cellVersionStatusStyle">Version</th>
                         <th data-halign="center" data-align="center">Revision</th>
                         <th data-halign="center" data-align="left">Short Description</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-cell-style="cellDoneStatusStyle">Code</th>
@@ -149,7 +149,11 @@ rect:hover {
                     <#list requirements as req> <!-- ${req_index + 1} -->
                     <tr>
                         <td>${req.id}</td>
-                        <td>${req.version}</td>
+                        <#if req.version == "N/A">
+                            <td><span class="glyphicon glyphicon-question-sign"></span></td>
+                        <#else>
+                            <td>${req.version}</td>
+                        </#if>
                         <td>${req.revision!''}</td>
                         <td>${req.shortDescription!''}</td>
                         <#if !req.ignore>
@@ -414,7 +418,7 @@ $(function () {
     });
   });
 });
-// Function for colorizing the cells
+// Function for colorizing the cells of (code/test) done columns
 function cellDoneStatusStyle(value, row, index) {
   // var classes = ['active', 'success', 'info', 'warning', 'danger'];
 
@@ -432,6 +436,15 @@ function cellDoneStatusStyle(value, row, index) {
       };
   }
   return {};
+}
+// Function for colorizing the cells of version column
+function cellVersionStatusStyle(value, row, index) {
+    if (value && value.includes("glyphicon-question-sign")) {
+        return {
+              classes: 'warning'
+      };
+   }
+   return {};
 }
 function fieldLinkFormatter(value) {
     if (value) {
@@ -463,5 +476,4 @@ dashboard('#dashboard_tests_coverage',freqDataTests);
 </script>
 
 <!--
-
 -->
