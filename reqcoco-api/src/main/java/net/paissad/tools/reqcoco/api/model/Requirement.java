@@ -20,7 +20,7 @@ public class Requirement implements Serializable {
 
 	private static final long	serialVersionUID	= 1L;
 
-	public static final String	VERSION_UNKNOWN		= "__unknown__";
+	public static final String	VERSION_UNKNOWN		= "N/A";
 
 	@XmlAttribute(required = true)
 	@XmlID
