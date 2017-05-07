@@ -9,6 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
+  <groupId>net.paissad.tools.reqcoco.generator</groupId>
   <artifactId>reqcoco-generator-simple</artifactId>
 
   <name>ReqCoCo Generator Simple</name>
@@ -29,4 +30,5 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
   </dependencies>
+
 </project>
