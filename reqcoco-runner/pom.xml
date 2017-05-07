@@ -38,7 +38,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>net.paissad.tools.reqcoco</groupId>
+      <groupId>net.paissad.tools.reqcoco.generator</groupId>
       <artifactId>reqcoco-generator-simple</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
