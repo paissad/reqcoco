@@ -155,7 +155,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		// Retrieves available version values
 		final Stream<String> versions = getRequirements().stream().map(Requirement::getVersion).distinct();
 
-		versions.forEach(version -> {
+		versions.sorted().forEach(version -> {
 
 			// Group requirements by version value
 			requirementsMap.put(version, Requirements.getByVersion(getRequirements(), version));
