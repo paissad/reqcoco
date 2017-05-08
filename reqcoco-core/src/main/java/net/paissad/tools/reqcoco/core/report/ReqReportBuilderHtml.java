@@ -160,18 +160,14 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 			// Group requirements by version value
 			requirementsMap.put(version, Requirements.getByVersion(getRequirements(), version));
 
-			// Now that all requirements are grouped by version, we can build the data set for the template.
-			// We retrieve all requirements for this version
-			final Collection<Requirement> reqs = requirementsMap.get(version);
-
 			// This variable holds the number of declared requirements which are ignored for coverage.
 			long reqsIgnoredCount = getIgnoredRequirementsCount(version);
 
 			long codeDoneCount = getCodeDoneCount(version);
-			long codeUndoneCount = reqs.size() - codeDoneCount - reqsIgnoredCount;
+			long codeUndoneCount = getCodeUndoneCount(version);
 
 			long testsDoneCount = getTestsDoneCount(version);
-			long testsUndoneCount = reqs.size() - testsDoneCount - reqsIgnoredCount;
+			long testsUndoneCount = getTestsUndoneCount(version);
 
 			final String dataSetEntryFormat = "{Version:'Version %s',freq:{Done:%s, Undone:%s, Ignored:%s}},\n";
 

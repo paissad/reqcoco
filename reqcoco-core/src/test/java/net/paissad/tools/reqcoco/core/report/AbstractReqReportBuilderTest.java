@@ -60,13 +60,38 @@ public class AbstractReqReportBuilderTest {
 	}
 
 	@Test
+	public void testGetCodeUndoneCount() {
+		Assert.assertEquals(1, this.abstractRequirementReportBuilder.getCodeUndoneCount());
+	}
+
+	@Test
+	public void testGetCodeUndoneCountV1_0() {
+		Assert.assertEquals(1, this.abstractRequirementReportBuilder.getCodeUndoneCount("1.0"));
+	}
+
+	@Test
+	public void testGetCodeUndoneCountV1_1() {
+		Assert.assertEquals(0, this.abstractRequirementReportBuilder.getCodeUndoneCount("1.1"));
+	}
+
+	@Test
 	public void testGetTestsDoneCount() {
 		Assert.assertEquals(1, this.abstractRequirementReportBuilder.getTestsDoneCount());
 	}
 
 	@Test
+	public void testGetTestsUndoneCount() {
+		Assert.assertEquals(2, this.abstractRequirementReportBuilder.getTestsUndoneCount());
+	}
+
+	@Test
 	public void testGetTestsDoneCountV1_1() {
 		Assert.assertEquals(0, this.abstractRequirementReportBuilder.getTestsDoneCount("1.1"));
+	}
+
+	@Test
+	public void testGetTestsUndoneCountV1_0() {
+		Assert.assertEquals(1, this.abstractRequirementReportBuilder.getTestsUndoneCount("1.0"));
 	}
 
 	@Test
@@ -88,12 +113,12 @@ public class AbstractReqReportBuilderTest {
 	public void testGetTestDoneRatioV1_0() {
 		Assert.assertEquals(1f / 4f, this.abstractRequirementReportBuilder.getTestDoneRatio("1.0"), 0.0001);
 	}
-	
+
 	@Test
 	public void testGetIgnoredRequirementsCount() {
 		Assert.assertEquals(2, this.abstractRequirementReportBuilder.getIgnoredRequirementsCount());
 	}
-	
+
 	@Test
 	public void testGetIgnoredRequirementsCountByVersion() {
 		Assert.assertEquals(2, this.abstractRequirementReportBuilder.getIgnoredRequirementsCount("1.0"));
@@ -103,6 +128,7 @@ public class AbstractReqReportBuilderTest {
 	@Test
 	public void testGetRequirements() {
 		Assert.assertEquals(this.requirements, this.abstractRequirementReportBuilder.getRequirements());
+		Assert.assertEquals(5, this.abstractRequirementReportBuilder.getRequirements().size());
 	}
 
 	@Test

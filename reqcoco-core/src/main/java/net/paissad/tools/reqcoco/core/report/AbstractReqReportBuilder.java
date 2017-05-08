@@ -48,28 +48,41 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	}
 
 	/**
-	 * @param versionValue - The version to use for filtering.
+	 * @return The number of requirements for which the code is not done yet.
+	 */
+	protected long getCodeUndoneCount() {
+		return getRequirements().size() - getCodeDoneCount() - getIgnoredRequirementsCount();
+	}
+
+	/**
+	 * @param version - The version to use for filtering.
 	 * @return The number of code marked as done for the specified version.
 	 */
-	protected long getCodeDoneCount(final String versionValue) {
-		return getRequirementByVersion(versionValue).stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count();
+	protected long getCodeDoneCount(final String version) {
+		return getRequirementByVersion(version).stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count();
+	}
+
+	/**
+	 * @param version - The version to use for filtering.
+	 * @return The number of requirements for which the code is not done yet.
+	 */
+	protected long getCodeUndoneCount(final String version) {
+		return getRequirementByVersion(version).size() - getCodeDoneCount(version) - getIgnoredRequirementsCount(version);
 	}
 
 	/**
 	 * @return The ratio of requirements for which the codes are marked as done !
 	 */
 	protected Float getCodeDoneRatio() {
-		final Collection<Requirement> reqs = getRequirements();
-		return reqs.stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count() / (float) reqs.size();
+		return getCodeDoneCount() / (float) getRequirements().size();
 	}
 
 	/**
-	 * @param versionValue : The version to use for filtering
+	 * @param version : The version to use for filtering
 	 * @return The ratio of requirements for which the codes are marked as done !
 	 */
-	protected Float getCodeDoneRatio(final String versionValue) {
-		final Collection<Requirement> reqs = getRequirementByVersion(versionValue);
-		return reqs.stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count() / (float) reqs.size();
+	protected Float getCodeDoneRatio(final String version) {
+		return getCodeDoneCount(version) / (float) getRequirementByVersion(version).size();
 	}
 
 	/**
@@ -80,28 +93,41 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	}
 
 	/**
-	 * @param versionValue - The version to use for filtering.
+	 * @return The number of tests marked as done for any version
+	 */
+	protected long getTestsUndoneCount() {
+		return getRequirements().size() - getTestsDoneCount() - getIgnoredRequirementsCount();
+	}
+
+	/**
+	 * @param version - The version to use for filtering.
 	 * @return The number of tests marked as done for the specified version.
 	 */
-	protected long getTestsDoneCount(final String versionValue) {
-		return getRequirementByVersion(versionValue).stream().filter(req -> !req.isIgnore() && req.isTestDone()).count();
+	protected long getTestsDoneCount(final String version) {
+		return getRequirementByVersion(version).stream().filter(req -> !req.isIgnore() && req.isTestDone()).count();
+	}
+
+	/**
+	 * @param version - The version to use for filtering.
+	 * @return The number of tests marked as done for the specified version.
+	 */
+	protected long getTestsUndoneCount(final String version) {
+		return getRequirementByVersion(version).size() - getTestsDoneCount(version) - getIgnoredRequirementsCount(version);
 	}
 
 	/**
 	 * @return The ratio of requirements for which the tests are marked as done !
 	 */
 	protected Float getTestDoneRatio() {
-		final Collection<Requirement> reqs = getRequirements();
-		return reqs.stream().filter(req -> !req.isIgnore() && req.isTestDone()).count() / (float) reqs.size();
+		return getTestsDoneCount() / (float) getRequirements().size();
 	}
 
 	/**
-	 * @param versionValue : The version to use for filtering
+	 * @param version : The version to use for filtering
 	 * @return The ratio of requirements for which the tests are marked as done !
 	 */
-	protected Float getTestDoneRatio(final String versionValue) {
-		final Collection<Requirement> reqs = getRequirementByVersion(versionValue);
-		return reqs.stream().filter(req -> !req.isIgnore() && req.isTestDone()).count() / (float) reqs.size();
+	protected Float getTestDoneRatio(final String version) {
+		return getTestsDoneCount(version) / (float) getRequirementByVersion(version).size();
 	}
 
 	/**
@@ -121,8 +147,8 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 		return reqs.stream().filter(Requirement::isIgnore).count();
 	}
 
-	protected Collection<Requirement> getRequirementByVersion(final String versionValue) {
-		return Requirements.getByVersion(getRequirements(), versionValue);
+	protected Collection<Requirement> getRequirementByVersion(final String version) {
+		return Requirements.getByVersion(getRequirements(), version);
 	}
 
 	protected ReqReportConfig getDefaultReportConfig() {

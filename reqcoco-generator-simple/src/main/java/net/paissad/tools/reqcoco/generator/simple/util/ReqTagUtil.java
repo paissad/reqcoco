@@ -5,12 +5,11 @@ import java.util.regex.Pattern;
 
 public interface ReqTagUtil {
 
-	// TODO : write unit tests !
 	/**
 	 * @param input - The input to process.
 	 * @param regex - The regexp to use.
 	 * @param groupIndex - The group index.
-	 * @return The value of the group retrieved by using the specified regexp.
+	 * @return The value of the group retrieved by using the specified regexp, <code>null</code> if not match.
 	 */
 	public static String extractFieldValue(final String input, final String regex, final int groupIndex) {
 		Pattern pattern = Pattern.compile(regex);
