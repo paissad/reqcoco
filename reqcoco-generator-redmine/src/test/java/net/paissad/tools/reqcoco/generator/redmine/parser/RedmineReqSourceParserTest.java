@@ -153,7 +153,7 @@ public class RedmineReqSourceParserTest {
 
 		this.options = Collections.emptyMap();
 		thrown.expect(ReqSourceParserException.class);
-		thrown.expectMessage("Non null and non empty options must be passed for in order to parse a Redmine project");
+		thrown.expectMessage("Non null and non empty options must be passed in order to parse a Redmine project");
 		this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 	}
 
@@ -162,7 +162,7 @@ public class RedmineReqSourceParserTest {
 
 		this.options = null;
 		thrown.expect(ReqSourceParserException.class);
-		thrown.expectMessage("Non null and non empty options must be passed for in order to parse a Redmine project");
+		thrown.expectMessage("Non null and non empty options must be passed in order to parse a Redmine project");
 		this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 	}
 

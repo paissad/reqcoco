@@ -65,7 +65,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 		}
 
 		if (options == null || options.isEmpty()) {
-			throw new ReqSourceParserException("Non null and non empty options must be passed for in order to parse a Redmine project", null);
+			throw new ReqSourceParserException("Non null and non empty options must be passed in order to parse a Redmine project", null);
 		}
 
 		try {
