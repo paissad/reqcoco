@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.hamcrest.core.Is;
 import org.junit.Before;
@@ -35,13 +36,14 @@ public class RedmineReqSourceParserTest {
 	@Before
 	public void setUp() throws Exception {
 		this.redmineReqSourceParser = new RedmineReqSourceParser();
-		this.stubUri = new URI("http://www.redmine.org");
+		this.stubUri = new URI("https://www.redmine.org");
+		// this.stubUri = new URI("http://localhost:3000");
 		this.tagConfig = new SimpleReqDeclTagConfig();
 		this.initOptions();
 	}
 
 	@Test
-//	@Ignore(value = "This test need to configure a Redmine server before ...")
+	// @Ignore(value = "This test need to configure a Redmine server before ...")
 	public void testParse() throws ReqSourceParserException {
 
 		this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
@@ -114,14 +116,17 @@ public class RedmineReqSourceParserTest {
 
 	private void initOptions() {
 		this.options = new HashMap<>();
-		this.options.put(RedmineReqSourceParser.OPTION_AUTH_API_KEY, "7ac3db9bcf094e273dc2c6ec34ddf2c56862f760");
-		this.options.put(RedmineReqSourceParser.OPTION_PROJECT_KEY, "dumm1");
+		// this.options.put(RedmineReqSourceParser.OPTION_AUTH_API_KEY, "7ac3db9bcf094e273dc2c6ec34ddf2c56862f760"); // redmine.org need no auth
+		this.options.put(RedmineReqSourceParser.OPTION_PROJECT_KEY, "1"); // or 'redmine' for http://redmine.org for example
 		this.options.put(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, false);
-		// this.options.put(RedmineReqSourceParser.OPTION_TRACKER_FILTER, "1");
-		this.options.put(RedmineReqSourceParser.OPTION_STATUS_FILTER, "*");
+		this.options.put(RedmineReqSourceParser.OPTION_TRACKER_FILTER, "3"); // Patch tracker
+		this.options.put(RedmineReqSourceParser.OPTION_STATUS_FILTER, "open"); // *, open, closed, or tracker id
 		this.options.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, Arrays.asList(new String[] {}));
-		this.options.put(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN, true);
-		this.options.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, true);
+		this.options.put(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN, false);
+		this.options.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, false);
+		final Properties extraProperties = new Properties();
+		extraProperties.put("assigned_to_id", "1");
+		this.options.put(RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES, extraProperties);
 	}
 
 }

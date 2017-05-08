@@ -3,9 +3,11 @@ package net.paissad.tools.reqcoco.generator.redmine.parser;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -52,6 +54,8 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
 	public static final String	OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT	= "_redmine_req_tag_must_be_present";
 
+	public static final String	OPTION_EXTRA_PROPERTIES					= "_redmine_extra_params";
+
 	@Override
 	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options)
 	        throws ReqSourceParserException {
@@ -82,6 +86,8 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 			final String authApiAccessKey = (String) options.get(OPTION_AUTH_API_KEY);
 
 			final boolean reqTagMustBePresent = (Boolean) options.getOrDefault(OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, true);
+
+			final Properties extraProperties = (Properties) options.getOrDefault(OPTION_EXTRA_PROPERTIES, new Properties());
 
 			// Check that all options meet minimum requirements
 			if (StringUtils.isBlank(projectKey)) {
@@ -117,11 +123,16 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 				parameters.add(new BasicNameValuePair("include", includes.stream().collect(Collectors.joining(","))));
 			}
 
+			if (!extraProperties.isEmpty()) {
+				extraProperties.keySet().stream().map(Object::toString)
+				        .forEach(key -> parameters.add(new BasicNameValuePair(key, extraProperties.getProperty(key))));
+			}
+
 			LOGGER.info("Making HTTP request to Redmine API");
 
 			final List<Issue> issues = transport.getObjectsList(Issue.class, parameters);
 
-			final Collection<Requirement> declaredRequirements = new ArrayList<>();
+			final Collection<Requirement> declaredRequirements = Collections.synchronizedList(new ArrayList<>());
 
 			final Predicate<Issue> reqIssuePredicate = new IssueMatchPredicate(tagConfig, reqTagMustBePresent, targetVersions);
 
