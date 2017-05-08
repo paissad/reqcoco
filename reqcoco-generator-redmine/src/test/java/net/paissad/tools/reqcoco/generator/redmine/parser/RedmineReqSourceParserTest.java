@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.hamcrest.core.Is;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -42,7 +41,7 @@ public class RedmineReqSourceParserTest {
 	}
 
 	@Test
-	@Ignore(value = "This test need to configure a Redmine server before ...")
+//	@Ignore(value = "This test need to configure a Redmine server before ...")
 	public void testParse() throws ReqSourceParserException {
 
 		this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
