@@ -36,7 +36,7 @@ public class RedmineReqSourceParserTest {
 	@Before
 	public void setUp() throws Exception {
 		this.redmineReqSourceParser = new RedmineReqSourceParser();
-		this.stubUri = new URI("http://localhost:3000/");
+		this.stubUri = new URI("http://www.redmine.org");
 		this.tagConfig = new SimpleReqDeclTagConfig();
 		this.initOptions();
 	}
