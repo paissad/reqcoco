@@ -254,6 +254,7 @@
     <module>reqcoco-maven-plugin</module>
     <module>reqcoco-runner</module>
     <module>reqcoco-generator-simple</module>
+    <module>reqcoco-generator-redmine</module>
   </modules>
 
 </project>
