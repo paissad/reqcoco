@@ -94,22 +94,12 @@ public class RedmineReqSourceParserTest {
 	}
 
 	@Test
-	public void testParseWhenProjectOneOpionHasBadType() throws ReqSourceParserException {
+	public void testParseWhenProjectOneOptionHasBadType() throws ReqSourceParserException {
 
 		this.options.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, "v1.9");
 		thrown.expect(ReqSourceParserException.class);
 		thrown.expectMessage("Error either while retrieving options, or while processing the API result");
 		thrown.expectCause(Is.isA(ClassCastException.class));
-		this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
-	}
-
-	@Test
-	public void testParseWhenProjectOneOpionIsNull() throws ReqSourceParserException {
-
-		this.options.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, null);
-		thrown.expect(ReqSourceParserException.class);
-		thrown.expectMessage("Error either while retrieving options, or while processing the API result");
-		thrown.expectCause(Is.isA(NullPointerException.class));
 		this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 	}
 
