@@ -44,9 +44,9 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
 	public static final String	OPTION_STATUS_FILTER					= "_redmine_statuses_ids";
 
-	public static final String	OPTION_AUTH_USERNAME					= "_redmine_auth_username";
+	public static final String	OPTION_AUTH_USER_NAME					= "_redmine_auth_username";
 
-	public static final String	OPTION_AUTH_PASSWORD					= "_redmine_auth_password";
+	public static final String	OPTION_AUTH_USER_PASS					= "_redmine_auth_password";
 
 	public static final String	OPTION_AUTH_API_KEY						= "_redmine_auth_key";
 
@@ -77,8 +77,8 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 			@SuppressWarnings("unchecked")
 			final Collection<String> targetVersions = (Collection<String>) options.getOrDefault(OPTION_TARGET_VERSIONS, new HashSet<String>());
 
-			final String authUsername = (String) options.get(OPTION_AUTH_USERNAME);
-			final String authPassword = (String) options.get(OPTION_AUTH_PASSWORD);
+			final String authUsername = (String) options.get(OPTION_AUTH_USER_NAME);
+			final String authPassword = (String) options.get(OPTION_AUTH_USER_PASS);
 			final String authApiAccessKey = (String) options.get(OPTION_AUTH_API_KEY);
 
 			final boolean reqTagMustBePresent = (Boolean) options.getOrDefault(OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, true);
@@ -128,12 +128,10 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 			LOGGER.info("Building requirements objects from Redmine issues");
 			issues.parallelStream().filter(reqIssuePredicate).forEach(issue -> {
 				final Requirement req = buildRequirementFromIssue(uri, issue);
-				System.out.println(req); // XXX
 				declaredRequirements.add(req);
 			});
 
 			LOGGER.info("{} requirements was built from Redmine issues", declaredRequirements.size());
-			System.out.println(declaredRequirements.size()); // XXX
 			return declaredRequirements;
 
 		} catch (NullPointerException | ClassCastException e) {
@@ -154,16 +152,16 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
 		if (!StringUtils.isBlank(authApiAccessKey)) {
 			LOGGER.info("Prepare to log into Redmine '{}' by using API access key method", uri);
-			transport = new Transport(new URIConfigurator(uri.toString(), authApiAccessKey), RedmineManagerFactory.createDefaultHttpClient());
+			transport = new Transport(new URIConfigurator(uri, authApiAccessKey), RedmineManagerFactory.createDefaultHttpClient());
 
 		} else if (!StringUtils.isBlank(authUsername)) {
 			LOGGER.info("Prepare to log into Redmine '{}' by using username/password method", uri);
-			transport = new Transport(new URIConfigurator(uri.toString(), null), RedmineManagerFactory.createDefaultHttpClient());
+			transport = new Transport(new URIConfigurator(uri, null), RedmineManagerFactory.createDefaultHttpClient());
 			transport.setCredentials(authUsername, authPassword);
 
 		} else {
 			LOGGER.info("Prepare to log into Redmine '{}' without authentication", uri);
-			transport = new Transport(new URIConfigurator(uri.toString(), null), RedmineManagerFactory.createDefaultHttpClient());
+			transport = new Transport(new URIConfigurator(uri, null), RedmineManagerFactory.createDefaultHttpClient());
 			transport.setCredentials(null, null);
 		}
 
