@@ -1,8 +1,8 @@
-package net.paissad.tools.reqcoco.generator.simple.impl.parser;
+package net.paissad.tools.reqcoco.generator.docx.parser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -11,39 +11,38 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.generator.simple.api.ReqDeclTagConfig;
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.generator.simple.impl.parser.AbstractReqSourceParser;
 
-public class FileReqSourceParser extends AbstractReqSourceParser {
+public class DocxReqSourceParser extends AbstractReqSourceParser {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FileReqSourceParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DocxReqSourceParser.class);
 
-	/**
-	 * Can be used when the {@link URI} is a link to a file.
-	 */
 	@Override
 	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options)
 	        throws ReqSourceParserException {
 
-		try (final Stream<String> lines = Files.lines(Paths.get(uri.getPath()), StandardCharsets.UTF_8)) {
+		try (final InputStream in = Files.newInputStream(Paths.get(uri.getPath())); final XWPFDocument document = new XWPFDocument(in)) {
 
 			final Set<Requirement> declaredRequirements = new HashSet<>();
 
-			final Predicate<String> lineContainsRequirementPredicate = Pattern.compile(declTagConfig.getCompleteRegex()).asPredicate();
+			final Predicate<String> textContainsRequirementPredicate = Pattern.compile(declTagConfig.getCompleteRegex()).asPredicate();
 
-			lines.parallel().filter(lineContainsRequirementPredicate)
-			        .forEach(line -> declaredRequirements.addAll(getRequirementsFromString(declTagConfig, line)));
+			document.getParagraphs().stream().map(XWPFParagraph::getText).filter(textContainsRequirementPredicate)
+			        .forEach(text -> getRequirementsFromString(declTagConfig, text));
 
 			return declaredRequirements;
 
 		} catch (IOException e) {
-			String errMsg = "I/O error while parsing the source for retrieving the declared requirements : " + e.getMessage();
+			String errMsg = "Error while reading the docx file : " + e.getMessage();
 			LOGGER.error(errMsg, e);
 			throw new ReqSourceParserException(errMsg, e);
 		}

@@ -76,7 +76,7 @@ public class ReqRunnerOptions {
 	@Option(name = "--config", required = true, usage = "The configuration file.")
 	private File				configFile;
 
-	@Option(name = "--input-type", required = true, usage = "'file' or 'redmine'")
+	@Option(name = "--input-type", required = true, usage = "The type of the requirements source declaration.")
 	private ReqSourceType		sourceType;
 
 	@Option(name = "--input", required = true, metaVar = "<input>", usage = "Source containing the requirements to parse.")
