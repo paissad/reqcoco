@@ -56,7 +56,7 @@ public class ReqRunnerTest {
 	public void testMainNominalCaseOK() throws URISyntaxException {
 		List<String> args = getSetupArgs(null);
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
-		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports(args.toArray(new String[args.size()])));
+		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
 		Assert.assertEquals("TRACE", runner.getOptions().getLogLevel());
 		Assert.assertTrue("The HTML report directory must exist", Files.exists(Paths.get(this.reportOutputDirPath.toString(), "html")));
 	}
@@ -67,7 +67,7 @@ public class ReqRunnerTest {
 		args.add("--report-name");
 		args.add("custom_project_name");
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
-		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports(args.toArray(new String[args.size()])));
+		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
 		Assert.assertTrue("The HTML report name is wrong",
 		        Files.exists(Paths.get(this.reportOutputDirPath.toString(), "html/custom_project_name.html")));
 	}
@@ -78,7 +78,7 @@ public class ReqRunnerTest {
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
 		runner.getOptions().setReportHtml(false);
 		runner.getOptions().setReportConsole(true);
-		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports(args.toArray(new String[args.size()])));
+		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
 		Assert.assertTrue("The HTML report directory should not exist", Files.notExists(Paths.get(this.reportOutputDirPath.toString(), "html")));
 	}
 
@@ -90,7 +90,7 @@ public class ReqRunnerTest {
 		List<String> args = getSetupArgs(null);
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
 		runner.getOptions().setLogLevel("OFF");
-		Assert.assertEquals(ExitStatus.BUILD_REPORT_ERROR.getCode(), runner.generateReports(args.toArray(new String[args.size()])));
+		Assert.assertEquals(ExitStatus.BUILD_REPORT_ERROR.getCode(), runner.generateReports());
 	}
 
 	/**

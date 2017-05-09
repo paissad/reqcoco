@@ -51,7 +51,7 @@ public class ReqRunner {
 		final int parseArgsStatus = reqRunner.parseArguments(args);
 
 		if (ExitStatus.OK.getCode() == parseArgsStatus && !reqRunner.getOptions().isHelp()) {
-			System.exit(reqRunner.generateReports(args));
+			System.exit(reqRunner.generateReports());
 		} else {
 			System.exit(parseArgsStatus);
 		}
@@ -78,7 +78,7 @@ public class ReqRunner {
 		return getExitCode(ExitStatus.OK);
 	}
 
-	public int generateReports(final String... args) {
+	public int generateReports() {
 
 		// Sets the log level if specified
 		if (getRunner().getOptions().getLogLevel() != null) {
