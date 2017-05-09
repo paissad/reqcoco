@@ -165,7 +165,7 @@ public class ReqRunnerOptions {
 		props.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, includeRelations);
 
 		final Collection<String> targetVersions = StringUtils.isBlank((String) props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS))
-		        ? RedmineReqSourceParser.DEFAULT_VALUE_TARGET_VERSIONS
+		        ? RedmineReqSourceParser.getDefautValueForTargetVersions()
 		        : Arrays.asList(props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS).toString().split(","));
 		props.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, targetVersions);
 

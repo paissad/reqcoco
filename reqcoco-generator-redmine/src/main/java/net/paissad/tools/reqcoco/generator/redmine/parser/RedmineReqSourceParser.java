@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -32,39 +33,37 @@ import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserExcep
 
 public class RedmineReqSourceParser implements ReqSourceParser {
 
-	private static final Logger				LOGGER									= LoggerFactory.getLogger(RedmineReqSourceParser.class);
+	private static final Logger	LOGGER									= LoggerFactory.getLogger(RedmineReqSourceParser.class);
 
-	public static final String				OPTION_PROJECT_KEY						= "redmine.project.id";
+	public static final String	OPTION_PROJECT_KEY						= "redmine.project.id";
 
-	public static final String				OPTION_INCLUDE_CHILDREN					= "redmine.include.children";
+	public static final String	OPTION_INCLUDE_CHILDREN					= "redmine.include.children";
 
-	public static final String				OPTION_INCLUDE_RELATIONS				= "redmine.include.relations";
+	public static final String	OPTION_INCLUDE_RELATIONS				= "redmine.include.relations";
 
-	public static final String				OPTION_TARGET_VERSIONS					= "redmine.target.versions";
+	public static final String	OPTION_TARGET_VERSIONS					= "redmine.target.versions";
 
-	public static final String				OPTION_TRACKER_FILTER					= "redmine.tracker.filter";
+	public static final String	OPTION_TRACKER_FILTER					= "redmine.tracker.filter";
 
-	public static final String				OPTION_STATUS_FILTER					= "redmine.status.filter";
+	public static final String	OPTION_STATUS_FILTER					= "redmine.status.filter";
 
-	public static final String				OPTION_AUTH_USER_NAME					= "redmine.auth.username";
+	public static final String	OPTION_AUTH_USER_NAME					= "redmine.auth.username";
 
-	public static final String				OPTION_AUTH_USER_PASS					= "redmine.auth.password";
+	public static final String	OPTION_AUTH_USER_PASS					= "redmine.auth.password";
 
-	public static final String				OPTION_AUTH_API_KEY						= "redmine.auth.apikey";
+	public static final String	OPTION_AUTH_API_KEY						= "redmine.auth.apikey";
 
-	public static final String				OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT	= "redmine.req.tag.required";
+	public static final String	OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT	= "redmine.req.tag.required";
 
-	public static final String				OPTION_EXTRA_PROPERTIES					= "redmine.extra.properties";
+	public static final String	OPTION_EXTRA_PROPERTIES					= "redmine.extra.properties";
 
-	public static final boolean				DEFAULT_VALUE_INCLUDE_CHILDREN			= true;
+	public static final boolean	DEFAULT_VALUE_INCLUDE_CHILDREN			= true;
 
-	public static final boolean				DEFAULT_VALUE_INCLUDE_RELATIONS			= true;
+	public static final boolean	DEFAULT_VALUE_INCLUDE_RELATIONS			= true;
 
-	public static final String				DEFAULT_VALUE_STATUS_FILTER				= "*";
+	public static final String	DEFAULT_VALUE_STATUS_FILTER				= "*";
 
-	public static final Collection<String>	DEFAULT_VALUE_TARGET_VERSIONS			= new HashSet<>();
-
-	public static final boolean				DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE	= true;
+	public static final boolean	DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE	= true;
 
 	@Override
 	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options)
@@ -90,7 +89,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
 			@SuppressWarnings("unchecked")
 			final Collection<String> targetVersions = (Collection<String>) options.getOrDefault(OPTION_TARGET_VERSIONS,
-			        DEFAULT_VALUE_TARGET_VERSIONS);
+			        getDefautValueForTargetVersions());
 
 			final String authUsername = (String) options.get(OPTION_AUTH_USER_NAME);
 			final String authPassword = (String) options.get(OPTION_AUTH_USER_PASS);
@@ -199,6 +198,10 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 		req.setFullDescription(issue.getDescription());
 		req.setLink(rootUri.toString() + "/issues/" + issue.getId());
 		return req;
+	}
+
+	public static Set<String> getDefautValueForTargetVersions() {
+		return new HashSet<>();
 	}
 
 	private static class IssueMatchPredicate implements Predicate<Issue> {
