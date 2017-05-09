@@ -10,7 +10,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -174,7 +177,33 @@ public class ReqRunnerOptions {
 		        : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT));
 		props.put(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, reqTagMustBePresent);
 
-		// FIXME : update for OPTION_EXTRA_PROPERTIES too !!!
+		final Properties redmineExtraProperties = getRedmineExtraProperties();
+		if (redmineExtraProperties != null) {
+			props.put(RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES, redmineExtraProperties);
+		}
+	}
+
+	public Properties getRedmineExtraProperties() {
+
+		Properties extraProps = null;
+
+		final String prefix = RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES;
+		final Predicate<String> predicate = Pattern.compile(Pattern.quote(prefix + ".key.")).asPredicate();
+
+		final Set<String> extraPropertyKeys = getConfigProperties().keySet().stream().map(Object::toString).filter(predicate)
+		        .collect(Collectors.toSet());
+
+		if (!extraPropertyKeys.isEmpty()) {
+			extraProps = new Properties();
+			for (final String key : extraPropertyKeys) {
+				String suffix = key.substring((prefix + ".key.").length(), key.length());
+				String extraPropsKey = getConfigProperties().getProperty(key);
+				String extraPropsValue = getConfigProperties().getProperty(prefix + ".value." + suffix);
+				extraProps.put(extraPropsKey, extraPropsValue);
+			}
+		}
+
+		return extraProps;
 	}
 
 	public static Map<String, Object> mapFromProperties(final Properties properties) {
