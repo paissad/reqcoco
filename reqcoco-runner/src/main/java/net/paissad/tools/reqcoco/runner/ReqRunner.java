@@ -2,6 +2,8 @@ package net.paissad.tools.reqcoco.runner;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +14,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,41 +31,54 @@ import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigEx
 import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.generator.simple.impl.AbstractReqGenerator;
 import net.paissad.tools.reqcoco.generator.simple.impl.SimpleReqGeneratorConfig;
-import net.paissad.tools.reqcoco.generator.simple.impl.parser.FileReqSourceParser;
 
-public class ReqCoCoRunner {
+public class ReqRunner {
 
-	private static final Logger		LOGGER				= LoggerFactory.getLogger(ReqCoCoRunner.class);
+	private static final Logger	LOGGER				= LoggerFactory.getLogger(ReqRunner.class);
 
-	private static final String		LOGGER_PREFIX_TAG	= String.format("%-15s -", "[ReqCoCoRunner]");
+	private static final String	LOGGER_PREFIX_TAG	= String.format("%-15s -", "[ReqCoCoRunner]");
 
 	@Getter
-	private ReqCoCoRunnerOptions	options;
+	private ReqRunnerOptions	options;
 
-	public ReqCoCoRunner() {
-		this.options = new ReqCoCoRunnerOptions();
+	public ReqRunner() {
+		this.options = new ReqRunnerOptions();
 	}
 
 	public static void main(final String... args) {
-		System.exit(new ReqCoCoRunner().proxyMain(args));
+
+		final ReqRunner reqRunner = new ReqRunner();
+		final int parseArgsStatus = reqRunner.parseArguments(args);
+
+		if (ExitStatus.OK.getCode() == parseArgsStatus && !reqRunner.getOptions().isHelp()) {
+			System.exit(reqRunner.generateReports(args));
+		} else {
+			System.exit(parseArgsStatus);
+		}
 	}
 
-	public int proxyMain(final String... args) {
+	public int parseArguments(final String... args) {
 
 		setLoggingLevel("INFO");
 
 		CmdLineParser parser = null;
 		try {
-			parser = getRunner().getOptions().parseOptions(args);
-		} catch (CmdLineException e1) {
-			LOGGER.trace(LOGGER_PREFIX_TAG + " An error occured while parsing the options", e1);
+			parser = getOptions().parseOptions(args);
+			getOptions().parseConfigFile();
+
+		} catch (Exception e) {
+			LOGGER.trace(LOGGER_PREFIX_TAG + " An error occured while parsing the options", e);
 			return getExitCode(ExitStatus.OPTIONS_PARSING_ERROR);
 		}
 
-		if (getRunner().getOptions().isHelp()) {
-			ReqCoCoRunnerOptions.printUsage(parser);
-			return getExitCode(ExitStatus.OK);
+		if (getOptions().isHelp()) {
+			ReqRunnerOptions.printUsage(parser);
 		}
+
+		return getExitCode(ExitStatus.OK);
+	}
+
+	public int generateReports(final String... args) {
 
 		// Sets the log level if specified
 		if (getRunner().getOptions().getLogLevel() != null) {
@@ -81,21 +95,16 @@ public class ReqCoCoRunner {
 
 			// Set the config to use for the generator
 			final SimpleReqGeneratorConfig coverageGeneratorCfg = new SimpleReqGeneratorConfig();
-			coverageGeneratorCfg.setSourceRequirements(Paths.get(getOptions().getRequirementSource()).toUri());
+			coverageGeneratorCfg.setExtraOptions(ReqRunnerOptions.mapFromProperties(getOptions().getConfigProperties()));
+			coverageGeneratorCfg.setSourceRequirements(new URI(getOptions().getRequirementSource()));
 			coverageGeneratorCfg.setCoverageOutput(temporaryCoverageFile.toPath());
 			coverageGeneratorCfg.setSourceCodePath(Paths.get(getOptions().getSourceCodePath()));
-			coverageGeneratorCfg.setTestsCodePath(Paths.get(getOptions().getTestsCodePath()));
-			coverageGeneratorCfg.setSourceParser(new FileReqSourceParser());
+			coverageGeneratorCfg.setTestsCodePath(Paths.get(getOptions().getTestCodePath()));
+			coverageGeneratorCfg.setSourceParser(getOptions().getSourceType().getParser());
 
-			final String includes = StringUtils.isBlank(getOptions().getFilesInclude()) ? "*" : getOptions().getFilesInclude(); // Include all files
-			                                                                                                                    // by default
-			final String excludes = StringUtils.isBlank(getOptions().getFilesExclude()) ? "" : getOptions().getFilesExclude(); // Exclude nothing by
-			                                                                                                                   // default
-			final String ignores = StringUtils.isBlank(getOptions().getIgnores()) ? "" : getOptions().getIgnores();
-
-			coverageGeneratorCfg.getFileIncludes().addAll(Arrays.asList(includes.split(",")));
-			coverageGeneratorCfg.getFileExcludes().addAll(Arrays.asList(excludes.split(",")));
-			coverageGeneratorCfg.getIgnoreList().addAll(Arrays.asList(ignores.split(",")));
+			coverageGeneratorCfg.getFileIncludes().addAll(Arrays.asList(getOptions().getResourceIncludes().split(",")));
+			coverageGeneratorCfg.getFileExcludes().addAll(Arrays.asList(getOptions().getResourceExcludes().split(",")));
+			coverageGeneratorCfg.getIgnoreList().addAll(Arrays.asList(getOptions().getIgnores().split(",")));
 
 			// Parse the input and build the temporary XML coverage report file
 			reqCoverageGenerator.configure(coverageGeneratorCfg);
@@ -106,6 +115,11 @@ public class ReqCoCoRunner {
 
 			// Build the human readable reports
 			runReportBuilders(reportBuilders, requirements);
+
+		} catch (URISyntaxException e) {
+			String errrMsg = "Error while building the URI from the specified source of declared requiremets : " + e.getMessage();
+			LOGGER.error(errrMsg, e);
+			return getExitCode(ExitStatus.URI_BUILD_ERROR);
 
 		} catch (IOException e) {
 			String errMsg = "Error while creating the temporary/intermediate coverage report : " + e.getMessage();
@@ -124,7 +138,7 @@ public class ReqCoCoRunner {
 		return getExitCode(ExitStatus.OK);
 	}
 
-	private ReqCoCoRunner getRunner() {
+	private ReqRunner getRunner() {
 		return this;
 	}
 
@@ -144,15 +158,15 @@ public class ReqCoCoRunner {
 	 * @param options
 	 * @return The report builders based on the passed parameters.
 	 */
-	private Collection<ReqReportBuilder> getReportBuilders(final ReqCoCoRunnerOptions options) {
+	private Collection<ReqReportBuilder> getReportBuilders(final ReqRunnerOptions options) {
 
 		final List<ReqReportBuilder> reportBuilders = new LinkedList<>();
 
-		if (Boolean.valueOf(options.getBuildConsoleReport())) {
+		if (getOptions().isReportConsole()) {
 			reportBuilders.add(new ReqReportBuilderConsole());
 		}
 
-		if (Boolean.valueOf(options.getBuildHtmlReport())) {
+		if (getOptions().isReportHtml()) {
 
 			Path htmlReportOutputDirPath = Paths.get(getReportOutputDirPath(options).toString(), "html");
 
@@ -170,7 +184,7 @@ public class ReqCoCoRunner {
 	 * @param options
 	 * @return The path to the output directory where to generate the reports.
 	 */
-	private Path getReportOutputDirPath(final ReqCoCoRunnerOptions options) {
+	private Path getReportOutputDirPath(final ReqRunnerOptions options) {
 		return Paths.get(options.getOutputFolder());
 	}
 

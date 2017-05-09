@@ -32,29 +32,39 @@ import net.paissad.tools.reqcoco.generator.simple.exception.ReqSourceParserExcep
 
 public class RedmineReqSourceParser implements ReqSourceParser {
 
-	private static final Logger	LOGGER									= LoggerFactory.getLogger(RedmineReqSourceParser.class);
+	private static final Logger				LOGGER									= LoggerFactory.getLogger(RedmineReqSourceParser.class);
 
-	public static final String	OPTION_PROJECT_KEY						= "_redmine_project_id";
+	public static final String				OPTION_PROJECT_KEY						= "redmine.project.id";
 
-	public static final String	OPTION_INCLUDE_CHILDREN					= "_redmine_include_children_projects";
+	public static final String				OPTION_INCLUDE_CHILDREN					= "redmine.include.children";
 
-	public static final String	OPTION_INCLUDE_RELATIONS				= "_redmine_include_children_relations";
+	public static final String				OPTION_INCLUDE_RELATIONS				= "redmine.include.relations";
 
-	public static final String	OPTION_TARGET_VERSIONS					= "_redmine_project_versions";
+	public static final String				OPTION_TARGET_VERSIONS					= "redmine.target.versions";
 
-	public static final String	OPTION_TRACKER_FILTER					= "_redmine_trackers_ids";
+	public static final String				OPTION_TRACKER_FILTER					= "redmine.tracker.filter";
 
-	public static final String	OPTION_STATUS_FILTER					= "_redmine_statuses_ids";
+	public static final String				OPTION_STATUS_FILTER					= "redmine.status.filter";
 
-	public static final String	OPTION_AUTH_USER_NAME					= "_redmine_auth_username";
+	public static final String				OPTION_AUTH_USER_NAME					= "redmine.auth.username";
 
-	public static final String	OPTION_AUTH_USER_PASS					= "_redmine_auth_password";
+	public static final String				OPTION_AUTH_USER_PASS					= "redmine.auth.password";
 
-	public static final String	OPTION_AUTH_API_KEY						= "_redmine_auth_key";
+	public static final String				OPTION_AUTH_API_KEY						= "redmine.auth.apikey";
 
-	public static final String	OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT	= "_redmine_req_tag_must_be_present";
+	public static final String				OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT	= "redmine.req.tag.required";
 
-	public static final String	OPTION_EXTRA_PROPERTIES					= "_redmine_extra_params";
+	public static final String				OPTION_EXTRA_PROPERTIES					= "redmine.extra.properties";
+
+	public static final boolean				DEFAULT_VALUE_INCLUDE_CHILDREN			= true;
+
+	public static final boolean				DEFAULT_VALUE_INCLUDE_RELATIONS			= true;
+
+	public static final String				DEFAULT_VALUE_STATUS_FILTER				= "*";
+
+	public static final Collection<String>	DEFAULT_VALUE_TARGET_VERSIONS			= new HashSet<>();
+
+	public static final boolean				DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE	= true;
 
 	@Override
 	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options)
@@ -72,14 +82,15 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
 			// Retrieve options
 			final String projectKey = (String) options.get(OPTION_PROJECT_KEY);
-			final boolean includeChildren = (Boolean) options.getOrDefault(OPTION_INCLUDE_CHILDREN, true);
-			final boolean includeRelations = (Boolean) options.getOrDefault(OPTION_INCLUDE_RELATIONS, true);
+			final boolean includeChildren = (Boolean) options.getOrDefault(OPTION_INCLUDE_CHILDREN, DEFAULT_VALUE_INCLUDE_CHILDREN);
+			final boolean includeRelations = (Boolean) options.getOrDefault(OPTION_INCLUDE_RELATIONS, DEFAULT_VALUE_INCLUDE_RELATIONS);
 
-			final String statusFilter = (String) options.getOrDefault(OPTION_STATUS_FILTER, "*");
+			final String statusFilter = (String) options.getOrDefault(OPTION_STATUS_FILTER, DEFAULT_VALUE_STATUS_FILTER);
 			final String trackerFilter = (String) options.get(OPTION_TRACKER_FILTER);
 
 			@SuppressWarnings("unchecked")
-			final Collection<String> targetVersions = (Collection<String>) options.getOrDefault(OPTION_TARGET_VERSIONS, new HashSet<String>());
+			final Collection<String> targetVersions = (Collection<String>) options.getOrDefault(OPTION_TARGET_VERSIONS,
+			        DEFAULT_VALUE_TARGET_VERSIONS);
 
 			final String authUsername = (String) options.get(OPTION_AUTH_USER_NAME);
 			final String authPassword = (String) options.get(OPTION_AUTH_USER_PASS);
@@ -142,7 +153,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 				declaredRequirements.add(req);
 			});
 
-			LOGGER.info("{} requirements was built from Redmine issues", declaredRequirements.size());
+			LOGGER.info("{} requirements were built from Redmine issues", declaredRequirements.size());
 			return declaredRequirements;
 
 		} catch (NullPointerException | ClassCastException e) {
