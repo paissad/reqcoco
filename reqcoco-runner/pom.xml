@@ -49,6 +49,11 @@
     </dependency>
     <dependency>
       <groupId>net.paissad.tools.reqcoco.generator</groupId>
+      <artifactId>reqcoco-generator-xlsx</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>net.paissad.tools.reqcoco.generator</groupId>
       <artifactId>reqcoco-generator-redmine</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>

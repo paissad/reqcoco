@@ -153,6 +153,16 @@
         <type>pom</type>
       </dependency>
       <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>3.16-beta2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>3.16-beta2</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.xmlbeans</groupId>
         <artifactId>xmlbeans</artifactId>
         <version>2.6.0</version>
@@ -246,6 +256,7 @@
     <module>reqcoco-generator-simple</module>
     <module>reqcoco-generator-redmine</module>
     <module>reqcoco-generator-docx</module>
+    <module>reqcoco-generator-xlsx</module>
   </modules>
 
 </project>
