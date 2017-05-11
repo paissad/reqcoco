@@ -144,7 +144,7 @@ public class ReqRunner {
 		if (Pattern.compile("^.*?:/").matcher(reqSource).find()) {
 			return new URI(reqSource);
 		} else {
-			return new URI("file:/" + new File(reqSource).getCanonicalPath().toString().replace("\\", "/").replace("^/+", ""));
+			return new URI("file:/" + new File(reqSource).getCanonicalPath().replace("\\", "/").replaceFirst("^/+", ""));
 		}
 	}
 
