@@ -139,12 +139,12 @@ public class ReqRunner {
 		return getExitCode(ExitStatus.OK);
 	}
 
-	private URI getReqSourceURI() throws URISyntaxException {
+	private URI getReqSourceURI() throws URISyntaxException, IOException {
 		final String reqSource = getOptions().getRequirementSource();
 		if (Pattern.compile("^.*?:/").matcher(reqSource).find()) {
 			return new URI(reqSource);
 		} else {
-			return new URI("file:/" + reqSource.replace("\\", "/"));
+			return new URI("file:/" + new File(reqSource).getCanonicalPath().toString().replace("\\", "/").replace("^/+", ""));
 		}
 	}
 
