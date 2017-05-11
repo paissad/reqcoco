@@ -31,7 +31,7 @@ public class FileReqSourceParser extends AbstractReqSourceParser {
 	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options)
 	        throws ReqSourceParserException {
 
-		try (final Stream<String> lines = Files.lines(Paths.get(uri.getPath()), StandardCharsets.UTF_8)) {
+		try (final Stream<String> lines = Files.lines(Paths.get(uri), StandardCharsets.UTF_8)) {
 
 			final Set<Requirement> declaredRequirements = new HashSet<>();
 
