@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -96,7 +97,7 @@ public class ReqRunner {
 			// Set the config to use for the generator
 			final SimpleReqGeneratorConfig coverageGeneratorCfg = new SimpleReqGeneratorConfig();
 			coverageGeneratorCfg.setExtraOptions(ReqRunnerOptions.mapFromProperties(getOptions().getConfigProperties()));
-			coverageGeneratorCfg.setSourceRequirements(new URI(getOptions().getRequirementSource()));
+			coverageGeneratorCfg.setSourceRequirements(getReqSourceURI());
 			coverageGeneratorCfg.setCoverageOutput(temporaryCoverageFile.toPath());
 			coverageGeneratorCfg.setSourceCodePath(Paths.get(getOptions().getSourceCodePath()));
 			coverageGeneratorCfg.setTestsCodePath(Paths.get(getOptions().getTestCodePath()));
@@ -136,6 +137,15 @@ public class ReqRunner {
 		}
 
 		return getExitCode(ExitStatus.OK);
+	}
+
+	private URI getReqSourceURI() throws URISyntaxException {
+		final String reqSource = getOptions().getRequirementSource();
+		if (Pattern.compile("^.*?:/").matcher(reqSource).find()) {
+			return new URI(reqSource);
+		} else {
+			return new URI("file:/" + reqSource.replace("\\", "/"));
+		}
 	}
 
 	private ReqRunner getRunner() {
