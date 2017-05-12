@@ -28,7 +28,7 @@ public interface RedmineTestUtil {
 			@Override
 			public Boolean handleResponse(final HttpResponse response) throws ClientProtocolException, IOException {
 				final int statusCode = response.getStatusLine().getStatusCode();
-				return statusCode >= 200 && statusCode <= 300;
+				return statusCode >= 200 && statusCode < 300;
 			}
 		};
 		try {
