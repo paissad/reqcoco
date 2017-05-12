@@ -36,9 +36,8 @@ public class DocxReqSourceParser extends AbstractReqSourceParser {
 
 			final Predicate<String> textContainsRequirementPredicate = Pattern.compile(declTagConfig.getCompleteRegex()).asPredicate();
 
-			document.getParagraphs().stream().map(XWPFParagraph::getText).filter(textContainsRequirementPredicate).forEach(text -> {
-				declaredRequirements.addAll(getRequirementsFromString(declTagConfig, text));
-			});
+			document.getParagraphs().stream().map(XWPFParagraph::getText).filter(textContainsRequirementPredicate)
+			        .forEach(text -> declaredRequirements.addAll(getRequirementsFromString(declTagConfig, text)));
 
 			return declaredRequirements;
 

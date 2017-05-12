@@ -41,7 +41,6 @@ public class FileReqSourceParserTest {
 		this.options = new HashMap<>();
 	}
 
-	// TODO: improve test by checking all requirements one by one !
 	@Test
 	public void testParse() throws ReqSourceParserException {
 

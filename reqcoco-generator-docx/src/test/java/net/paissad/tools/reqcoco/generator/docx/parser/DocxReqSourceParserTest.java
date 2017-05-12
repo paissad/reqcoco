@@ -2,10 +2,12 @@ package net.paissad.tools.reqcoco.generator.docx.parser;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -46,6 +48,15 @@ public class DocxReqSourceParserTest {
 		final Collection<Requirement> reqs_1 = getRequirementsHavingId("req_1", extractedRequirements);
 		Assert.assertEquals(1, reqs_1.size());
 		Assert.assertEquals("desc 1 …", reqs_1.iterator().next().getShortDescription());
+	}
+	
+	@Test
+	public void testParseUnexistentFile() throws ReqSourceParserException {
+
+		this.uri = Paths.get("__unexistent_docx_file__").toUri();
+		this.thrown.expect(Is.isA(ReqSourceParserException.class));
+		this.thrown.expectMessage("Error while reading the docx file : ");
+		this.docxReqSourceParser.parse(uri, declTagConfig, options);
 	}
 
 	private URI getUriForStub(final String stubResource) throws URISyntaxException {
