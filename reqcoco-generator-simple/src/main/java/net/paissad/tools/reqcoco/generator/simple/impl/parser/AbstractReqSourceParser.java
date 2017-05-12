@@ -35,23 +35,23 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 			final String tag = matcherTag.group();
 
 			// Retrieve the 'id' part of the tag
-			final String id = ReqTagUtil.extractFieldValue(tag, declTagConfig.getIdRegex(), 1);
+			String id = StringUtils.trim(ReqTagUtil.extractFieldValue(tag, declTagConfig.getIdRegex(), 1));
 			if (StringUtils.isBlank(id)) {
 				LOGGER.error("No id defined for requirement tag --> {}", tag);
 			}
 
 			// Retrieve the 'version' part of the tag
-			String version = ReqTagUtil.extractFieldValue(tag, declTagConfig.getVersionRegex(), 1);
+			String version = StringUtils.trim(ReqTagUtil.extractFieldValue(tag, declTagConfig.getVersionRegex(), 1));
 			if (StringUtils.isBlank(version)) {
 				LOGGER.warn("No version defined for tag --> {} <--- Version is going to be set to '{}'", tag, Requirement.VERSION_UNKNOWN);
 				version = Requirement.VERSION_UNKNOWN;
 			}
 
 			// Retrieve the 'revision' part of the tag
-			final String revision = ReqTagUtil.extractFieldValue(tag, declTagConfig.getRevisionRegex(), 1);
+			final String revision = StringUtils.trim(ReqTagUtil.extractFieldValue(tag, declTagConfig.getRevisionRegex(), 1));
 
 			// Retrieve the 'summary' part of the tag
-			final String summary = ReqTagUtil.extractFieldValue(tag, declTagConfig.getSummaryRegex(), 1);
+			final String summary = StringUtils.trim(ReqTagUtil.extractFieldValue(tag, declTagConfig.getSummaryRegex(), 1));
 
 			final Requirement req = new Requirement(id, version, revision);
 			req.setShortDescription(summary);
