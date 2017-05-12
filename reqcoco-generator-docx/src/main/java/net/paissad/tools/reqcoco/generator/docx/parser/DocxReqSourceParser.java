@@ -30,14 +30,15 @@ public class DocxReqSourceParser extends AbstractReqSourceParser {
 	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options)
 	        throws ReqSourceParserException {
 
-		try (final InputStream in = Files.newInputStream(Paths.get(uri.getPath())); final XWPFDocument document = new XWPFDocument(in)) {
+		try (final InputStream in = Files.newInputStream(Paths.get(uri)); final XWPFDocument document = new XWPFDocument(in)) {
 
 			final Set<Requirement> declaredRequirements = new HashSet<>();
 
 			final Predicate<String> textContainsRequirementPredicate = Pattern.compile(declTagConfig.getCompleteRegex()).asPredicate();
 
-			document.getParagraphs().stream().map(XWPFParagraph::getText).filter(textContainsRequirementPredicate)
-			        .forEach(text -> getRequirementsFromString(declTagConfig, text));
+			document.getParagraphs().stream().map(XWPFParagraph::getText).filter(textContainsRequirementPredicate).forEach(text -> {
+				declaredRequirements.addAll(getRequirementsFromString(declTagConfig, text));
+			});
 
 			return declaredRequirements;
 
