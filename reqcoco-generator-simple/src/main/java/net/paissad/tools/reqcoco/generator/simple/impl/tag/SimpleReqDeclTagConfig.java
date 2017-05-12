@@ -11,22 +11,22 @@ public class SimpleReqDeclTagConfig implements ReqDeclTagConfig {
 
 	@Override
 	public String getIdRegex() {
-		return "@Req\\s*\\(.*id\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req\\s*\\(.*id\\s*=\\s*[\"|«|](.*?)[\"|»].*";
 	}
 
 	@Override
 	public String getVersionRegex() {
-		return "@Req\\s*\\(.*version\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req\\s*\\(.*version\\s*=\\s*[\"|«|](.*?)[\"|»].*";
 	}
 
 	@Override
 	public String getRevisionRegex() {
-		return "@Req\\s*\\(.*revision\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req\\s*\\(.*revision\\s*=\\s*[\"|«|](.*?)[\"|»].*";
 	}
 
 	@Override
 	public String getSummaryRegex() {
-		return "@Req\\s*\\(.*summary\\s*=\\s*\"(.*?)\\\".*";
+		return "@Req\\s*\\(.*summary\\s*=\\s*[\"|«|](.*?)[\"|»].*";
 	}
 
 }
