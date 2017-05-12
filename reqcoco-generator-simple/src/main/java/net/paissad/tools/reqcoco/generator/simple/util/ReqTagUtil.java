@@ -20,4 +20,9 @@ public interface ReqTagUtil {
 		return null;
 	}
 
+	public static String trimString(final String str) {
+		// return str == null ? null : str.replaceAll("^[\\u00A0|\\s]*(.*?)[\\u00A0|\\s]*$", "$1");
+		return str == null ? null : str.replaceAll("^[\\h|\\s]*(.*?)[\\h|\\s]*$", "$1");
+	}
+
 }
