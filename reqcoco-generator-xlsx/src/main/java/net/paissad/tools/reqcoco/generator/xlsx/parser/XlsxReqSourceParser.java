@@ -37,7 +37,7 @@ public class XlsxReqSourceParser implements ReqSourceParser {
 
 			final Set<Requirement> declaredRequirements = new HashSet<>();
 
-			LOGGER.debug("Iterating through all sheets of the xlsx file");
+			LOGGER.debug("Iterating through all sheets of the xlsx file -> {}", uri);
 			for (int sheetIndex = 0; sheetIndex < workbook.getNumberOfSheets(); sheetIndex++) {
 
 				final XSSFSheet sheet = workbook.getSheetAt(sheetIndex);
