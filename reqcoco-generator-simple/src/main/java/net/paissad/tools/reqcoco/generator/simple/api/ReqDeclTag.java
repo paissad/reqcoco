@@ -1,5 +1,6 @@
 package net.paissad.tools.reqcoco.generator.simple.api;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@EqualsAndHashCode
 public class ReqDeclTag {
 
 	private String	id;
@@ -19,4 +21,5 @@ public class ReqDeclTag {
 	private String	revision;
 
 	private String	summary;
+
 }
