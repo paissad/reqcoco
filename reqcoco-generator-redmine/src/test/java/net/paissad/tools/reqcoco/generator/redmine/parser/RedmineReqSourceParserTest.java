@@ -48,6 +48,7 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParse() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 		final Collection<Requirement> reqs = this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 		Assert.assertFalse(reqs.isEmpty());
 	}
@@ -55,6 +56,7 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParseWithMatchReqTagSetToTrue() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 		this.options.put(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, true);
 		final Collection<Requirement> reqs = this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 		Assert.assertTrue(reqs.isEmpty()); // Hope that no one will use the tag '@Req()' ;-)
@@ -63,6 +65,7 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParseWhenIncludeChildrenIsSetToFalse() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 		this.options.put(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN, false);
 		final Collection<Requirement> reqs = this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 		Assert.assertFalse(reqs.isEmpty());
@@ -71,6 +74,7 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParseWhenIncludeRelationsIsSetToFalse() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 		this.options.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, false);
 		final Collection<Requirement> reqs = this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 		Assert.assertFalse(reqs.isEmpty());
@@ -79,6 +83,7 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParseWhenTargetVersionIsNotEmpty() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 		this.options.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, Arrays.asList(new String[] { "9.8.7.6" }));
 		final Collection<Requirement> reqs = this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 		Assert.assertTrue(reqs.isEmpty());
@@ -86,6 +91,8 @@ public class RedmineReqSourceParserTest {
 
 	@Test
 	public void testParseWhenExtraPropertiesIsEmpty() throws ReqSourceParserException {
+
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 
 		this.options.put(RedmineReqSourceParser.OPTION_TRACKER_FILTER, "99"); // Sure this tracker won't exit so that we don't waste retrieve too many
 		                                                                      // issues ...
@@ -97,6 +104,8 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParseWhenTrackerFilterIsNotSet() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
+
 		this.options.remove(RedmineReqSourceParser.OPTION_TRACKER_FILTER);
 		final Properties extraProps = new Properties();
 		extraProps.put("assigned_to_id", "0"); // User with id '0' does not exit ... the request should run fast
@@ -107,6 +116,8 @@ public class RedmineReqSourceParserTest {
 
 	@Test
 	public void testParseWithApiAccessKeyAuth() throws ReqSourceParserException {
+
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 
 		this.options.put(RedmineReqSourceParser.OPTION_AUTH_API_KEY, "azertyuiopsdfghjk"); // Since redmine.org does not need any authentication,
 		                                                                                   // the api access key is not checked actually
@@ -120,6 +131,8 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParseWithUsernameAndPasswordAuth() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
+
 		this.options.put(RedmineReqSourceParser.OPTION_AUTH_USER_NAME, "my_user"); // Since redmine.org does not need any authentication, the
 		                                                                           // user/pass is not checked actually
 		this.options.put(RedmineReqSourceParser.OPTION_AUTH_USER_PASS, "my_pass");
@@ -132,6 +145,8 @@ public class RedmineReqSourceParserTest {
 
 	@Test
 	public void testParseWhenAllIncludesAreSetToFalse() throws ReqSourceParserException {
+
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 
 		this.options.put(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN, false);
 		this.options.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, false);
@@ -178,6 +193,8 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParseWhenProjectIdIsBlank() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
+
 		this.options.put(RedmineReqSourceParser.OPTION_PROJECT_KEY, "");
 		thrown.expect(ReqSourceParserException.class);
 		thrown.expectMessage("A non null project id or name must be provided for parsing requirements from Redmine");
@@ -187,6 +204,7 @@ public class RedmineReqSourceParserTest {
 	@Test
 	public void testParseWhenProjectOneOptionHasBadType() throws ReqSourceParserException {
 
+		RedmineTestUtil.assumeRedminePublicApiReachable();
 		this.options.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, "v1.9");
 		thrown.expect(ReqSourceParserException.class);
 		thrown.expectMessage("Error either while retrieving options, or while processing the API result");
