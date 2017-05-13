@@ -38,7 +38,7 @@ public class ReqRunner {
 
 	private static final Logger	LOGGER				= LoggerFactory.getLogger(ReqRunner.class);
 
-	private static final String	LOGGER_PREFIX_TAG	= String.format("%-15s -", "[ReqCoCoRunner]");
+	private static final String	LOGGER_PREFIX_TAG	= String.format("%-15s -", "[ReqRunner]");
 
 	@Getter
 	private ReqRunnerOptions	options;
