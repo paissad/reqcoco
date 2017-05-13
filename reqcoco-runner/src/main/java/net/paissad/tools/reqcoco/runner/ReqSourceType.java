@@ -1,11 +1,11 @@
 package net.paissad.tools.reqcoco.runner;
 
 import lombok.Getter;
-import net.paissad.tools.reqcoco.generator.docx.parser.DocxReqSourceParser;
-import net.paissad.tools.reqcoco.generator.redmine.parser.RedmineReqSourceParser;
-import net.paissad.tools.reqcoco.generator.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.generator.simple.impl.parser.FileReqSourceParser;
-import net.paissad.tools.reqcoco.generator.xlsx.parser.XlsxReqSourceParser;
+import net.paissad.tools.reqcoco.parser.docx.DocxReqSourceParser;
+import net.paissad.tools.reqcoco.parser.redmine.RedmineReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.impl.FileReqSourceParser;
+import net.paissad.tools.reqcoco.parser.xlsx.XlsxReqSourceParser;
 
 public enum ReqSourceType {
 

@@ -253,10 +253,10 @@
     <module>reqcoco-core</module>
     <module>reqcoco-maven-plugin</module>
     <module>reqcoco-runner</module>
-    <module>reqcoco-generator-simple</module>
-    <module>reqcoco-generator-redmine</module>
-    <module>reqcoco-generator-docx</module>
-    <module>reqcoco-generator-xlsx</module>
+    <module>reqcoco-parser-simple</module>
+    <module>reqcoco-parser-redmine</module>
+    <module>reqcoco-parser-docx</module>
+    <module>reqcoco-parser-xlsx</module>
   </modules>
 
 </project>

@@ -3,8 +3,8 @@ package net.paissad.tools.reqcoco.runner;
 import org.junit.Assert;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.generator.redmine.parser.RedmineReqSourceParser;
-import net.paissad.tools.reqcoco.generator.simple.impl.parser.FileReqSourceParser;
+import net.paissad.tools.reqcoco.parser.redmine.RedmineReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.impl.FileReqSourceParser;
 
 public class ReqSourceTypeTest {
 

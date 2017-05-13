@@ -27,11 +27,11 @@ import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
-import net.paissad.tools.reqcoco.generator.simple.api.ReqGenerator;
-import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorConfigException;
-import net.paissad.tools.reqcoco.generator.simple.exception.ReqGeneratorExecutionException;
-import net.paissad.tools.reqcoco.generator.simple.impl.AbstractReqGenerator;
-import net.paissad.tools.reqcoco.generator.simple.impl.SimpleReqGeneratorConfig;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqGenerator;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigException;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorExecutionException;
+import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqGenerator;
+import net.paissad.tools.reqcoco.parser.simple.impl.SimpleReqGeneratorConfig;
 
 public class ReqRunner {
 

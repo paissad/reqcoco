@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import lombok.Getter;
 import lombok.Setter;
 import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
-import net.paissad.tools.reqcoco.generator.redmine.parser.RedmineReqSourceParser;
+import net.paissad.tools.reqcoco.parser.redmine.RedmineReqSourceParser;
 
 @Getter
 @Setter
