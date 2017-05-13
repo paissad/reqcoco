@@ -171,7 +171,6 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
 	/**
 	 * @return The default expected extension to use for the report filename if needed.
 	 */
-	protected String getDefaultFileReporttExtension() {
-		return "";
-	}
+	protected abstract String getDefaultFileReporttExtension();
+
 }

@@ -52,6 +52,8 @@ public class ReqRunnerOptions {
 
 	public static final String	CONFIG_REPORT_HTML			= "report.html";
 
+	public static final String	CONFIG_REPORT_EXCEL			= "report.excel";
+
 	private String				logLevel;
 
 	private String				sourceCodePath;
@@ -67,6 +69,8 @@ public class ReqRunnerOptions {
 	private boolean				reportConsole;
 
 	private boolean				reportHtml;
+
+	private boolean				reportExcel;
 
 	private Properties			configProperties;
 
@@ -143,6 +147,7 @@ public class ReqRunnerOptions {
 		this.setIgnores(props.getProperty(CONFIG_REQUIREMENT_IGNORES, ""));
 		this.setReportConsole(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_CONSOLE, Boolean.FALSE.toString())));
 		this.setReportHtml(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_HTML, Boolean.TRUE.toString())));
+		this.setReportExcel(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_EXCEL, Boolean.TRUE.toString())));
 	}
 
 	/**

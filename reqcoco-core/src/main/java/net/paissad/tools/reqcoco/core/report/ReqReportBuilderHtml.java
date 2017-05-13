@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,34 +35,32 @@ import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 	/** The default extension for the HTML report builder. */
-	public static final String		REPORT_FILE_DEFAULT_EXTENSION	= ".html";
+	public static final String	HTML_REPORT_FILE_DEFAULT_EXTENSION	= ".html";
 
-	private static final Logger		LOGGER							= LoggerFactory.getLogger(ReqReportBuilderHtml.class);
+	private static final Logger	LOGGER								= LoggerFactory.getLogger(ReqReportBuilderHtml.class);
 
-	private static final String		LOGGER_PREFIX_TAG				= String.format("%-15s -", "[HtmlReport]");
+	private static final String	LOGGER_PREFIX_TAG					= String.format("%-15s -", "[HtmlReport]");
 
-	private static final Charset	UTF8							= Charset.forName("UTF8");
-
-	private static final String		TEMPLATES_REPORTS_HTML_LOCATION	= "/templates/reports/html";
+	private static final String	TEMPLATES_REPORTS_HTML_LOCATION		= "/templates/reports/html";
 
 	@Getter(value = AccessLevel.PRIVATE)
 	@Setter(value = AccessLevel.PRIVATE)
-	private Path					htmlReportFilePath;
+	private Path				htmlReportFilePath;
 
 	/**
 	 * The template configuration
 	 */
-	private Configuration			templateConfig;
+	private Configuration		templateConfig;
 
 	/**
 	 * The path of the directory where to create for the HTML report
 	 */
 	@Getter(value = AccessLevel.PRIVATE)
-	private Path					reportOutputDirPath;
+	private Path				reportOutputDirPath;
 
-	/** The name of the output HTML output file to generate. */
+	/** The name of the HTML output file to generate. */
 	@Getter(value = AccessLevel.PRIVATE)
-	private String					reportFilename;
+	private String				reportFilename;
 
 	/**
 	 * @param reportOutputDirPath - The directory where to generate the report.
@@ -113,7 +111,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	public void run() throws ReqReportBuilderException {
 
 		try (final Writer out = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(getHtmlReportFilePath().toFile()), 8192),
-		        UTF8)) {
+		        StandardCharsets.UTF_8)) {
 
 			LOGGER.info("{} Starting to generate HTML report to the directory --> {}", LOGGER_PREFIX_TAG, this.getReportOutputDirPath());
 
@@ -136,7 +134,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 
 	@Override
 	protected String getDefaultFileReporttExtension() {
-		return REPORT_FILE_DEFAULT_EXTENSION;
+		return HTML_REPORT_FILE_DEFAULT_EXTENSION;
 	}
 
 	/**
@@ -152,12 +150,12 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		final StringBuilder dataCode = new StringBuilder();
 		final StringBuilder dataTests = new StringBuilder();
 
-		// Retrieves available version values
+		// Retrieves available versions
 		final Stream<String> versions = getRequirements().stream().map(Requirement::getVersion).distinct();
 
 		versions.sorted().forEach(version -> {
 
-			// Group requirements by version value
+			// Group requirements by version
 			requirementsMap.put(version, Requirements.getByVersion(getRequirements(), version));
 
 			// This variable holds the number of declared requirements which are ignored for coverage.

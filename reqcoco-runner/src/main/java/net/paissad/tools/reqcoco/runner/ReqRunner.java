@@ -26,6 +26,7 @@ import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
+import net.paissad.tools.reqcoco.core.report.ReqReportBuilderExcel;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigException;
@@ -173,18 +174,34 @@ public class ReqRunner {
 		final List<ReqReportBuilder> reportBuilders = new LinkedList<>();
 
 		if (getOptions().isReportConsole()) {
+			LOGGER.debug("{} Including console report", LOGGER_PREFIX_TAG);
 			reportBuilders.add(new ReqReportBuilderConsole());
 		}
 
 		if (getOptions().isReportHtml()) {
 
-			Path htmlReportOutputDirPath = Paths.get(getReportOutputDirPath(options).toString(), "html");
+			LOGGER.debug("{} Including HTML report", LOGGER_PREFIX_TAG);
+			final Path htmlReportOutputDirPath = Paths.get(getReportOutputDirPath(options).toString(), "html");
 
 			final ReqReportBuilderHtml htmlReportBuilder = StringUtils.isBlank(options.getReportName())
 			        ? new ReqReportBuilderHtml(htmlReportOutputDirPath)
-			        : new ReqReportBuilderHtml(htmlReportOutputDirPath, options.getReportName() + ReqReportBuilderHtml.REPORT_FILE_DEFAULT_EXTENSION);
+			        : new ReqReportBuilderHtml(htmlReportOutputDirPath,
+			                options.getReportName() + ReqReportBuilderHtml.HTML_REPORT_FILE_DEFAULT_EXTENSION);
 
 			reportBuilders.add(htmlReportBuilder);
+		}
+
+		if (getOptions().isReportExcel()) {
+
+			LOGGER.debug("{} Including EXCEL report", LOGGER_PREFIX_TAG);
+			final Path excelReportOutputDirPath = Paths.get(getReportOutputDirPath(options).toString(), "excel");
+
+			final ReqReportBuilderExcel excelReportBuilder = StringUtils.isBlank(options.getReportName())
+			        ? new ReqReportBuilderExcel(excelReportOutputDirPath)
+			        : new ReqReportBuilderExcel(excelReportOutputDirPath,
+			                options.getReportName() + ReqReportBuilderExcel.EXCEL_REPORT_FILE_DEFAULT_EXTENSION);
+
+			reportBuilders.add(excelReportBuilder);
 		}
 
 		return reportBuilders;
