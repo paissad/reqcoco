@@ -16,11 +16,11 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.CmdLineParser;
+import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
 import lombok.Getter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
@@ -61,7 +61,7 @@ public class ReqRunner {
 
 	public int parseArguments(final String... args) {
 
-		setLoggingLevel("INFO");
+		setLoggingLevelSafely("INFO");
 
 		CmdLineParser parser = null;
 		try {
@@ -84,7 +84,7 @@ public class ReqRunner {
 
 		// Sets the log level if specified
 		if (getRunner().getOptions().getLogLevel() != null) {
-			setLoggingLevel(getRunner().getOptions().getLogLevel());
+			setLoggingLevelSafely(getRunner().getOptions().getLogLevel());
 		}
 
 		File temporaryCoverageFile = null;
@@ -219,9 +219,14 @@ public class ReqRunner {
 		return exitStatus.getCode();
 	}
 
-	private static void setLoggingLevel(final String logLevel) {
-		final LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-		final ch.qos.logback.classic.Logger appLogger = loggerContext.getLogger("net.paissad.tools.reqcoco");
-		appLogger.setLevel(Level.valueOf(logLevel));
-	}
+    private static void setLoggingLevelSafely(final String logLevel) {
+        final ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
+        final Logger appLogger = loggerFactory.getLogger("net.paissad.tools.reqcoco");
+        if (appLogger!= null && appLogger instanceof ch.qos.logback.classic.Logger) {
+            ((ch.qos.logback.classic.Logger) appLogger).setLevel(Level.valueOf(logLevel));
+        } else {
+            // The log level cannot be changed since it relies on the implementation ...
+            // http://stackoverflow.com/questions/2621701/setting-log-level-of-message-at-runtime-in-slf4j?answertab=active#tab-top
+        }
+    }
 }

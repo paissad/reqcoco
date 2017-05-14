@@ -10,108 +10,156 @@ import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
-import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.maven.plugin.util.PathUtils;
+import net.paissad.tools.reqcoco.runner.ExitStatus;
 
 public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
 
-	private Path hardcoded_outputdir;;
+    private Path hardcoded_outputdir;;
 
-	protected void setUp() throws Exception {
-		super.setUp();
-		hardcoded_outputdir = Paths.get(System.getProperty("user.dir"), "target/__hardcoded_test_dir__/custom-output-dir").normalize();
-		FileUtils.forceDeleteOnExit(hardcoded_outputdir.toFile());
-	}
+    protected void setUp() throws Exception {
+        super.setUp();
+        hardcoded_outputdir = Paths.get(System.getProperty("user.dir"), "target/__hardcoded_test_dir__/custom-output-dir").normalize();
+        FileUtils.forceDeleteOnExit(hardcoded_outputdir.toFile());
+    }
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		FileUtils.deleteQuietly(hardcoded_outputdir.toFile());
-	}
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        FileUtils.deleteQuietly(hardcoded_outputdir.toFile());
+    }
 
-	@Test
-	public void testExecuteBasicRun() throws Exception {
-		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/basic-run-test/pom.xml";
-		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
-		Assert.assertNotNull(mojo);
-		mojo.execute();
-		Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.html").toFile().exists());
-	}
+    @Test
+    public void testExecuteBasicRun() throws Exception {
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/basic-run-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
+        mojo.execute();
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
+    }
 
-	@Test
-	public void testExecuteNoHtmlReport() throws Exception {
-		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/no-html-report-test/pom.xml";
-		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
-		Assert.assertNotNull(mojo);
-		mojo.execute();
-		Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.html").toFile().exists());
-	}
+    @Test
+    public void testExecuteNoHtmlReport() throws Exception {
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/no-html-report-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
+        mojo.execute();
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
+        Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+    }
 
-	@Test
-	public void testExecuteCustomReportName() throws Exception {
-		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/custom-report-name-test/pom.xml";
-		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
-		Assert.assertNotNull(mojo);
-		mojo.execute();
-		Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.html").toFile().exists());
-		Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "new_report_name.html").toFile().exists());
-	}
+    @Test
+    public void testExecuteNoExcelReport() throws Exception {
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/no-excel-report-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
+        mojo.execute();
+        Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+    }
 
-	@Test
-	public void testExecuteNonExistentInput() throws Exception {
+    @Test
+    public void testExecuteCustomReportName() throws Exception {
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/custom-report-name-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
+        mojo.execute();
+        Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
+        Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/new_report_name.xlsx").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/new_report_name.html").toFile().exists());
+    }
 
-		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/non-existent-input/pom.xml";
-		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
-		Assert.assertNotNull(mojo);
+    @Test
+    public void testExecuteUnhandledProperties() throws Exception {
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/unhandled-properties-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
+        mojo.execute();
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
+    }
 
-		Exception expectedException = null;
+    @Test
+    public void testExecuteMissingRequiredArg() throws Exception {
 
-		try {
-			mojo.execute();
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/missing-required-arg-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
 
-		} catch (MojoExecutionException e) {
-			expectedException = e;
-			Assert.assertNotNull("A MojoExecutionException was expected to be thrown !!!", e);
-			Throwable cause = e.getCause();
-			Assert.assertNotNull("The cause of the exception should not be null", cause);
-			Assert.assertTrue(ReqReportParserException.class.equals(cause.getClass()));
-			Assert.assertTrue(cause.getMessage().startsWith("Error while retrieving requirements from the source : "));
-		}
+        Exception expectedException = null;
 
-		Assert.assertNotNull("A 'ReqSourceParserException' should have been thrown while executing the mojo", expectedException);
-	}
+        try {
+            mojo.execute();
 
-	@Test
-	public void testExecuteWhileUnableToCreateOutputDir() throws Exception {
+        } catch (MojoExecutionException e) {
+            expectedException = e;
+            Assert.assertNotNull("A MojoExecutionException was expected to be thrown !!!", e);
+            Throwable cause = e.getCause();
+            Assert.assertNotNull("The cause of the exception should not be null", cause);
+            Assert.assertTrue(MojoExecutionException.class.equals(cause.getClass()));
+            Assert.assertTrue(
+                    cause.getMessage().startsWith("The ReqRunner program returned an exit code of " + ExitStatus.OPTIONS_PARSING_ERROR.getCode() + ". The arguments are : "));
+        }
 
-		final Path outputDirPath = Paths.get(getBasedir(), "target/__hardcoded_test_dir__/unmodifiable-output-dir");
-		if (outputDirPath.toFile().exists()) {
-			FileUtils.deleteQuietly(outputDirPath.toFile());
-		}
+        Assert.assertNotNull("A 'MojoExecutionException' should have been thrown while executing the mojo", expectedException);
+    }
 
-		Files.createDirectories(outputDirPath);
+    @Test
+    public void testExecuteNonExistentInput() throws Exception {
 
-		final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/unable-create-outputdir-test/pom.xml";
-		final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
-		Assert.assertNotNull(mojo);
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/non-existent-input/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
 
-		Exception expectedException = null;
+        Exception expectedException = null;
 
-		try {
+        try {
+            mojo.execute();
 
-			PathUtils.removeWritePerms(outputDirPath); // Remove the write permissions
-			mojo.execute();
+        } catch (MojoExecutionException e) {
+            expectedException = e;
+            Assert.assertNotNull("A MojoExecutionException was expected to be thrown !!!", e);
+            Throwable cause = e.getCause();
+            Assert.assertNotNull("The cause of the exception should not be null", cause);
+            Assert.assertTrue(MojoExecutionException.class.equals(cause.getClass()));
+            Assert.assertTrue(cause.getMessage().startsWith("The return code status while generating the reports is : "));
+        }
 
-		} catch (MojoExecutionException e) {
+        Assert.assertNotNull("A 'MojoExecutionException' should have been thrown while executing the mojo", expectedException);
+    }
 
-			expectedException = e;
-			Assert.assertNotNull("A MojoExecutionException was expected to be thrown !!!", e);
-			Throwable cause = e.getCause();
-			Assert.assertNotNull("The cause of the exception should not be null", cause);
-			Assert.assertTrue(ReqReportBuilderException.class.equals(cause.getClass()));
-		}
+    @Test
+    public void testExecuteWhileUnableToCreateOutputDir() throws Exception {
 
-		Assert.assertNotNull("A 'ReqReportBuilderException' should have been thrown while executing the mojo", expectedException);
-	}
+        final Path outputDirPath = Paths.get(getBasedir(), "target/__hardcoded_test_dir__/unmodifiable-output-dir");
+        if (outputDirPath.toFile().exists()) {
+            FileUtils.deleteQuietly(outputDirPath.toFile());
+        }
+
+        Files.createDirectories(outputDirPath);
+
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/unable-create-outputdir-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
+
+        Exception expectedException = null;
+
+        try {
+
+            PathUtils.removeWritePerms(outputDirPath); // Remove the write permissions
+            mojo.execute();
+
+        } catch (MojoExecutionException e) {
+
+            expectedException = e;
+            Assert.assertNotNull("A MojoExecutionException was expected to be thrown !!!", e);
+            Throwable cause = e.getCause();
+            Assert.assertNotNull("The cause of the exception should not be null", cause);
+            Assert.assertTrue(MojoExecutionException.class.equals(cause.getClass()));
+        }
+
+        Assert.assertNotNull("A 'MojoExecutionException' should have been thrown while executing the mojo", expectedException);
+    }
 
 }

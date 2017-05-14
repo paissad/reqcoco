@@ -1,0 +1,16 @@
+@Req(id = "req_1", version = "1.0", revision = "r1", summary = "short summary n°1")
+@Req(id = "req_2", version = "1.0", revision = "r1", summary = "summary number 2")
+@Req (id = "req_3", version = "1.1", revision = "r4", summary = "There is a space just before the 1st parenthesis")
+@Req
+(id = "req_4", version = "1.1", revision = "r6", summary = "This requirement should not be retrieved because @Req is on another line ...")
+@Req (id = "req_5", version = "1.1", revision = "r2", summary = "There is some other content not processed ..." i'm not going to be processed !!!)
+@Req (id = "req_6", version = "1.0", summary = "There is no revision here")
+@Req     (id = "req_7" -- version = "1.1" -- revision = "r4" -- summary = "i don't like the commas, i wanna use '---' for example ;)")
+@Req (version = "1.0", revision = "r1", id = "req_8", summary = "Disordored spirit :D")
+This following line has 2 declared requirements ...
+@Req(id = "req_9", version = "1.0", revision = "myRev", summary = "1st req on this line") @Req(version = "1.1", revision = "r1", id = "req_10", summary = "2nd req on the same line ...")
+@ReqXXX(id = "", version = "1.0", revision = "r1", summary = "empty id")
+@ReqXXX(version = "1.0", revision = "r1", summary = "no id defined at all !")
+@Req(id = "req_11", revision = "r1", summary = "no version defined at all !")
+@Req(id = "req_12", version = "", revision = "r1", summary = "empty version")
+...
