@@ -488,11 +488,13 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
         case 3:
             return requirement.getShortDescription();
         case 4:
-            return requirement.isIgnore() ? "Ignore" : (requirement.isCodeDone() ? "OK" : "KO");
+            final String codeDoneMsg = requirement.isCodeDone() ? "OK" : "KO";
+            return requirement.isIgnore() ? "Ignore" : codeDoneMsg;
         case 5:
             return requirement.getCodeAuthor();
         case 6:
-            return requirement.isIgnore() ? "Ignore" : (requirement.isTestDone() ? "OK" : "KO");
+            final String testDoneMsg = requirement.isTestDone() ? "OK" : "KO";
+            return requirement.isIgnore() ? "Ignore" : testDoneMsg;
         case 7:
             return requirement.getTestAuthor();
         case 8:
