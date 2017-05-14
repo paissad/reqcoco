@@ -102,8 +102,8 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		try {
 			// We create the output directory before generating the HTML report and we copy the lib/ directory into it
 			Files.createDirectories(getReportOutputDirPath());
-		} catch (IOException ioe) {
-			throw new ReqReportBuilderException("Error while creating parent directories which are supposed to contain the HTML report file", ioe);
+		} catch (Exception e) {
+			throw new ReqReportBuilderException("Error while creating parent directories which are supposed to contain the HTML report file", e);
 		}
 	}
 

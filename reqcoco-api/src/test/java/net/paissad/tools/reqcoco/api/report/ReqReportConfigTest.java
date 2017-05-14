@@ -21,12 +21,12 @@ public class ReqReportConfigTest {
 
 	@Test
 	public void testGetCodeCoverageDiagramName() {
-		Assert.assertEquals("Code coverage", cfg.getCodeCoverageDiagramName());
+		Assert.assertEquals("Source Code Coverage", cfg.getCodeCoverageDiagramName());
 	}
 
 	@Test
 	public void testGetTestsCoverageDiagramName() {
-		Assert.assertEquals("Tests coverage", cfg.getTestsCoverageDiagramName());
+		Assert.assertEquals("Tests Code Coverage", cfg.getTestsCoverageDiagramName());
 	}
 
 	@Test

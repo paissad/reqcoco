@@ -8,20 +8,26 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.Collection;
-import java.util.stream.Stream;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFHeader;
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.hssf.usermodel.HeaderFooter;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Footer;
-import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -47,6 +53,8 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
     private static final Logger LOGGER                              = LoggerFactory.getLogger(ReqReportBuilderExcel.class);
 
     private static final String LOGGER_PREFIX_TAG                   = String.format("%-15s -", "[ExcelReport]");
+
+    private static final int    HEADERS_ROW_POSITION                = 0;
 
     /** The name of the EXCEL output file to generate. */
     @Getter(value = AccessLevel.PRIVATE)
@@ -97,22 +105,34 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
         try (final OutputStream out = new BufferedOutputStream(new FileOutputStream(excelOutputFile.toFile()), 8192); final Workbook workbook = new XSSFWorkbook()) {
 
             // Retrieves available versions
-            final Stream<String> versions = getRequirements().stream().map(Requirement::getVersion).distinct();
+            final List<String> versions = getRequirements().stream().map(Requirement::getVersion).distinct().collect(Collectors.toList());
+            Collections.sort(versions);
 
-            versions.sorted().forEach(version -> {
+            int summaryCurrentRowIndex = 5;
 
-                final Collection<Requirement> reqs = Requirements.getByVersion(getRequirements(), version);
+            this.createOrUpdateSummarySheet(workbook, null, summaryCurrentRowIndex);
+
+            for (final String version : versions) {
+
+                final Collection<Requirement> reqs = Requirements.getByVersion(getRequirements(), version).stream().sorted().collect(Collectors.toList());
+
+                this.createOrUpdateSummarySheet(workbook, version, summaryCurrentRowIndex);
+                summaryCurrentRowIndex += 6;
 
                 final Sheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName("Version " + version));
 
-                final Header header = sheet.getHeader();
-                header.setCenter("Center Header");
-                header.setLeft("Left Header");
-                header.setRight(HSSFHeader.font("Stencil-Normal", "Italic") + HSSFHeader.fontSize((short) 16) + "Right w/ Stencil-Normal Italic font and size 16");
+                sheet.setZoom(150);
+
+                final PrintSetup ps = sheet.getPrintSetup();
+
+                sheet.setAutobreaks(true);
+
+                ps.setFitHeight((short) 1);
+                ps.setFitWidth((short) 1);
 
                 this.createHeaders(workbook, sheet);
 
-                int rowIndex = 1;
+                int rowIndex = HEADERS_ROW_POSITION + 1;
                 for (final Requirement req : reqs) {
                     final Row row = sheet.createRow(rowIndex++);
                     this.populateRow(workbook, row, req);
@@ -120,13 +140,13 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
 
                 final Footer footer = sheet.getFooter();
                 footer.setRight("Page " + HeaderFooter.page() + " of " + HeaderFooter.numPages());
-            });
+            }
 
             LOGGER.trace("{} Creating the .xlsx file -> {}", LOGGER_PREFIX_TAG, excelOutputFile);
             workbook.write(out);
             LOGGER.info("{} Finished generating EXCEL report", LOGGER_PREFIX_TAG);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             String errMsg = "Error while building the EXCEL coverage report : " + e.getMessage();
             LOGGER.error(errMsg, e);
             throw new ReqReportBuilderException(errMsg, e);
@@ -134,13 +154,52 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
 
     }
 
+    private void createOrUpdateSummarySheet(final Workbook wb, final String version, final int rowStartPosition) {
+
+        Sheet sheet = wb.getSheet("Summary");
+
+        if (sheet == null) {
+            sheet = wb.createSheet(WorkbookUtil.createSafeSheetName("Summary"));
+
+            final CreationHelper creationHelper = wb.getCreationHelper();
+            final Font font = wb.createFont();
+            XSSFCellStyle cellStyle = (XSSFCellStyle) wb.createCellStyle();
+
+            // Title
+            final Row rowTitle = sheet.createRow(0);
+            cellStyle.setAlignment(HorizontalAlignment.CENTER);
+            cellStyle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.getIndex());
+            cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            font.setBold(true);
+            cellStyle.setFont(font);
+
+            final Cell cellTitle = rowTitle.createCell(4);
+            cellTitle.setCellValue(creationHelper.createRichTextString(getDefaultReportConfig().getTitle()));
+            cellTitle.setCellStyle(cellStyle);
+            sheet.autoSizeColumn(cellTitle.getColumnIndex());
+
+            // Row for total of requirements for all versions
+            final Row rowTotalOfReqsForAllVersions = sheet.createRow(3);
+            final Cell cellTotalOfReqs = rowTotalOfReqsForAllVersions.createCell(0);
+            cellTotalOfReqs.setCellValue(creationHelper.createRichTextString("Total of requirements : " + getRequirements().size()));
+            cellTotalOfReqs.getCellStyle().setFont(font);
+            sheet.autoSizeColumn(cellTotalOfReqs.getColumnIndex());
+
+            sheet.setZoom(150);
+        }
+
+        if (!StringUtils.isBlank(version)) {
+            this.updateSummarySheet(wb, sheet, version, rowStartPosition);
+        }
+    }
+
     private void createHeaders(final Workbook wb, final Sheet sheet) {
 
-        final Row row = sheet.createRow((short) 0);
+        final Row row = sheet.createRow(HEADERS_ROW_POSITION);
 
         final XSSFCellStyle cellStyle = (XSSFCellStyle) wb.createCellStyle();
         cellStyle.setAlignment(HorizontalAlignment.CENTER);
-        cellStyle.setFillForegroundColor(new XSSFColor(Color.GREEN));
+        cellStyle.setFillForegroundColor(new XSSFColor(Color.LIGHT_GRAY));
         cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         final Font headerFont = wb.createFont();
         headerFont.setBold(true);
@@ -151,28 +210,270 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
         for (final CELL_CONFIG cellConfig : CELL_CONFIG.values()) {
             final Cell cell = row.createCell(cellConfig.position);
             cell.setCellValue(creationHelper.createRichTextString(cellConfig.header));
+            addBordersToCellStyle(cellStyle, BorderStyle.MEDIUM);
             cell.setCellStyle(cellStyle);
             sheet.autoSizeColumn(cellConfig.position);
         }
     }
 
-    private void populateRow(final Workbook wb, final Row row, final Requirement requirement) {
+    private void updateSummarySheet(final Workbook wb, final Sheet sheet, final String version, final int rowStartPosition) {
+
+        // Source Code Coverage
+        this.createCodeCoverageSummary(wb, sheet, rowStartPosition, CODE_TYPE.SOURCE, version);
+
+        // Test Code Coverage
+        this.createCodeCoverageSummary(wb, sheet, rowStartPosition, CODE_TYPE.TEST, version);
+    }
+
+    private void createCodeCoverageSummary(final Workbook wb, final Sheet sheet, final int rowStartPosition, final CODE_TYPE codeType, final String version) {
 
         final CreationHelper creationHelper = wb.getCreationHelper();
+        final XSSFCellStyle cellStyle = (XSSFCellStyle) wb.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyle.setFillForegroundColor(new XSSFColor(Color.LIGHT_GRAY));
+        cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        addBordersToCellStyle(cellStyle, BorderStyle.MEDIUM);
+        final Font font = wb.createFont();
+        font.setBold(true);
+        cellStyle.setFont(font);
+
+        final XSSFCellStyle cellStyleTitle = (XSSFCellStyle) wb.createCellStyle();
+        cellStyleTitle.setAlignment(HorizontalAlignment.CENTER);
+        cellStyleTitle.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.getIndex());
+        cellStyleTitle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        addBordersToCellStyle(cellStyleTitle, BorderStyle.MEDIUM);
+        cellStyleTitle.setFont(font);
+
+        // Version row part ...
+        final XSSFCellStyle cellStyleVersion = (XSSFCellStyle) wb.createCellStyle();
+        cellStyleVersion.setAlignment(HorizontalAlignment.CENTER);
+        cellStyleVersion.setFillForegroundColor(IndexedColors.CORNFLOWER_BLUE.getIndex());
+        cellStyleVersion.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        cellStyleVersion.setBorderTop(BorderStyle.MEDIUM);
+        cellStyleVersion.setBorderBottom(BorderStyle.MEDIUM);
+        cellStyleVersion.setFont(font);
+        Row rowVersion = sheet.getRow(rowStartPosition);
+        if (rowVersion == null) {
+            rowVersion = sheet.createRow(rowStartPosition);
+        }
+        for (int i = 0; i < 9; i++) {
+            final Cell cell = rowVersion.createCell(i);
+            cell.setCellStyle(cellStyleVersion);
+        }
+        final Cell cellVersion = rowVersion.getCell(4);
+        cellVersion.setCellValue(creationHelper.createRichTextString("Version " + version));
+        sheet.autoSizeColumn(cellVersion.getColumnIndex());
+
+        int columnOffset = 0;
+
+        // Title part ...
+        Row rowCodeCoverageTitle = sheet.getRow(rowStartPosition + 1);
+        if (rowCodeCoverageTitle != null) {
+            columnOffset += 5;
+        } else {
+            rowCodeCoverageTitle = sheet.createRow(rowStartPosition + 1);
+        }
+        final Cell cellCodeCoverateTitle = rowCodeCoverageTitle.createCell(columnOffset);
+        if (CODE_TYPE.SOURCE == codeType) {
+            cellCodeCoverateTitle.setCellValue(creationHelper.createRichTextString(getDefaultReportConfig().getCodeCoverageDiagramName()));
+        } else {
+            cellCodeCoverateTitle.setCellValue(creationHelper.createRichTextString(getDefaultReportConfig().getTestsCoverageDiagramName()));
+        }
+        cellCodeCoverateTitle.setCellStyle(cellStyleTitle);
+        // End of title part ...
+
+        final Cell cellCodeDoneTitle = rowCodeCoverageTitle.createCell(columnOffset + 1);
+        cellCodeDoneTitle.setCellValue(creationHelper.createRichTextString("Done"));
+        cellCodeDoneTitle.setCellStyle(cellStyle);
+
+        final Cell cellCodeUndoneTitle = rowCodeCoverageTitle.createCell(columnOffset + 2);
+        cellCodeUndoneTitle.setCellValue(creationHelper.createRichTextString("Undone"));
+        cellCodeUndoneTitle.setCellStyle(cellStyle);
+
+        final Cell cellReqIgnoredTitle = rowCodeCoverageTitle.createCell(columnOffset + 3);
+        cellReqIgnoredTitle.setCellValue(creationHelper.createRichTextString("Ignored"));
+        cellReqIgnoredTitle.setCellStyle(cellStyle);
+
+        Row rowTotalCount = sheet.getRow(rowStartPosition + 2);
+        if (rowTotalCount == null) {
+            rowTotalCount = sheet.createRow(rowStartPosition + 2);
+        }
+        final Cell cellCountTitle = rowTotalCount.createCell(columnOffset);
+        cellCountTitle.setCellStyle(cellStyle);
+        cellCountTitle.setCellValue(creationHelper.createRichTextString("Total"));
+
+        Row rowPercentage = sheet.getRow(rowStartPosition + 3);
+        if (rowPercentage == null) {
+            rowPercentage = sheet.createRow(rowStartPosition + 3);
+        }
+        final Cell cellPercentageTitle = rowPercentage.createCell(columnOffset);
+        cellPercentageTitle.setCellStyle(cellStyle);
+        cellPercentageTitle.setCellValue(creationHelper.createRichTextString("%"));
+
+        // Done part ...
+        final XSSFCellStyle cellStyleDone = (XSSFCellStyle) wb.createCellStyle();
+        cellStyleDone.setAlignment(HorizontalAlignment.CENTER);
+        cellStyleDone.setFillForegroundColor(new XSSFColor(Color.GREEN));
+        cellStyleDone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        addBordersToCellStyle(cellStyleDone, BorderStyle.THIN);
+
+        final Cell cellDoneCount = rowTotalCount.createCell(columnOffset + 1);
+        cellDoneCount.setCellStyle(cellStyleDone);
+        if (CODE_TYPE.SOURCE == codeType) {
+            final long codeDoneCount = getCodeDoneCount(version);
+            cellDoneCount.setCellValue(creationHelper.createRichTextString(String.valueOf(codeDoneCount)));
+        } else if (CODE_TYPE.TEST == codeType) {
+            final long testsDoneCount = getTestsDoneCount(version);
+            cellDoneCount.setCellValue(creationHelper.createRichTextString(String.valueOf(testsDoneCount)));
+        }
+
+        final Cell cellDonePercentage = rowPercentage.createCell(columnOffset + 1);
+        cellDonePercentage.setCellStyle(cellStyleDone);
+        if (CODE_TYPE.SOURCE == codeType) {
+            cellDonePercentage.setCellValue(creationHelper.createRichTextString(formatRatioIntoPercentage(getCodeDoneRatio(version))));
+        } else if (CODE_TYPE.TEST == codeType) {
+            cellDonePercentage.setCellValue(creationHelper.createRichTextString(formatRatioIntoPercentage(getTestDoneRatio(version))));
+        }
+
+        // Undone part ...
+        boolean setColor = false;
+
+        final XSSFCellStyle cellStyleUndone = (XSSFCellStyle) wb.createCellStyle();
+        cellStyleUndone.setAlignment(HorizontalAlignment.CENTER);
+        addBordersToCellStyle(cellStyleUndone, BorderStyle.THIN);
+
+        final Cell cellUndoneCount = rowTotalCount.createCell(columnOffset + 2);
+        cellUndoneCount.setCellStyle(cellStyleUndone);
+        if (CODE_TYPE.SOURCE == codeType) {
+            final long codeUndoneCount = getCodeUndoneCount(version);
+            setColor = codeUndoneCount > 0;
+            cellUndoneCount.setCellValue(creationHelper.createRichTextString(String.valueOf(codeUndoneCount)));
+        } else if (CODE_TYPE.TEST == codeType) {
+            final long testsUndoneCount = getTestsUndoneCount(version);
+            setColor = testsUndoneCount > 0;
+            cellUndoneCount.setCellValue(creationHelper.createRichTextString(String.valueOf(testsUndoneCount)));
+        }
+        if (setColor) {
+            cellStyleUndone.setFillForegroundColor(new XSSFColor(Color.RED));
+            cellStyleUndone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        }
+
+        final Cell cellUndonePercentage = rowPercentage.createCell(columnOffset + 2);
+        cellUndonePercentage.setCellStyle(cellStyleUndone);
+        if (CODE_TYPE.SOURCE == codeType) {
+            cellUndonePercentage
+                    .setCellValue(creationHelper.createRichTextString(formatRatioIntoPercentage(1f - getCodeDoneRatio(version) - this.getRequirementsIgnoredRatio(version))));
+        } else if (CODE_TYPE.TEST == codeType) {
+            cellUndonePercentage
+                    .setCellValue(creationHelper.createRichTextString(formatRatioIntoPercentage(1f - getTestDoneRatio(version) - this.getRequirementsIgnoredRatio(version))));
+        }
+
+        // Ignored requirements part ...
+        final XSSFCellStyle cellStyleIgnore = (XSSFCellStyle) wb.createCellStyle();
+        cellStyleIgnore.setAlignment(HorizontalAlignment.CENTER);
+        addBordersToCellStyle(cellStyleIgnore, BorderStyle.THIN);
+
+        final Cell cellIgnoreCount = rowTotalCount.createCell(columnOffset + 3);
+        cellIgnoreCount.setCellStyle(cellStyleIgnore);
+        long ignoredRequirementsCount = getIgnoredRequirementsCount(version);
+        setColor = ignoredRequirementsCount > 0;
+        if (setColor) {
+            cellStyleIgnore.setFillForegroundColor(new XSSFColor(Color.YELLOW));
+            cellStyleIgnore.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        }
+        cellIgnoreCount.setCellValue(creationHelper.createRichTextString(String.valueOf(ignoredRequirementsCount)));
+
+        final Cell cellIgnorePercentage = rowPercentage.createCell(columnOffset + 3);
+        cellIgnorePercentage.setCellStyle(cellStyleIgnore);
+        cellIgnorePercentage.setCellValue(creationHelper.createRichTextString(formatRatioIntoPercentage(this.getRequirementsIgnoredRatio(version))));
+
+        sheet.autoSizeColumn(columnOffset);
+    }
+
+    private String formatRatioIntoPercentage(final float ratio) {
+        return new DecimalFormat("##.#").format(ratio * 100) + " %";
+    }
+
+    private float getRequirementsIgnoredRatio(final String version) {
+        return 1f * getIgnoredRequirementsCount(version) / getRequirementByVersion(version).size();
+    }
+
+    private void populateRow(final Workbook wb, final Row row, final Requirement req) {
+
         final Sheet currentSheet = row.getSheet();
 
         for (final CELL_CONFIG cellConfig : CELL_CONFIG.values()) {
+
             final Cell cell = row.createCell(cellConfig.position);
-            final Cell headerCell = currentSheet.getRow(0).getCell(cellConfig.position);
+            final Cell headerCell = currentSheet.getRow(HEADERS_ROW_POSITION).getCell(cellConfig.position);
             final CellStyle headerCellStyle = headerCell.getCellStyle();
 
-            final XSSFCellStyle currentCellStyle = (XSSFCellStyle) wb.createCellStyle();
-            currentCellStyle.setAlignment(headerCellStyle.getAlignmentEnum());
+            final Font cellFont = wb.createFont();
 
+            final CreationHelper creationHelper = wb.getCreationHelper();
+
+            String cellContent = getRequirementFieldValue(cellConfig.position, req);
+
+            XSSFColor cellColor = new XSSFColor(Color.WHITE);
+
+            switch (cellConfig) {
+            case CODE:
+                cellColor = getColorForDoneCell(req.isIgnore(), req.isCodeDone());
+                break;
+
+            case TEST:
+                cellColor = getColorForDoneCell(req.isIgnore(), req.isTestDone());
+                break;
+
+            case LINK:
+                if (!StringUtils.isBlank(cellContent)) {
+                    configureHyperlinkCell(cell, cellFont, creationHelper, cellContent);
+                    cellContent = "Link";
+                }
+                break;
+
+            default:
+                break;
+            }
+
+            cell.setCellValue(creationHelper.createRichTextString(cellContent));
+
+            final XSSFCellStyle currentCellStyle = (XSSFCellStyle) wb.createCellStyle();
+            currentCellStyle.setFillForegroundColor(cellColor);
+            currentCellStyle.setFont(cellFont);
+            addBordersToCellStyle(currentCellStyle, BorderStyle.THIN);
             cell.setCellStyle(currentCellStyle);
-            cell.setCellValue(creationHelper.createRichTextString(getRequirementFieldValue(cellConfig.position, requirement)));
+            currentCellStyle.setAlignment(headerCellStyle.getAlignmentEnum());
+            currentCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            if (req.isIgnore() && !(CELL_CONFIG.CODE == cellConfig || CELL_CONFIG.TEST == cellConfig)) {
+                currentCellStyle.setFillForegroundColor(IndexedColors.DARK_YELLOW.getIndex());
+                currentCellStyle.setFillPattern(FillPatternType.FINE_DOTS);
+            }
 
             currentSheet.autoSizeColumn(cellConfig.position);
+        }
+    }
+
+    private void configureHyperlinkCell(final Cell cell, final Font cellFont, final CreationHelper creationHelper, String cellContent) {
+        cellFont.setUnderline(Font.U_SINGLE);
+        cellFont.setColor(IndexedColors.BLUE.getIndex());
+        final Hyperlink link = creationHelper.createHyperlink(HyperlinkType.URL);
+        link.setAddress(cellContent);
+        cell.setHyperlink(link);
+    }
+
+    private static void addBordersToCellStyle(final XSSFCellStyle currentCellStyle, final BorderStyle borderStyle) {
+        currentCellStyle.setBorderTop(borderStyle);
+        currentCellStyle.setBorderBottom(borderStyle);
+        currentCellStyle.setBorderLeft(borderStyle);
+        currentCellStyle.setBorderRight(borderStyle);
+    }
+
+    private static XSSFColor getColorForDoneCell(final boolean ignore, final boolean done) {
+        if (ignore) {
+            return new XSSFColor(Color.YELLOW);
+        } else {
+            return done ? new XSSFColor(Color.GREEN) : new XSSFColor(Color.RED);
         }
     }
 
@@ -187,11 +488,11 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
         case 3:
             return requirement.getShortDescription();
         case 4:
-            return requirement.isCodeDone() ? "OK" : "KO";
+            return requirement.isIgnore() ? "Ignore" : (requirement.isCodeDone() ? "OK" : "KO");
         case 5:
             return requirement.getCodeAuthor();
         case 6:
-            return requirement.isTestDone() ? "OK" : "KO";
+            return requirement.isIgnore() ? "Ignore" : (requirement.isTestDone() ? "OK" : "KO");
         case 7:
             return requirement.getTestAuthor();
         case 8:
@@ -225,6 +526,11 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
             this.header = columnHeaderName;
             this.position = columnPosition;
         }
+    }
+
+    private enum CODE_TYPE {
+                            SOURCE,
+                            TEST;
     }
 
 }

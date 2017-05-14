@@ -7,11 +7,11 @@ public interface ReqReportConfig {
 	}
 
 	default String getCodeCoverageDiagramName() {
-		return "Code coverage";
+		return "Source Code Coverage";
 	}
 
 	default String getTestsCoverageDiagramName() {
-		return "Tests coverage";
+		return "Tests Code Coverage";
 	}
 
 	default String getRequirementsTableLegend() {
