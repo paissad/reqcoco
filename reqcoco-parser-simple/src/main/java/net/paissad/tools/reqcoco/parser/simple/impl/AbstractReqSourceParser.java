@@ -23,12 +23,12 @@ public abstract class AbstractReqSourceParser implements ReqSourceParser {
 	 * @param text - The text to parse
 	 * @return The requirement extracted from the specified text content.
 	 */
-	protected Collection<Requirement> getRequirementsFromString(final ReqDeclTagConfig declTagConfig, String text) {
+	protected Collection<Requirement> getRequirementsFromString(final ReqDeclTagConfig declTagConfig, final String text) {
 
 		final Collection<Requirement> extractedRequirements = new HashSet<>();
 
 		final Pattern patternTag = Pattern.compile(declTagConfig.getCompleteRegex());
-		final Matcher matcherTag = patternTag.matcher(text);
+		final Matcher matcherTag = patternTag.matcher(ReqTagUtil.unEscapeString(text));
 
 		while (matcherTag.find()) {
 

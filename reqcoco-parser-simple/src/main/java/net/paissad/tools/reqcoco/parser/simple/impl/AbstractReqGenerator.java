@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,8 +60,8 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			final ReqSourceParser sourceParser = getConfig().getSourceParser();
 
 			LOGGER.info("Retrieving declared requirements by parsing the source {}", sourceOfDeclaredReqs);
-			final Collection<Requirement> declaredRequirements = sourceParser.parse(sourceOfDeclaredReqs, getConfig().getDeclTagConfig(),
-			        getConfig().getExtraOptions());
+            final Collection<Requirement> declaredRequirements = Collections
+                    .synchronizedCollection(sourceParser.parse(sourceOfDeclaredReqs, getConfig().getDeclTagConfig(), getConfig().getExtraOptions()));
 
 			LOGGER.info("Tagging the requirements to ignore for the code and test coverage");
 			final Collection<String> ignoreList = getConfig().getIgnoreList();
@@ -174,8 +175,8 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
 		try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
 
-			reader.lines().filter(patternTag.asPredicate()).forEach(line -> {
-				// At this step, the line matched the patter tag predicate, we can start the retrieval of the tag(s) and parts of the tag(s)
+			reader.lines().forEach(line -> {
+			    line = ReqTagUtil.unEscapeString(line);
 				final Matcher matcherTag = patternTag.matcher(line);
 				while (matcherTag.find()) {
 					final String tagAsString = matcherTag.group();

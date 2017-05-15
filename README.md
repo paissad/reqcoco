@@ -1,12 +1,13 @@
 # ReqCoCo
 
-[![Join the chat at https://gitter.im/reqcoco/Lobby](https://badges.gitter.im/reqcoco/Lobby.svg)](https://gitter.im/reqcoco/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 **Requirements Code Coverage**
 
 
 ####IMPORTANT INFORMATION: the work is in progress and there is no stable or usable version yet !!! 
 
 ----------
+
+**Chat Room** [![Join the chat at https://gitter.im/reqcoco/Lobby](https://badges.gitter.im/reqcoco/Lobby.svg)](https://gitter.im/reqcoco/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **Build Status** <a target="_blank" href ="https://travis-ci.org/paissad/reqcoco"><img src="https://travis-ci.org/paissad/reqcoco.svg?branch=master" /></a>
 

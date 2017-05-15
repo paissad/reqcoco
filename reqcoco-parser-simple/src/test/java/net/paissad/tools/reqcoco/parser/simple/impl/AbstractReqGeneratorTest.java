@@ -2,6 +2,7 @@ package net.paissad.tools.reqcoco.parser.simple.impl;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -72,12 +73,26 @@ public class AbstractReqGeneratorTest {
 
 	@Test
 	public void testRun() throws ReqGeneratorConfigException, ReqGeneratorExecutionException {
-
+	    
 		this.reqGenerator.configure(this.reqGeneratorConfigStub);
-		this.reqGenerator.run();
+        this.reqGenerator.run();
 	}
 
-	@Test
+    @Test
+    public void testRunWithCharactersToUnescape() throws ReqGeneratorConfigException, ReqGeneratorExecutionException, URISyntaxException {
+
+        this.sourcePath = Paths.get(AbstractReqGeneratorTest.class.getResource("/samples/input/code/source_to_unescape").toURI());
+        this.reqGeneratorConfigStub = this.getConfigStub();
+
+        this.reqGenerator.configure(this.reqGeneratorConfigStub);
+        final Collection<Requirement> reqs = this.reqGenerator.run();
+        Assert.assertTrue(Requirements.getById(reqs, "req_1").iterator().next().isCodeDone());
+        Assert.assertTrue(Requirements.getById(reqs, "req_2").iterator().next().isCodeDone());
+        Assert.assertTrue(Requirements.getById(reqs, "req_3").iterator().next().isCodeDone());
+        Assert.assertTrue(Requirements.getById(reqs, "req_5").iterator().next().isCodeDone());
+    }
+
+    @Test
 	public void testRunWithIgnore() throws ReqGeneratorConfigException, ReqGeneratorExecutionException {
 
 		this.reqGeneratorConfigStub.getIgnoreList().add("req_1");

@@ -3,6 +3,8 @@ package net.paissad.tools.reqcoco.parser.simple.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 public interface ReqTagUtil {
 
 	/**
@@ -23,5 +25,13 @@ public interface ReqTagUtil {
 	public static String trimString(final String str) {
 		return str == null ? null : str.replaceAll("^[\\h|\\s]*(.*?)[\\h|\\s]*$", "$1");
 	}
+	
+    /**
+     * @param str - The string to unescape.
+     * @return The HTML and XML unescaped string.
+     */
+    public static String unEscapeString(final String str) {
+        return StringEscapeUtils.unescapeHtml4(StringEscapeUtils.unescapeXml(str));
+    }
 
 }

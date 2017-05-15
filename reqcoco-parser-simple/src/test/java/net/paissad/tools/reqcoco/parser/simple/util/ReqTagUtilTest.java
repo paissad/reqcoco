@@ -25,4 +25,15 @@ public class ReqTagUtilTest {
 		Assert.assertEquals("I am preprended and appended by a horizontal space",
 		        ReqTagUtil.trimString(" I am preprended and appended by a horizontal space "));
 	}
+	
+	@Test
+	public void testUnEscapeString() {
+        Assert.assertNull(ReqTagUtil.unEscapeString(null));
+
+        Assert.assertEquals("Error decoding XML", "@Req(id = \"id\", version = \"ver\", revision = \"rev\")",
+                ReqTagUtil.unEscapeString("@Req(id = &quot;id&quot;, version = &quot;ver&quot;, revision = &quot;rev&quot;)"));
+
+        Assert.assertEquals("Error decoding HTML", "@Req(id = \"id\", version = \"ver\", revision = \"rev\")",
+                ReqTagUtil.unEscapeString("@Req(id = &#34;id&#34;, version = &#34;ver&#34;, revision = &#34;rev&#34;)"));
+	}
 }
