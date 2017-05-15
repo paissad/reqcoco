@@ -16,10 +16,6 @@
 
   <name>ReqCoco Maven Plugin</name>
 
-  <properties>
-    <mavenVersion>3.3.9</mavenVersion>
-  </properties>
-
   <prerequisites>
     <maven>${mavenVersion}</maven>
   </prerequisites>

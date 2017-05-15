@@ -49,6 +49,8 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <javaVersion>1.8</javaVersion>
+    <mavenVersion>3.3.9</mavenVersion>
   </properties>
 
   <build>
@@ -60,8 +62,25 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.6.1</version>
           <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
+            <source>${javaVersion}</source>
+            <target>${javaVersion}</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.4.1</version>
+          <configuration>
+            <rules>
+              <requireJavaVersion>${javaVersion}</requireJavaVersion>
+              <requireMavenVersion>${mavenVersion}</requireMavenVersion>
+              <bannedDependencies>true</bannedDependencies>
+              <dependencyConvergence>true</dependencyConvergence>
+              <reactorModuleConvergence>true</reactorModuleConvergence>
+              <requireReleaseDeps>true</requireReleaseDeps>
+              <requirePrerequisite>true</requirePrerequisite>
+              <requirePluginVersions>true</requirePluginVersions>
+              <requireNoRepositories>true</requireNoRepositories>
+            </rules>
           </configuration>
         </plugin>
         <plugin>
