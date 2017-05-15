@@ -93,12 +93,14 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			}
 			parseCodeAndUpdateRequirements(declaredRequirements, testsCodePath, CODE_TYPE.TEST);
 
-			final Path coverageOutputPath = getConfig().getCoverageOutput();
-			LOGGER.info("Generating the coverage report to --> {}", coverageOutputPath);
-			ReqGeneratorUtil.generateXmlCoverageReport(declaredRequirements, coverageOutputPath);
+            final Path coverageOutputPath = getConfig().getCoverageOutput();
+            if (coverageOutputPath != null) {
+                LOGGER.info("Generating the coverage report to --> {}", coverageOutputPath);
+                ReqGeneratorUtil.generateXmlCoverageReport(declaredRequirements, coverageOutputPath);
+                LOGGER.info("The raw coverage report output file is --> {}", coverageOutputPath);
+            }
 
-			LOGGER.info("Finished executing the generator. The coverage report output is --> {}", coverageOutputPath);
-
+            LOGGER.info("Finished executing the generator.");
 			return declaredRequirements;
 
 		} catch (ReqSourceParserException | IOException e) {

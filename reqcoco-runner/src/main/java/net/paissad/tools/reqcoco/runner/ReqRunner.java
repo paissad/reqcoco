@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -13,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.args4j.CmdLineParser;
 import org.slf4j.ILoggerFactory;
@@ -87,11 +85,9 @@ public class ReqRunner {
 			setLoggingLevelSafely(getRunner().getOptions().getLogLevel());
 		}
 
-		File temporaryCoverageFile = null;
-
 		try {
 
-			temporaryCoverageFile = Files.createTempFile(getClass().getSimpleName() + "-", "-intermediate-coverage-report.xml").toFile();
+		    final File rawCoverageFile = Paths.get(getOptions().getOutputFolder(), "raw-coverage-report.xml").toFile();
 			final ReqGenerator reqCoverageGenerator = new AbstractReqGenerator() {
 			};
 
@@ -99,7 +95,7 @@ public class ReqRunner {
 			final SimpleReqGeneratorConfig coverageGeneratorCfg = new SimpleReqGeneratorConfig();
 			coverageGeneratorCfg.setExtraOptions(ReqRunnerOptions.mapFromProperties(getOptions().getConfigProperties()));
 			coverageGeneratorCfg.setSourceRequirements(getReqSourceURI());
-			coverageGeneratorCfg.setCoverageOutput(temporaryCoverageFile.toPath());
+			coverageGeneratorCfg.setCoverageOutput(rawCoverageFile.toPath());
 			coverageGeneratorCfg.setSourceCodePath(Paths.get(getOptions().getSourceCodePath()));
 			coverageGeneratorCfg.setTestsCodePath(Paths.get(getOptions().getTestCodePath()));
 			coverageGeneratorCfg.setSourceParser(getOptions().getSourceType().getParser());
@@ -133,8 +129,6 @@ public class ReqRunner {
 			LOGGER.error(LOGGER_PREFIX_TAG + " " + errMsg, e);
 			return getExitCode(ExitStatus.BUILD_REPORT_ERROR);
 
-		} finally {
-			FileUtils.deleteQuietly(temporaryCoverageFile);
 		}
 
 		return getExitCode(ExitStatus.OK);

@@ -40,7 +40,7 @@ public class ReqGeneratorUtilTest {
 	}
 
 	@Test
-	public void testGenerateXmlCoverageReport() throws JAXBException {
+	public void testGenerateXmlCoverageReport() throws JAXBException, IOException {
 		ReqGeneratorUtil.generateXmlCoverageReport(this.requirements, this.coverageFile);
 	}
 
