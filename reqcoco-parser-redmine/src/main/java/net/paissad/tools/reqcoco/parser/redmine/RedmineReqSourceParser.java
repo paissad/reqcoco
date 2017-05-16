@@ -30,6 +30,7 @@ import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
 public class RedmineReqSourceParser implements ReqSourceParser {
 
@@ -140,7 +141,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
 			LOGGER.info("Making HTTP request to Redmine API");
 
-			final List<Issue> issues = transport.getObjectsList(Issue.class, parameters);
+			final List<Issue> issues = Collections.synchronizedList(transport.getObjectsList(Issue.class, parameters));
 
 			final Collection<Requirement> declaredRequirements = Collections.synchronizedList(new ArrayList<>());
 
@@ -148,7 +149,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
 			LOGGER.info("Building requirements objects from Redmine issues");
 			issues.parallelStream().filter(reqIssuePredicate).forEach(issue -> {
-				final Requirement req = buildRequirementFromIssue(uri, issue);
+				final Requirement req = buildRequirementFromIssue(uri, issue, reqTagMustBePresent, tagConfig);
 				declaredRequirements.add(req);
 			});
 
@@ -189,15 +190,20 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 		return transport;
 	}
 
-	private Requirement buildRequirementFromIssue(final URI rootUri, final Issue issue) {
+    private Requirement buildRequirementFromIssue(final URI rootUri, final Issue issue, final boolean issueSubjectMustContainTag, final ReqDeclTagConfig tagConfig) {
 
 		final Version issueVersion = issue.getTargetVersion();
 		final String reqVersion = (issueVersion != null) ? issueVersion.getName() : Requirement.VERSION_UNKNOWN;
-		final Requirement req = new Requirement(issue.getId().toString(), reqVersion, null);
+		final String revision = issueSubjectMustContainTag ? this.getRevisionFromSubject(issue, tagConfig) : null;
+		final Requirement req = new Requirement(issue.getId().toString(), reqVersion, revision);
 		req.setShortDescription(issue.getSubject());
 		req.setFullDescription(issue.getDescription());
 		req.setLink(rootUri.toString().replaceAll("/+$", "") + "/issues/" + issue.getId());
 		return req;
+	}
+	
+	private String getRevisionFromSubject(final Issue issue, final ReqDeclTagConfig tagConfig) {
+	    return ReqTagUtil.extractFieldValue(issue.getSubject(), tagConfig.getRevisionRegex(), 1);
 	}
 
 	public static Set<String> getDefautValueForTargetVersions() {
