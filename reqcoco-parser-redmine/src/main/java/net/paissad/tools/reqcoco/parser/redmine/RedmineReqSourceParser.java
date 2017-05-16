@@ -196,7 +196,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 		final Requirement req = new Requirement(issue.getId().toString(), reqVersion, null);
 		req.setShortDescription(issue.getSubject());
 		req.setFullDescription(issue.getDescription());
-		req.setLink(rootUri.toString() + "/issues/" + issue.getId());
+		req.setLink(rootUri.toString().replaceAll("/+$", "") + "/issues/" + issue.getId());
 		return req;
 	}
 
