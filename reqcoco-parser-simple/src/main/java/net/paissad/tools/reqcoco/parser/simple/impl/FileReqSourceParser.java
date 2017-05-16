@@ -42,7 +42,7 @@ public class FileReqSourceParser extends AbstractReqSourceParser {
 
 			return declaredRequirements;
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			String errMsg = "I/O error while parsing the source for retrieving the declared requirements : " + e.getMessage();
 			LOGGER.error(errMsg, e);
 			throw new ReqSourceParserException(errMsg, e);

@@ -137,7 +137,7 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
             FileUtils.deleteQuietly(outputDirPath.toFile());
         }
 
-        Files.createDirectories(outputDirPath);
+        Files.createFile(outputDirPath); // We create a file rather than a directory in order to generate an I/O error ...
 
         final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/unable-create-outputdir-test/pom.xml";
         final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
@@ -147,7 +147,6 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
 
         try {
 
-            PathUtils.removeWritePerms(outputDirPath); // Remove the write permissions
             mojo.execute();
 
         } catch (MojoExecutionException e) {
