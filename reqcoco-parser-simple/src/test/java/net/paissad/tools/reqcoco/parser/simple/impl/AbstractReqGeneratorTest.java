@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBException;
 
@@ -73,9 +75,28 @@ public class AbstractReqGeneratorTest {
 
 	@Test
 	public void testRun() throws ReqGeneratorConfigException, ReqGeneratorExecutionException {
-	    
-		this.reqGenerator.configure(this.reqGeneratorConfigStub);
-        this.reqGenerator.run();
+
+        this.reqGenerator.configure(this.reqGeneratorConfigStub);
+
+        final Collection<Requirement> reqs = this.reqGenerator.run();
+
+        Assert.assertEquals(13, reqs.size());
+
+        final List<Requirement> reqsWithCodeDone = reqs.stream().filter(Requirement::isCodeDone).collect(Collectors.toList());
+        Assert.assertEquals(4, reqsWithCodeDone.size());
+        // /!\ while comparing the arrays, the order must be respected (easier for the test comparison, without the need to write more code ...)
+        Assert.assertArrayEquals(new String[] { "req_1", "req_11", "req_2", "req_6" }, reqsWithCodeDone.stream().map(Requirement::getId).sorted().toArray());
+
+        final List<Requirement> reqsWithTestDone = reqs.stream().filter(Requirement::isTestDone).collect(Collectors.toList());
+        Assert.assertEquals(4, reqsWithTestDone.size());
+        // /!\ while comparing the arrays, the order must be respected (easier for the test comparison, without the need to write more code ...)
+        Assert.assertArrayEquals(new String[] { "req_1", "req_11", "req_3", "req_6" }, reqsWithTestDone.stream().map(Requirement::getId).sorted().toArray());
+
+        Assert.assertFalse("The revision is not specified into the code while it is specified into the source. So no match should be made !!!",
+                Requirements.getById(reqs, "req_5").iterator().next().isCodeDone());
+
+        Assert.assertFalse("The revision specified into the code is different to the revision specified into the source. Warning is expected to be triggered !",
+                Requirements.getById(reqs, "req_9").iterator().next().isCodeDone());
 	}
 
     @Test

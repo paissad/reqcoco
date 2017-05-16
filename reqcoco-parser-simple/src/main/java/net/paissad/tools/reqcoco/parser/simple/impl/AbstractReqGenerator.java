@@ -262,7 +262,13 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 		if (!StringUtils.isBlank(requirement.getId())) {
 			boolean match = requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
 			if (match && !StringUtils.isBlank(requirement.getRevision())) {
-				match = requirement.getRevision().equals(tag.getRevision());
+				final String revisionIntoCode = tag.getRevision();
+                match = requirement.getRevision().equals(revisionIntoCode);
+                if(!match && !StringUtils.isBlank(revisionIntoCode)) {
+                    LOGGER.warn("The requirement's revision into the code is not up to date compared to what is declared into the source. The tag is -> {}", tag);
+                } else if (StringUtils.isBlank(revisionIntoCode)) {
+                    LOGGER.warn("A requirement with revision exists, but no revision is specified into the code tag -> {}", tag);
+                }
 			}
 			return match;
 		} else {
