@@ -10,7 +10,6 @@ import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.maven.plugin.util.PathUtils;
 import net.paissad.tools.reqcoco.runner.ExitStatus;
 
 public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
