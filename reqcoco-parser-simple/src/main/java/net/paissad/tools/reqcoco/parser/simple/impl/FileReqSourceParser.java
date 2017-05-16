@@ -1,6 +1,5 @@
 package net.paissad.tools.reqcoco.parser.simple.impl;
 
-import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;

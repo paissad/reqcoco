@@ -59,6 +59,10 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.6.1</version>
           <configuration>
@@ -69,19 +73,38 @@
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
           <version>1.4.1</version>
-          <configuration>
-            <rules>
-              <requireJavaVersion>${javaVersion}</requireJavaVersion>
-              <requireMavenVersion>${mavenVersion}</requireMavenVersion>
-              <bannedDependencies>true</bannedDependencies>
-              <dependencyConvergence>true</dependencyConvergence>
-              <reactorModuleConvergence>true</reactorModuleConvergence>
-              <requireReleaseDeps>true</requireReleaseDeps>
-              <requirePrerequisite>true</requirePrerequisite>
-              <requirePluginVersions>true</requirePluginVersions>
-              <requireNoRepositories>true</requireNoRepositories>
-            </rules>
-          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireJavaVersion>
+                    <version>[${javaVersion},)</version>
+                  </requireJavaVersion>
+                  <requireMavenVersion>
+                    <version>${mavenVersion}</version>
+                  </requireMavenVersion>
+                  <reactorModuleConvergence />
+                  <requireReleaseDeps>
+                    <message>No Snapshots Allowed If Parent Is Not A Snapshot !!!</message>
+                    <onlyWhenRelease>true</onlyWhenRelease>
+                  </requireReleaseDeps>
+                  <requirePluginVersions>
+                    <message>Best Practice is to always define plugin versions!</message>
+                    <banLatest>true</banLatest>
+                    <banRelease>true</banRelease>
+                    <banSnapshots>true</banSnapshots>
+                    <phases>clean,deploy,site</phases>
+                  </requirePluginVersions>
+                  <requireNoRepositories>
+                    <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead)</message>
+                  </requireNoRepositories>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <artifactId>maven-source-plugin</artifactId>
@@ -94,6 +117,18 @@
               </goals>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.12.4</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.4</version>
         </plugin>
         <plugin>
           <artifactId>maven-javadoc-plugin</artifactId>
@@ -120,6 +155,14 @@
           <version>3.0.0</version>
         </plugin>
         <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+        <plugin>
           <artifactId>maven-release-plugin</artifactId>
           <version>2.5.3</version>
           <configuration>
@@ -127,11 +170,18 @@
             <releaseProfiles>release</releaseProfiles>
           </configuration>
         </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.7</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 
     <!-- Build plugin executions to share for all modules -->
     <plugins>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+      </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
       </plugin>

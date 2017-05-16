@@ -25,6 +25,17 @@
       <plugin>
         <artifactId>maven-plugin-plugin</artifactId>
       </plugin>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <inherited>true</inherited>
+        <configuration>
+          <rules>
+            <requirePrerequisite>
+              <mavenVersion>[${mavenVersion},)</mavenVersion>
+            </requirePrerequisite>
+          </rules>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
