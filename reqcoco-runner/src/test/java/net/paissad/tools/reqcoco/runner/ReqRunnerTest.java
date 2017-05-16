@@ -16,6 +16,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
+
 public class ReqRunnerTest {
 
 	private ReqRunner	runner;
@@ -59,6 +61,8 @@ public class ReqRunnerTest {
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
 		Assert.assertEquals("TRACE", runner.getOptions().getLogLevel());
 		Assert.assertTrue("The HTML report directory must exist", Files.exists(Paths.get(this.reportOutputDirPath.toString(), "html")));
+        Assert.assertFalse("The raw report coverage file must not be created by default",
+                Files.exists(Paths.get(this.reportOutputDirPath.toString(), AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + ".xml")));
 	}
 
 	@Test
@@ -72,7 +76,19 @@ public class ReqRunnerTest {
 		        Files.exists(Paths.get(this.reportOutputDirPath.toString(), "html/custom_project_name.html")));
 	}
 
-	@Test
+    @Test
+    public void testMainCreateRawCoverageFileAsWell() throws URISyntaxException {
+        List<String> args = getSetupArgs(null);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
+        runner.getOptions().setCreateRawReportFile(true); // /!\ change the value after the arguments are parsed !!!
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
+        Assert.assertEquals("TRACE", runner.getOptions().getLogLevel());
+        Assert.assertTrue("The HTML report directory must exist", Files.exists(Paths.get(this.reportOutputDirPath.toString(), "html")));
+        Assert.assertTrue("The raw report coverage file must exist",
+                Files.exists(Paths.get(this.reportOutputDirPath.toString(), AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + ".xml")));
+    }
+
+    @Test
 	public void testMainNoHtmlButConsoleReport() throws URISyntaxException {
 		List<String> args = getSetupArgs(null);
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
@@ -81,6 +97,35 @@ public class ReqRunnerTest {
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
 		Assert.assertTrue("The HTML report directory should not exist", Files.notExists(Paths.get(this.reportOutputDirPath.toString(), "html")));
 	}
+
+    @Test
+    public void testMainNoExcelReport() throws URISyntaxException {
+        List<String> args = getSetupArgs(null);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
+        runner.getOptions().setReportExcel(false);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
+        Assert.assertTrue("The EXCEL report directory should not exist", Files.notExists(Paths.get(this.reportOutputDirPath.toString(), "excel")));
+    }
+
+    @Test
+    public void testMainNoExcelAndNoHtmlReports() throws URISyntaxException {
+        List<String> args = getSetupArgs(null);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
+        runner.getOptions().setReportHtml(false);
+        runner.getOptions().setReportExcel(false);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
+        Assert.assertTrue("The HTML report directory should not exist", Files.notExists(Paths.get(this.reportOutputDirPath.toString(), "html")));
+        Assert.assertTrue("The EXCEL report directory should not exist", Files.notExists(Paths.get(this.reportOutputDirPath.toString(), "excel")));
+    }
+
+    @Test
+    public void testMainSourceIsABadURI() throws URISyntaxException, IOException {
+
+        List<String> args = getSetupArgs("file:////this_is_a_bad_source_as_it_contains_too_many_forward_slashes", false);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
+        runner.getOptions().setLogLevel("OFF");
+        Assert.assertEquals(ExitStatus.BUILD_REPORT_ERROR.getCode(), runner.generateReports());
+    }
 
 	@Test
 	public void testMainOutputdirIsActuallyAFile() throws URISyntaxException, IOException {
@@ -93,14 +138,22 @@ public class ReqRunnerTest {
 		Assert.assertEquals(ExitStatus.BUILD_REPORT_ERROR.getCode(), runner.generateReports());
 	}
 
-	/**
+    /**
+     * @return Default options to use for all tests during setUp().
+     * @throws URISyntaxException
+     */
+    private List<String> getSetupArgs(final String testResource) throws URISyntaxException {
+        return getSetupArgs(testResource, true);
+    }
+
+    /**
 	 * @return Default options to use for all tests during setUp().
 	 * @throws URISyntaxException
 	 */
-	private List<String> getSetupArgs(final String testResource) throws URISyntaxException {
+	private List<String> getSetupArgs(final String testResource, boolean locatedIntoSampleDir) throws URISyntaxException {
 
 		String f = StringUtils.isBlank(testResource) ? "req_declarations_1.txt" : testResource;
-		String sourceDeclarationPath = Paths.get(getClass().getResource("/input-samples/" + f).toURI()).toString();
+		String sourceDeclarationPath = locatedIntoSampleDir ? Paths.get(getClass().getResource("/input-samples/" + f).toURI()).toString() : f;
 
 		return new ArrayList<>(Arrays.asList(new String[] { "--input-type", "FILE", "--input", sourceDeclarationPath, "--output",
 		        this.reportOutputDirPath.toString(), "--config", configFilePath.toString() }));

@@ -23,6 +23,7 @@ import lombok.Getter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
+import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderExcel;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
@@ -87,7 +88,7 @@ public class ReqRunner {
 
 		try {
 
-		    final File rawCoverageFile = Paths.get(getOptions().getOutputFolder(), "raw-coverage-report.xml").toFile();
+		    final File rawCoverageFile = Paths.get(getOptions().getOutputFolder(), this.buildRawCoverageFileName()).toFile();
 			final ReqGenerator reqCoverageGenerator = new AbstractReqGenerator() {
 			};
 
@@ -95,7 +96,14 @@ public class ReqRunner {
 			final SimpleReqGeneratorConfig coverageGeneratorCfg = new SimpleReqGeneratorConfig();
 			coverageGeneratorCfg.setExtraOptions(ReqRunnerOptions.mapFromProperties(getOptions().getConfigProperties()));
 			coverageGeneratorCfg.setSourceRequirements(getReqSourceURI());
-			coverageGeneratorCfg.setCoverageOutput(rawCoverageFile.toPath());
+
+            if (getOptions().isCreateRawReportFile()) {
+                LOGGER.info("{} The raw report coverage file will be created at '{}'", LOGGER_PREFIX_TAG, rawCoverageFile);
+                coverageGeneratorCfg.setCoverageOutput(rawCoverageFile.toPath());
+            } else {
+                LOGGER.debug("{} Skip the creation of the raw report coverage file.", LOGGER_PREFIX_TAG);
+            }
+			
 			coverageGeneratorCfg.setSourceCodePath(Paths.get(getOptions().getSourceCodePath()));
 			coverageGeneratorCfg.setTestsCodePath(Paths.get(getOptions().getTestCodePath()));
 			coverageGeneratorCfg.setSourceParser(getOptions().getSourceType().getParser());
@@ -115,7 +123,7 @@ public class ReqRunner {
 			runReportBuilders(reportBuilders, requirements);
 
 		} catch (URISyntaxException e) {
-			String errrMsg = "Error while building the URI from the specified source of declared requiremets : " + e.getMessage();
+			String errrMsg = LOGGER_PREFIX_TAG + " Error while building the URI from the specified source of declared requiremets : " + e.getMessage();
 			LOGGER.error(errrMsg, e);
 			return getExitCode(ExitStatus.URI_BUILD_ERROR);
 
@@ -133,6 +141,11 @@ public class ReqRunner {
 
 		return getExitCode(ExitStatus.OK);
 	}
+
+    private String buildRawCoverageFileName() {
+        final String reportName = getOptions().getReportName();
+        return (StringUtils.isBlank(reportName) ? AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION : reportName) + ".xml";
+    }
 
 	private URI getReqSourceURI() throws URISyntaxException, IOException {
 		final String reqSource = getOptions().getRequirementSource();

@@ -34,197 +34,198 @@ import net.paissad.tools.reqcoco.parser.redmine.RedmineReqSourceParser;
 @Setter
 public class ReqRunnerOptions {
 
-	private static final Logger	LOGGER						= LoggerFactory.getLogger(ReqRunnerOptions.class);
+    private static final Logger LOGGER                        = LoggerFactory.getLogger(ReqRunnerOptions.class);
 
-	public static final String	CONFIG_LOG_LEVEL			= "log.level";
+    public static final String  CONFIG_LOG_LEVEL              = "log.level";
 
-	public static final String	CONFIG_SOURCE_CODE_PATH		= "code.source.path";
+    public static final String  CONFIG_SOURCE_CODE_PATH       = "code.source.path";
 
-	public static final String	CONFIG_TEST_CODE_PATH		= "code.test.path";
+    public static final String  CONFIG_TEST_CODE_PATH         = "code.test.path";
 
-	public static final String	CONFIG_RESOURCE_INCLUDES	= "resource.includes";
+    public static final String  CONFIG_RESOURCE_INCLUDES      = "resource.includes";
 
-	public static final String	CONFIG_RESOURCE_EXCLUDES	= "resource.excludes";
+    public static final String  CONFIG_RESOURCE_EXCLUDES      = "resource.excludes";
 
-	public static final String	CONFIG_REQUIREMENT_IGNORES	= "requirement.ignores";
+    public static final String  CONFIG_REQUIREMENT_IGNORES    = "requirement.ignores";
 
-	public static final String	CONFIG_REPORT_CONSOLE		= "report.console";
+    public static final String  CONFIG_REPORT_CONSOLE         = "report.console";
 
-	public static final String	CONFIG_REPORT_HTML			= "report.html";
+    public static final String  CONFIG_REPORT_HTML            = "report.html";
 
-	public static final String	CONFIG_REPORT_EXCEL			= "report.excel";
+    public static final String  CONFIG_REPORT_EXCEL           = "report.excel";
 
-	private String				logLevel;
+    public static final String  CONFIG_CREATE_RAW_REPORT_FILE = "create.raw.report.file";
 
-	private String				sourceCodePath;
+    private String              logLevel;
 
-	private String				testCodePath;
+    private String              sourceCodePath;
 
-	private String				resourceIncludes;
+    private String              testCodePath;
 
-	private String				resourceExcludes;
+    private String              resourceIncludes;
 
-	private String				ignores;
+    private String              resourceExcludes;
 
-	private boolean				reportConsole;
+    private String              ignores;
 
-	private boolean				reportHtml;
+    private boolean             reportConsole;
 
-	private boolean				reportExcel;
+    private boolean             reportHtml;
 
-	private Properties			configProperties;
+    private boolean             reportExcel;
 
-	@Option(name = "-h", aliases = { "--help" }, help = true, usage = "Shows the help.")
-	private boolean				help;
+    private boolean             createRawReportFile;
 
-	@Option(name = "--config", required = true, usage = "The configuration file.")
-	private File				configFile;
+    private Properties          configProperties;
 
-	@Option(name = "--input-type", required = true, usage = "The type of the requirements source declaration.")
-	private ReqSourceType		sourceType;
+    @Option(name = "-h", aliases = { "--help" }, help = true, usage = "Shows the help.")
+    private boolean             help;
 
-	@Option(name = "--input", required = true, metaVar = "<input>", usage = "Source containing the requirements to parse.")
-	private String				requirementSource;
+    @Option(name = "--config", required = true, usage = "The configuration file.")
+    private File                configFile;
 
-	@Option(name = "--output", required = true, metaVar = "<dir>", usage = "Directory where to store the coverage reports.")
-	private String				outputFolder;
+    @Option(name = "--input-type", required = true, usage = "The type of the requirements source declaration.")
+    private ReqSourceType       sourceType;
 
-	@Option(name = "--report-name", required = false, metaVar = "[name]", usage = "The name of the report file. The default value is '"
-	        + AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + "'")
-	private String				reportName;
+    @Option(name = "--input", required = true, metaVar = "<input>", usage = "Source containing the requirements to parse.")
+    private String              requirementSource;
 
-	@Argument
-	private List<String>		arguments					= new ArrayList<>();
+    @Option(name = "--output", required = true, metaVar = "<dir>", usage = "Directory where to store the coverage reports.")
+    private String              outputFolder;
 
-	/**
-	 * @param args : arguments / options.
-	 * @return The command line parser.
-	 * @throws CmdLineException If an error occurs while parsing the options.
-	 */
-	public CmdLineParser parseOptions(final String... args) throws CmdLineException {
+    @Option(name = "--report-name", required = false, metaVar = "[name]", usage = "The name of the report file. The default value is '"
+            + AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + "'")
+    private String              reportName;
 
-		final CmdLineParser parser = new CmdLineParser(this);
+    @Argument
+    private List<String>        arguments                     = new ArrayList<>();
 
-		ParserProperties.defaults().withUsageWidth(150);
+    /**
+     * @param args : arguments / options.
+     * @return The command line parser.
+     * @throws CmdLineException If an error occurs while parsing the options.
+     */
+    public CmdLineParser parseOptions(final String... args) throws CmdLineException {
 
-		try {
-			parser.parseArgument(args);
+        final CmdLineParser parser = new CmdLineParser(this);
 
-		} catch (CmdLineException e) {
-			System.err.println();
-			System.err.println("======> " + e.getMessage());
-			System.err.println();
-			printUsage(parser);
-			throw e;
-		}
+        ParserProperties.defaults().withUsageWidth(150);
 
-		return parser;
-	}
+        try {
+            parser.parseArgument(args);
 
-	public void parseConfigFile() throws IOException {
+        } catch (CmdLineException e) {
+            System.err.println();
+            System.err.println("======> " + e.getMessage());
+            System.err.println();
+            printUsage(parser);
+            throw e;
+        }
 
-		try (final InputStream in = Files.newInputStream(getConfigFile().toPath())) {
+        return parser;
+    }
 
-			this.setConfigProperties(new Properties());
-			this.getConfigProperties().load(in);
-			this.buildOptionsFromProperties(getConfigProperties());
-			this.updatePropertiesForRedmine(getConfigProperties());
+    public void parseConfigFile() throws IOException {
 
-		} catch (NullPointerException | IOException e) {
-			String errMsg = "Error while parsing the configuration file : " + e.getMessage();
-			LOGGER.error(errMsg, e);
-			throw new IOException(errMsg, e);
-		}
-	}
+        try (final InputStream in = Files.newInputStream(getConfigFile().toPath())) {
 
-	private void buildOptionsFromProperties(final Properties props) {
+            this.setConfigProperties(new Properties());
+            this.getConfigProperties().load(in);
+            this.buildOptionsFromProperties(getConfigProperties());
+            this.updatePropertiesForRedmine(getConfigProperties());
 
-		this.setLogLevel(props.getProperty(CONFIG_LOG_LEVEL, "INFO"));
-		this.setSourceCodePath(props.getProperty(CONFIG_SOURCE_CODE_PATH));
-		this.setTestCodePath(props.getProperty(CONFIG_TEST_CODE_PATH));
-		this.setResourceIncludes(props.getProperty(CONFIG_RESOURCE_INCLUDES, "*"));
-		this.setResourceExcludes(props.getProperty(CONFIG_RESOURCE_EXCLUDES, ""));
-		this.setIgnores(props.getProperty(CONFIG_REQUIREMENT_IGNORES, ""));
-		this.setReportConsole(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_CONSOLE, Boolean.FALSE.toString())));
-		this.setReportHtml(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_HTML, Boolean.TRUE.toString())));
-		this.setReportExcel(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_EXCEL, Boolean.TRUE.toString())));
-	}
+        } catch (NullPointerException | IOException e) {
+            String errMsg = "Error while parsing the configuration file : " + e.getMessage();
+            LOGGER.error(errMsg, e);
+            throw new IOException(errMsg, e);
+        }
+    }
 
-	/**
-	 * This method update the properties loaded from the configuration file by setting the correct value type (Boolean, Collection ...) in order to
-	 * avoid ClassCastException exception.
-	 * 
-	 * @param props
-	 */
-	private void updatePropertiesForRedmine(final Properties props) {
+    private void buildOptionsFromProperties(final Properties props) {
 
-		final String statusFilter = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_STATUS_FILTER))
-		        ? RedmineReqSourceParser.DEFAULT_VALUE_STATUS_FILTER : props.getProperty(RedmineReqSourceParser.OPTION_STATUS_FILTER);
-		props.put(RedmineReqSourceParser.OPTION_STATUS_FILTER, statusFilter);
+        this.setLogLevel(props.getProperty(CONFIG_LOG_LEVEL, "INFO"));
+        this.setSourceCodePath(props.getProperty(CONFIG_SOURCE_CODE_PATH));
+        this.setTestCodePath(props.getProperty(CONFIG_TEST_CODE_PATH));
+        this.setResourceIncludes(props.getProperty(CONFIG_RESOURCE_INCLUDES, "*"));
+        this.setResourceExcludes(props.getProperty(CONFIG_RESOURCE_EXCLUDES, ""));
+        this.setIgnores(props.getProperty(CONFIG_REQUIREMENT_IGNORES, ""));
+        this.setReportConsole(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_CONSOLE, Boolean.FALSE.toString())));
+        this.setReportHtml(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_HTML, Boolean.TRUE.toString())));
+        this.setReportExcel(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_EXCEL, Boolean.TRUE.toString())));
+        this.setCreateRawReportFile(Boolean.parseBoolean(props.getProperty(CONFIG_CREATE_RAW_REPORT_FILE, Boolean.FALSE.toString())));
+    }
 
-		final boolean includeChildren = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN))
-		        ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_CHILDREN
-		        : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN));
-		props.put(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN, includeChildren);
+    /**
+     * This method update the properties loaded from the configuration file by setting the correct value type (Boolean, Collection ...) in order to
+     * avoid ClassCastException exception.
+     * 
+     * @param props
+     */
+    private void updatePropertiesForRedmine(final Properties props) {
 
-		final boolean includeRelations = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS))
-		        ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_RELATIONS
-		        : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS));
-		props.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, includeRelations);
+        final String statusFilter = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_STATUS_FILTER)) ? RedmineReqSourceParser.DEFAULT_VALUE_STATUS_FILTER
+                : props.getProperty(RedmineReqSourceParser.OPTION_STATUS_FILTER);
+        props.put(RedmineReqSourceParser.OPTION_STATUS_FILTER, statusFilter);
 
-		final Collection<String> targetVersions = StringUtils.isBlank((String) props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS))
-		        ? RedmineReqSourceParser.getDefautValueForTargetVersions()
-		        : Arrays.asList(props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS).toString().split(","));
-		props.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, targetVersions);
+        final boolean includeChildren = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN))
+                ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_CHILDREN : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN));
+        props.put(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN, includeChildren);
 
-		final boolean reqTagMustBePresent = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT))
-		        ? RedmineReqSourceParser.DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE
-		        : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT));
-		props.put(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, reqTagMustBePresent);
+        final boolean includeRelations = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS))
+                ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_RELATIONS : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS));
+        props.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, includeRelations);
 
-		final Properties redmineExtraProperties = getRedmineExtraProperties();
-		if (redmineExtraProperties != null) {
-			props.put(RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES, redmineExtraProperties);
-		}
-	}
+        final Collection<String> targetVersions = StringUtils.isBlank((String) props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS))
+                ? RedmineReqSourceParser.getDefautValueForTargetVersions() : Arrays.asList(props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS).toString().split(","));
+        props.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, targetVersions);
 
-	public Properties getRedmineExtraProperties() {
+        final boolean reqTagMustBePresent = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT))
+                ? RedmineReqSourceParser.DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE
+                : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT));
+        props.put(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, reqTagMustBePresent);
 
-		Properties extraProps = null;
+        final Properties redmineExtraProperties = getRedmineExtraProperties();
+        if (redmineExtraProperties != null) {
+            props.put(RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES, redmineExtraProperties);
+        }
+    }
 
-		final String prefix = RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES;
-		final Predicate<String> predicate = Pattern.compile(Pattern.quote(prefix + ".key.")).asPredicate();
+    public Properties getRedmineExtraProperties() {
 
-		final Set<String> extraPropertyKeys = getConfigProperties().keySet().stream().map(Object::toString).filter(predicate)
-		        .collect(Collectors.toSet());
+        Properties extraProps = null;
 
-		if (!extraPropertyKeys.isEmpty()) {
-			extraProps = new Properties();
-			for (final String key : extraPropertyKeys) {
-				String suffix = key.substring((prefix + ".key.").length(), key.length());
-				String extraPropsKey = getConfigProperties().getProperty(key);
-				String extraPropsValue = getConfigProperties().getProperty(prefix + ".value." + suffix);
-				extraProps.put(extraPropsKey, extraPropsValue);
-			}
-		}
+        final String prefix = RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES;
+        final Predicate<String> predicate = Pattern.compile(Pattern.quote(prefix + ".key.")).asPredicate();
 
-		return extraProps;
-	}
+        final Set<String> extraPropertyKeys = getConfigProperties().keySet().stream().map(Object::toString).filter(predicate).collect(Collectors.toSet());
 
-	public static Map<String, Object> mapFromProperties(final Properties properties) {
-		return properties.keySet().stream().map(Object::toString).collect(Collectors.toMap(Function.identity(), properties::get));
-	}
+        if (!extraPropertyKeys.isEmpty()) {
+            extraProps = new Properties();
+            for (final String key : extraPropertyKeys) {
+                String suffix = key.substring((prefix + ".key.").length(), key.length());
+                String extraPropsKey = getConfigProperties().getProperty(key);
+                String extraPropsValue = getConfigProperties().getProperty(prefix + ".value." + suffix);
+                extraProps.put(extraPropsKey, extraPropsValue);
+            }
+        }
 
-	/**
-	 * Prints the usage.
-	 * 
-	 * @param parser - The command line parser.
-	 */
-	public static void printUsage(final CmdLineParser parser) {
-		System.out.println("reqcoco-runner [options...] arguments...");
-		parser.printUsage(System.out);
-		System.out.println();
+        return extraProps;
+    }
 
-		System.out.println("  Example: reqcoco-runner " + parser.printExample(filter -> !filter.option.help()));
-	}
+    public static Map<String, Object> mapFromProperties(final Properties properties) {
+        return properties.keySet().stream().map(Object::toString).collect(Collectors.toMap(Function.identity(), properties::get));
+    }
+
+    /**
+     * Prints the usage.
+     * 
+     * @param parser - The command line parser.
+     */
+    public static void printUsage(final CmdLineParser parser) {
+        System.out.println("reqcoco-runner [options...] arguments...");
+        parser.printUsage(System.out);
+        System.out.println();
+
+        System.out.println("  Example: reqcoco-runner " + parser.printExample(filter -> !filter.option.help()));
+    }
 }
