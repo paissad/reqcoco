@@ -86,7 +86,10 @@
                   <requireMavenVersion>
                     <version>${mavenVersion}</version>
                   </requireMavenVersion>
-                  <reactorModuleConvergence />
+                  <reactorModuleConvergence>
+                    <message>The reactor is not valid</message>
+                    <ignoreModuleDependencies>true</ignoreModuleDependencies>
+                  </reactorModuleConvergence>
                   <requireReleaseDeps>
                     <message>No Snapshots Allowed If Parent Is Not A Snapshot !!!</message>
                     <onlyWhenRelease>true</onlyWhenRelease>
