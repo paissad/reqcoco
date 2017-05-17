@@ -2,9 +2,6 @@
 
 **Requirements Code Coverage**
 
-
-####IMPORTANT INFORMATION: the work is in progress and there is no stable or usable version yet !!! 
-
 ----------
 
 **Chat Room** [![Join the chat at https://gitter.im/reqcoco/Lobby](https://badges.gitter.im/reqcoco/Lobby.svg)](https://gitter.im/reqcoco/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
