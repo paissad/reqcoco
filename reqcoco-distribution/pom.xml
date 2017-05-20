@@ -31,6 +31,7 @@
                 <descriptor>src/assembly/dist.xml</descriptor>
               </descriptors>
               <appendAssemblyId>false</appendAssemblyId>
+              <attach>false</attach> <!-- Do not deploy the assembly artifacts into the Maven repository -->
             </configuration>
           </execution>
         </executions>

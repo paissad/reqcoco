@@ -17,26 +17,13 @@
         <include>CHANGELOG*</include>
       </includes>
     </fileSet>
-  </fileSets>
-
-  <moduleSets>
-    <moduleSet>
-      <!-- Enable access to all projects in the current multimodule build! -->
-      <useAllReactorProjects>true</useAllReactorProjects>
-
-      <!-- Now, select which projects to include in this module-set. -->
+    <fileSet>
+      <directory>${project.basedir}/../reqcoco-runner/target/</directory>
+      <outputDirectory></outputDirectory>
       <includes>
-        <include>net.paissad.tools.reqcoco:reqcoco-runner</include>
+        <include>reqcoco-runner-*-shaded.jar</include>
       </includes>
-
-      <binaries>
-        <outputDirectory></outputDirectory>
-        <unpack>false</unpack>
-        <attachmentClassifier>shaded</attachmentClassifier>
-        <includeDependencies>false</includeDependencies>
-      </binaries>
-      
-    </moduleSet>
-  </moduleSets>
+    </fileSet>
+  </fileSets>
 
 </assembly>

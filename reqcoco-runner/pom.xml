@@ -29,7 +29,9 @@
                   <mainClass>net.paissad.tools.reqcoco.ReqRunner</mainClass>
                 </transformer>
               </transformers>
-              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <finalName>${project.artifactId}-${project.version}-shaded</finalName>
+              <shadedClassifierName>workaround</shadedClassifierName> <!-- Avoid replacement of the default and main artifact by the shaded artifact -->
+              <shadedArtifactAttached>false</shadedArtifactAttached> <!-- Do not deploy the shaded artifact into the Maven repository -->
             </configuration>
           </execution>
         </executions>
