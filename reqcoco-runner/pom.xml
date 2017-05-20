@@ -29,6 +29,7 @@
                   <mainClass>net.paissad.tools.reqcoco.ReqRunner</mainClass>
                 </transformer>
               </transformers>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
             </configuration>
           </execution>
         </executions>

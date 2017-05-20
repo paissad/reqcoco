@@ -336,6 +336,7 @@
     <module>reqcoco-parser-redmine</module>
     <module>reqcoco-parser-docx</module>
     <module>reqcoco-parser-xlsx</module>
+    <module>reqcoco-distribution</module>
   </modules>
 
 </project>
