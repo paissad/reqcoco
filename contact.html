@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Contact us!
+title: Contact
 permalink: /contact/
 ---
 
@@ -21,31 +21,42 @@ permalink: /contact/
 <section id="contact-form">
   <div class="container">
     <div class="row">
+     <script type="text/javascript">var submitted=false;</script>
+     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {window.location='{{ site.baseurl }}/contact';}"></iframe>
+     <form action="https://docs.google.com/forms/d/e/1FAIpQLScJLKB27lAik1HDLLOmEwhO6D4nXu_iS-NvOhHBkpqIv1qHNw/formResponse?embedded=true" target="hidden_iframe" method="POST" onsubmit="submitted=true;">
       <div class="col-md-6 col-sm-12">
-        <div class="block">
-          <form>
+            <div class="block">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Your Name">
+              <input type="text" class="form-control" placeholder="Your Name" name="entry.903155837" required>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Email Address">
+              <input type="text" class="form-control" placeholder="Email Address" name="entry.1438055900" required>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Subject">
+              <input type="text" class="form-control" placeholder="Subject" name="entry.1456507032" required>
             </div>
-          </form>
         </div>
       </div>
       <div class="col-md-6 col-sm-12">
         <div class="block">
-          <form>
             <div class="form-group-2">
-              <textarea class="form-control" rows="3" placeholder="Your Message"></textarea>
+              <textarea class="form-control" rows="3" placeholder="Your Message" name="entry.217559406" required></textarea>
             </div>
+            <input type="hidden" name="fbzx" id="hidden-fbzx">
+            <br>
+            <script type="text/javascript">
+              function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min)) + min;
+              }
+
+              document.getElementById('hidden-fbzx').value = getRandomInt(1000000000000000000, 9999999999999999999);
+            </script>
             <button class="btn btn-default" type="submit">Send Message</button>
-          </form>
         </div>
       </div>
+     </form>
     </div>
     <div id="contact-box" class="row">
       <div class="col-md-6 col-sm-12">
@@ -53,19 +64,13 @@ permalink: /contact/
           <h2>Informations</h2>
           <ul class="address-block">
             <li>
-              <i class="fa fa-envelope-o"></i>Email: reqcoco@gmail.com
-            </li>
-          </ul>
-
-          <ul class="social-icons">
-            <li>
-              <a href="https://twitter.com/reqcoco"><i class="fa fa-twitter"></i></a>
+              <i class="fa fa-envelope-o"></i>Email: Please, use the contact form above.
             </li>
             <li>
-              <a href="https://www.facebook.com/reqcoco.reqcoco.3"><i class="fa fa-facebook"></i></a>
+              <i class="fa fa-ticket"></i>Issues Page: <a href="https://github.com/paissad/reqcoco/issues" target="_blank">https://github.com/paissad/reqcoco/issues</a>
             </li>
             <li>
-              <a href="https://www.youtube.com/channel/UC7fRveLazv_ukE1RhfmVyMQ"><i class="fa fa-youtube"></i></a>
+              <i class="fa fa-comments"></i>Gitter Chatroom: <a href="https://gitter.im/reqcoco/Lobby" target="_blank">https://gitter.im/reqcoco/Lobby</a>
             </li>
           </ul>
         </div>
