@@ -5,15 +5,10 @@ subtitle: This is the first release of the project
 date: 2017-05-21 21:11:27
 author: paissad
 ---
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
+The first release of the project is available at the [download page][release-download-1.0.0].
 
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+Check out the [QuickStart][quickstart-link] for more info on how to get the most out of ReqCoCo. File all bugs/feature requests at [ReqCoCo GitHub Issue Page][gh-issues-page]. 
 
-Jekyll also offers powerful support for code snippets:
-
-
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: http://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+[release-download-1.0.0]: https://github.com/paissad/reqcoco/releases/tag/reqcoco-1.0.0
+[quickstart-link]:   {{ site.baseurl }}/quickstart
+[gh-issues-page]: https://github.com/issues
