@@ -25,7 +25,7 @@ Table of contents
 
 The reports can generated in different ways (console, html, pdf, xlsx, ...)
 
-Custom generators can be built by anyone in order to generate a standard input source. And then **ReqCoCo** can be used to generate the reportsS in the
+Custom generators can be built by anyone in order to generate a standard input source. And then **ReqCoCo** can be used to generate the reports in the
 desired format/output.
 
 

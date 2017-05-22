@@ -46,6 +46,12 @@
       <artifactId>reqcoco-runner</artifactId>
       <version>1.1.0-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>net.paissad.tools.reqcoco</groupId>
+      <artifactId>reqcoco-webapp</artifactId>
+      <version>1.1.0-SNAPSHOT</version>
+      <type>war</type>
+    </dependency>
   </dependencies>
 
 </project>

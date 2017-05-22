@@ -24,6 +24,13 @@
         <include>reqcoco-runner-*-shaded.jar</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/../reqcoco-webapp/target/</directory>
+      <outputDirectory></outputDirectory>
+      <includes>
+        <include>reqcoco.war</include>
+      </includes>
+    </fileSet>
   </fileSets>
 
 </assembly>
