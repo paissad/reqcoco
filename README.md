@@ -1,6 +1,6 @@
 [![ReqCoCo : Requirements Code Coverage](https://paissad.github.io/reqcoco/img/reqcoco-logo-orig.png "ReqCoCo : Requirements Code Coverage")](https://paissad.github.io/reqcoco)
 
-**Requirements Code Coverage**
+[*Requirements Code Coverage*][reqcoco-homepage]
 
 ----------
 
@@ -42,6 +42,7 @@ The latest source code can be found [here on GitHub][gh-source-code-page]. Feel 
 
 **ReqCoCo** is licensed under the [LGPL v3 license][reqcoco-license-link]. 
 
+[reqcoco-homepage]: https://paissad.github.io/reqcoco "ReqCoCo Homepage"
 [gh-releases-page]: https://github.com/paissad/reqcoco/releases "ReqCoCo Releases"
 [gh-source-code-page]: https://github.com/paissad/reqcoco "ReqCoCo Source Code"
 [reqcoco-license-link]: https://raw.githubusercontent.com/paissad/reqcoco/master/LICENSE "License"
