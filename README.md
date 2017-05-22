@@ -15,6 +15,7 @@
 Table of contents
 
 - [About](#about)
+- [Downloads](#downloads)
 - [Source](#source)
 - [License](#license)
 
@@ -28,11 +29,19 @@ The reports can generated in different ways (console, html, pdf, xlsx, ...)
 Custom generators can be built by anyone in order to generate a standard input source. And then **ReqCoCo** can be used to generate the reports in the
 desired format/output.
 
+# Downloads
+
+The releases can be retrieved from the [GitHub Releases Download Page][gh-releases-page].
+
 
 # Source
 
-The latest source code can be found [here on GitHub](https://github.com/paissad/reqcoco "ReqCoCo"). Feel free to fork and/or contribute.
+The latest source code can be found [here on GitHub][gh-source-code-page]. Feel free to fork and/or contribute.
 
 # License
 
-**ReqCoCo** is licensed under the [LGPL v3 license](https://raw.githubusercontent.com/paissad/reqcoco/master/LICENSE "License"). 
+**ReqCoCo** is licensed under the [LGPL v3 license][reqcoco-license-link]. 
+
+[gh-releases-page]: https://github.com/paissad/reqcoco/releases "ReqCoCo Releases"
+[gh-source-code-page]: https://github.com/paissad/reqcoco "ReqCoCo Source Code"
+[reqcoco-license-link]: https://raw.githubusercontent.com/paissad/reqcoco/master/LICENSE "License"
