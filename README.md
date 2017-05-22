@@ -1,4 +1,4 @@
-# ReqCoCo
+[![ReqCoCo : Requirements Code Coverage](https://paissad.github.io/reqcoco/img/reqcoco-logo-orig.png "ReqCoCo : Requirements Code Coverage")](https://paissad.github.io/reqcoco)
 
 **Requirements Code Coverage**
 
@@ -25,9 +25,7 @@ Table of contents
 
 The reports can generated in different ways (console, html, pdf, xlsx, ...)
 
-The source from which the reports are built is based from an XML source file.
-
-Custom generators can be built by anyone in order to generate a standard input source. And then **ReqCoCo** can be used to generate the report in the
+Custom generators can be built by anyone in order to generate a standard input source. And then **ReqCoCo** can be used to generate the reportsS in the
 desired format/output.
 
 
