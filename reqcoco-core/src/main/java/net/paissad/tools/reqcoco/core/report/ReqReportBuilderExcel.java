@@ -511,7 +511,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
 
     private enum CELL_CONFIG {
 
-                              ID("Id", 0),
+                              NAME("Name", 0),
                               VERSION("Version", 1),
                               REVISION("Revision", 2),
                               DESCRIPTION("Short Description", 3),

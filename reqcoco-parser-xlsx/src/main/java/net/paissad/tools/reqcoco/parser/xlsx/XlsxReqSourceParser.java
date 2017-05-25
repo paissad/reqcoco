@@ -59,18 +59,18 @@ public class XlsxReqSourceParser implements ReqSourceParser {
 
 					} else {
 
-						final String id = ReqTagUtil.trimString(row.getCell(headersPositions.get("id")).getStringCellValue());
+						final String name = ReqTagUtil.trimString(row.getCell(headersPositions.get("name")).getStringCellValue());
 						final String version = ReqTagUtil.trimString(row.getCell(headersPositions.get("version")).getStringCellValue());
 						final String revision = ReqTagUtil.trimString(row.getCell(headersPositions.get("revision")).getStringCellValue());
 						final String summary = ReqTagUtil.trimString(row.getCell(headersPositions.get("summary")).getStringCellValue());
 
 						final Map<String, String> tagMembers = new HashMap<>();
-						tagMembers.put("id", id);
+						tagMembers.put("name", name);
 						tagMembers.put("version", version);
 						tagMembers.put("revision", revision);
 						tagMembers.put("summary", summary);
 
-						final Requirement req = new Requirement(id, version, revision);
+						final Requirement req = new Requirement(name, version, revision);
 						req.setShortDescription(summary);
 
 						declaredRequirements.add(req);
