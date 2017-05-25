@@ -47,6 +47,8 @@ import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 
 public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
 
+    private static final int    DEFAULT_ZOOM_SCALE                  = 100;
+
     /** The default extension for the EXCEL report builder. */
     public static final String  EXCEL_REPORT_FILE_DEFAULT_EXTENSION = ".xlsx";
 
@@ -121,7 +123,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
 
                 final Sheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName("Version " + version));
 
-                sheet.setZoom(100);
+                sheet.setZoom(DEFAULT_ZOOM_SCALE);
 
                 final PrintSetup ps = sheet.getPrintSetup();
 
@@ -185,7 +187,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
             cellTotalOfReqs.getCellStyle().setFont(font);
             sheet.autoSizeColumn(cellTotalOfReqs.getColumnIndex());
 
-            sheet.setZoom(150);
+            sheet.setZoom(DEFAULT_ZOOM_SCALE);
         }
 
         if (!StringUtils.isBlank(version)) {
