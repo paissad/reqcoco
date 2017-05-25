@@ -27,7 +27,7 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
 
     @XmlAttribute(required = true)
     @XmlID
-    private String             id;
+    private String             name;
 
     @XmlAttribute
     private boolean            ignore;
@@ -70,7 +70,7 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
     }
 
     public Requirement(String id, String version, String revision) {
-        this.id = id;
+        this.name = id;
         this.version = version;
         this.revision = revision;
     }
@@ -78,8 +78,8 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Requirement [id=");
-        builder.append(id);
+        builder.append("Requirement [name=");
+        builder.append(name);
         builder.append(", ignore=");
         builder.append(ignore);
         builder.append(", shortDescription=");
@@ -104,7 +104,7 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((version == null) ? 0 : version.hashCode());
         result = prime * result + ((revision == null) ? 0 : revision.hashCode());
         return result;
@@ -119,10 +119,10 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
         if (!(obj instanceof Requirement))
             return false;
         Requirement other = (Requirement) obj;
-        if (id == null) {
-            if (other.id != null)
+        if (name == null) {
+            if (other.name != null)
                 return false;
-        } else if (!id.equals(other.id))
+        } else if (!name.equals(other.name))
             return false;
         if (version == null) {
             if (other.version != null)
@@ -144,7 +144,7 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
 
     @Override
     public int compare(final Requirement req1, final Requirement req2) {
-        int compare = StringUtils.compare(req1.getId(), req2.getId());
+        int compare = StringUtils.compare(req1.getName(), req2.getName());
         if (compare == 0) {
             compare = StringUtils.compare(req1.getVersion(), req2.getVersion());
             if (compare == 0) {

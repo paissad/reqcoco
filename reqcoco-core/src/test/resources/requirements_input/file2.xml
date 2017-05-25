@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <requirements>
-  <requirement id="req_name_1" version="1.0" revision="r1">
+  <requirement name="req_name_1" version="1.0" revision="r1">
     <shortDescription>short desc</shortDescription>
     <fullDescription>very long desc ..</fullDescription>
     <codeDone>true</codeDone>
     <codeAuthor>developer1</codeAuthor>
     <testDone>true</testDone>
   </requirement>
-  <requirement id="req_name_2" version="1.1" revision="r2">
+  <requirement name="req_name_2" version="1.1" revision="r2">
     <shortDescription>short desc ... test specials chars &amp; &apos; &quot; &lt; &gt;... </shortDescription>
     <fullDescription>very long desc number 2 ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>false</testDone>
   </requirement>
-  <requirement id="req_name_3" version="1.0" revision="r2">
+  <requirement name="req_name_3" version="1.0" revision="r2">
     <shortDescription>short desc 3</shortDescription>
     <fullDescription>very long desc number 3 ...</fullDescription>
     <codeDone>false</codeDone>
     <testDone>false</testDone>
     <link>https://github.com/paissad/reqcoco</link>
   </requirement>
-  <requirement id="req_name_4" version="1.0" revision="r2">
+  <requirement name="req_name_4" version="1.0" revision="r2">
     <shortDescription>short desc</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>true</testDone>
     <testAuthor>tester 1</testAuthor>
   </requirement>
-  <requirement id="req_name_5" version="1.0" revision="r2">
+  <requirement name="req_name_5" version="1.0" revision="r2">
     <shortDescription>short desc</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>false</testDone>
   </requirement>
-  <requirement id="req_name_6" version="1.0" revision="r2">
+  <requirement name="req_name_6" version="1.0" revision="r2">
     <shortDescription>short desc </shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>false</codeDone>
     <testDone>false</testDone>
   </requirement>
-  <requirement id="req_name_7" version="1.1" revision="r3">
+  <requirement name="req_name_7" version="1.1" revision="r3">
     <shortDescription>short desc </shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>false</testDone>
   </requirement>
-  <requirement id="req_name_8" version="1.0" revision="r4">
+  <requirement name="req_name_8" version="1.0" revision="r4">
     <shortDescription>short desc 8</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>true</testDone>
   </requirement>
-  <requirement id="req_name_9" version="1.0" revision="r2">
+  <requirement name="req_name_9" version="1.0" revision="r2">
     <shortDescription>short desc 9</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>false</codeDone>
     <testDone>true</testDone>
   </requirement>
-  <requirement id="req_name_10" version="1.1" revision="r4">
+  <requirement name="req_name_10" version="1.1" revision="r4">
     <shortDescription>short desc 10</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>true</testDone>
   </requirement>
-  <requirement id="req_name_11" version="1.0" revision="r7" ignore="true">
+  <requirement name="req_name_11" version="1.0" revision="r7" ignore="true">
     <shortDescription>short desc 11</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>true</codeDone>
     <testDone>true</testDone>
   </requirement>
-  <requirement id="req_name_12" version="1.0" revision="r1" ignore="true">
+  <requirement name="req_name_12" version="1.0" revision="r1" ignore="true">
     <shortDescription>short desc 12</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeDone>false</codeDone>

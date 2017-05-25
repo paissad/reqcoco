@@ -46,7 +46,7 @@ public class DocxReqSourceParserTest {
 
 		final Collection<Requirement> extractedRequirements = this.docxReqSourceParser.parse(uri, declTagConfig, options);
 		Assert.assertEquals(1, extractedRequirements.size());
-		final Collection<Requirement> reqs_1 = getRequirementsHavingId("req_1", extractedRequirements);
+		final Collection<Requirement> reqs_1 = getRequirementsHavingName("req_1", extractedRequirements);
 		Assert.assertEquals(1, reqs_1.size());
 		Assert.assertEquals("desc 1 …", reqs_1.iterator().next().getShortDescription());
 	}
@@ -64,7 +64,7 @@ public class DocxReqSourceParserTest {
 		return getClass().getResource(stubResource).toURI();
 	}
 
-	private Collection<Requirement> getRequirementsHavingId(final String id, final Collection<Requirement> requirements) {
-		return requirements.parallelStream().filter(req -> id.equals(req.getId())).collect(Collectors.toList());
+	private Collection<Requirement> getRequirementsHavingName(final String name, final Collection<Requirement> requirements) {
+		return requirements.parallelStream().filter(req -> name.equals(req.getName())).collect(Collectors.toList());
 	}
 }

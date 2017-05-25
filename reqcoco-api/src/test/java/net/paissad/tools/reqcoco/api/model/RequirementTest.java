@@ -13,7 +13,7 @@ public class RequirementTest {
     @Before
     public void setUp() throws Exception {
         this.requirement = new Requirement();
-        this.requirement.setId("myId");
+        this.requirement.setName("myId");
         this.requirement.setVersion("myVersion");
         this.requirement.setRevision("myRevision");
         this.requirement.setShortDescription("myShortDesc");
@@ -30,7 +30,7 @@ public class RequirementTest {
 
     @Test
     public void testGetId() {
-        Assert.assertEquals("myId", this.requirement.getId());
+        Assert.assertEquals("myId", this.requirement.getName());
     }
 
     @Test

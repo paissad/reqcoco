@@ -65,6 +65,6 @@ public class XlsxReqSourceParserTest {
 	}
 
 	private Collection<Requirement> getRequirementsHavingId(final String id, final Collection<Requirement> requirements) {
-		return requirements.parallelStream().filter(req -> id.equals(req.getId())).collect(Collectors.toList());
+		return requirements.parallelStream().filter(req -> id.equals(req.getName())).collect(Collectors.toList());
 	}
 }

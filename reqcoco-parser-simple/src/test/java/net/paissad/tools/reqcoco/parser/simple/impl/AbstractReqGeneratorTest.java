@@ -85,18 +85,18 @@ public class AbstractReqGeneratorTest {
         final List<Requirement> reqsWithCodeDone = reqs.stream().filter(Requirement::isCodeDone).collect(Collectors.toList());
         Assert.assertEquals(4, reqsWithCodeDone.size());
         // /!\ while comparing the arrays, the order must be respected (easier for the test comparison, without the need to write more code ...)
-        Assert.assertArrayEquals(new String[] { "req_1", "req_11", "req_2", "req_6" }, reqsWithCodeDone.stream().map(Requirement::getId).sorted().toArray());
+        Assert.assertArrayEquals(new String[] { "req_1", "req_11", "req_2", "req_6" }, reqsWithCodeDone.stream().map(Requirement::getName).sorted().toArray());
 
         final List<Requirement> reqsWithTestDone = reqs.stream().filter(Requirement::isTestDone).collect(Collectors.toList());
         Assert.assertEquals(4, reqsWithTestDone.size());
         // /!\ while comparing the arrays, the order must be respected (easier for the test comparison, without the need to write more code ...)
-        Assert.assertArrayEquals(new String[] { "req_1", "req_11", "req_3", "req_6" }, reqsWithTestDone.stream().map(Requirement::getId).sorted().toArray());
+        Assert.assertArrayEquals(new String[] { "req_1", "req_11", "req_3", "req_6" }, reqsWithTestDone.stream().map(Requirement::getName).sorted().toArray());
 
         Assert.assertFalse("The revision is not specified into the code while it is specified into the source. So no match should be made !!!",
-                Requirements.getById(reqs, "req_5").iterator().next().isCodeDone());
+                Requirements.getByName(reqs, "req_5").iterator().next().isCodeDone());
 
         Assert.assertFalse("The revision specified into the code is different to the revision specified into the source. Warning is expected to be triggered !",
-                Requirements.getById(reqs, "req_9").iterator().next().isCodeDone());
+                Requirements.getByName(reqs, "req_9").iterator().next().isCodeDone());
 	}
 
     @Test
@@ -107,10 +107,10 @@ public class AbstractReqGeneratorTest {
 
         this.reqGenerator.configure(this.reqGeneratorConfigStub);
         final Collection<Requirement> reqs = this.reqGenerator.run();
-        Assert.assertTrue(Requirements.getById(reqs, "req_1").iterator().next().isCodeDone());
-        Assert.assertTrue(Requirements.getById(reqs, "req_2").iterator().next().isCodeDone());
-        Assert.assertTrue(Requirements.getById(reqs, "req_3").iterator().next().isCodeDone());
-        Assert.assertTrue(Requirements.getById(reqs, "req_5").iterator().next().isCodeDone());
+        Assert.assertTrue(Requirements.getByName(reqs, "req_1").iterator().next().isCodeDone());
+        Assert.assertTrue(Requirements.getByName(reqs, "req_2").iterator().next().isCodeDone());
+        Assert.assertTrue(Requirements.getByName(reqs, "req_3").iterator().next().isCodeDone());
+        Assert.assertTrue(Requirements.getByName(reqs, "req_5").iterator().next().isCodeDone());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class AbstractReqGeneratorTest {
 		this.reqGeneratorConfigStub.getIgnoreList().add("req_1");
 		this.reqGenerator.configure(this.reqGeneratorConfigStub);
 		final Collection<Requirement> computedRequirements = this.reqGenerator.run();
-		final Collection<Requirement> reqs1 = Requirements.getById(computedRequirements, "req_1");
+		final Collection<Requirement> reqs1 = Requirements.getByName(computedRequirements, "req_1");
 		Assert.assertEquals(1, reqs1.size());
 		Assert.assertTrue(reqs1.iterator().next().isIgnore());
 	}

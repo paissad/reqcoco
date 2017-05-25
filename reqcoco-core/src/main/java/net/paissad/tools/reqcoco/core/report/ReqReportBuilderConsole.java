@@ -67,7 +67,7 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 		try {
 			out.write(String.format(reqListFormat, req.toString()).getBytes(UTF8));
 		} catch (IOException e) {
-			LOGGER.error(LOGGER_PREFIX_TAG + "Unable to print requirement having id {} : {}", req.getId(), e);
+			LOGGER.error(LOGGER_PREFIX_TAG + "Unable to print requirement having name {} : {}", req.getName(), e);
 		}
 	}
 

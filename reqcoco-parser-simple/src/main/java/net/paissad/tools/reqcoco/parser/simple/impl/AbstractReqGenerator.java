@@ -67,7 +67,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 			final Collection<String> ignoreList = getConfig().getIgnoreList();
 			if (!ignoreList.isEmpty()) {
 				declaredRequirements.parallelStream().forEach(req -> {
-					if (ignoreList.contains(req.getId())) {
+					if (ignoreList.contains(req.getName())) {
 						req.setIgnore(true);
 					}
 				});
@@ -259,8 +259,8 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 	 */
 	private boolean isRequirementMatchTag(final Requirement requirement, final ReqCodeTag tag) {
 
-		if (!StringUtils.isBlank(requirement.getId())) {
-			boolean match = requirement.getId().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
+		if (!StringUtils.isBlank(requirement.getName())) {
+			boolean match = requirement.getName().equals(tag.getId()) && requirement.getVersion().equals(tag.getVersion());
 			if (match && !StringUtils.isBlank(requirement.getRevision())) {
 				final String revisionIntoCode = tag.getRevision();
                 match = requirement.getRevision().equals(revisionIntoCode);

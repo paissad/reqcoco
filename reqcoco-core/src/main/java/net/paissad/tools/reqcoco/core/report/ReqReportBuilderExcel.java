@@ -480,7 +480,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
     private String getRequirementFieldValue(final int position, final Requirement requirement) {
         switch (position) {
         case 0:
-            return requirement.getId();
+            return requirement.getName();
         case 1:
             return requirement.getVersion();
         case 2:

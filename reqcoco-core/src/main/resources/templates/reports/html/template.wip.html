@@ -131,7 +131,7 @@ rect:hover {
                 data-click-to-select="true" data-single-select="false">
                 <thead>
                     <tr>
-                        <th data-sortable="true" data-halign="center" data-align="center">Id</th>
+                        <th data-sortable="true" data-halign="center" data-align="center">Name</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-cell-style="cellVersionStatusStyle">Version</th>
                         <th data-halign="center" data-align="center">Revision</th>
                         <th data-halign="center" data-align="left">Short Description</th>
@@ -148,7 +148,7 @@ rect:hover {
                 <tbody>
                     <#list requirements as req> <!-- ${req_index + 1} -->
                     <tr>
-                        <td>${req.id}</td>
+                        <td>${req.name}</td>
                         <#if req.version == "N/A">
                             <td><span class="glyphicon glyphicon-question-sign"></span></td>
                         <#else>
