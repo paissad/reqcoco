@@ -16,6 +16,6 @@ public class RequirementEntity extends Requirement implements GenericEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long              id;
 
 }
