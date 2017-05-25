@@ -121,7 +121,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
 
                 final Sheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName("Version " + version));
 
-                sheet.setZoom(150);
+                sheet.setZoom(100);
 
                 final PrintSetup ps = sheet.getPrintSetup();
 
