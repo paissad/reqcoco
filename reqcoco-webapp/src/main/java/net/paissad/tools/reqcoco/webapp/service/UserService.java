@@ -6,7 +6,7 @@ import net.paissad.tools.reqcoco.webapp.model.User;
 
 public interface UserService extends PagingAndSortingRepository<User, Long> {
 
-    User findByName(final String name);
+    User findByLogin(final String login);
 
     User findByEmail(final String email);
 

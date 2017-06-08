@@ -13,6 +13,10 @@
 
   <name>ReqCoCo Web App</name>
 
+  <properties>
+    <spring.module.version>1.5.3.RELEASE</spring.module.version>
+  </properties>
+
   <build>
     <finalName>reqcoco</finalName>
 
@@ -27,7 +31,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>1.5.3.RELEASE</version>
+        <version>${spring.module.version}</version>
       </plugin>
     </plugins>
   </build>
@@ -45,12 +49,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <version>1.5.3.RELEASE</version>
+      <version>${spring.module.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>1.5.3.RELEASE</version>
+      <version>${spring.module.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -61,7 +65,33 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-rest</artifactId>
-      <version>1.5.3.RELEASE</version>
+      <version>${spring.module.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>2.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>2.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <version>${spring.module.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <version>${spring.module.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator-docs</artifactId>
+      <version>${spring.module.version}</version>
     </dependency>
   </dependencies>
 
