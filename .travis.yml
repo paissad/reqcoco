@@ -22,4 +22,4 @@ addons:
     branches:
       - master
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - mvn clean jacoco:prepare-agent jacoco:report install sonar:sonar coveralls:report
