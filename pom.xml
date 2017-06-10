@@ -135,9 +135,9 @@
           <version>0.7.9</version>
           <executions>
             <execution>
+              <id>exec-jacoco</id>
               <goals>
                 <goal>prepare-agent</goal>
-                <goal>report</goal>
               </goals>
             </execution>
           </executions>
@@ -148,6 +148,7 @@
           <version>3.3.0.603</version>
           <executions>
             <execution>
+              <id>exec-sonar</id>
               <goals>
                 <goal>sonar</goal>
               </goals>
@@ -160,6 +161,7 @@
           <version>4.3.0</version>
           <executions>
             <execution>
+              <id>exec-coveralls</id>
               <goals>
                 <goal>report</goal>
               </goals>
