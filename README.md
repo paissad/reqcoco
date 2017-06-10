@@ -4,11 +4,11 @@
 
 ----------
 
-**Chat Room** [![Join the chat at https://gitter.im/reqcoco/Lobby](https://badges.gitter.im/reqcoco/Lobby.svg)](https://gitter.im/reqcoco/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-**Build Status** <a target="_blank" href ="https://travis-ci.org/paissad/reqcoco"><img src="https://travis-ci.org/paissad/reqcoco.svg?branch=master" /></a>
-
-**Code Coverage** [![Coverage Status](https://coveralls.io/repos/github/paissad/reqcoco/badge.svg?branch=master)](https://coveralls.io/github/paissad/reqcoco?branch=master)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
+[![Stories in progress](https://badge.waffle.io/paissad/reqcoco.png?label=ready&title=Issues%20In%20Progress)](http://waffle.io/paissad/reqcoco) 
+[![Join the chat at https://gitter.im/reqcoco/Lobby](https://badges.gitter.im/reqcoco/Lobby.svg)](https://gitter.im/reqcoco/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<a target="_blank" href ="https://travis-ci.org/paissad/reqcoco"><img src="https://travis-ci.org/paissad/reqcoco.svg?branch=master"/></a>
+[![Coverage Status](https://coveralls.io/repos/github/paissad/reqcoco/badge.svg?branch=master)](https://coveralls.io/github/paissad/reqcoco?branch=master)
 
 **Quality Gate** <a target="_blank" href="https://sonarqube.com/dashboard?id=net.paissad.tools.reqcoco%3Areqcoco-parent"><img alt="ReqCoCo Quality Gate" src="https://www.sonarqube.org/assets/logo-31ad3115b1b4b120f3d1efd63e6b13ac9f1f89437f0cf6881cc4d8b5603a52b4.svg" width="100px"></a>
 
