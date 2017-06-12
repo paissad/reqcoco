@@ -2,8 +2,9 @@ package net.paissad.tools.reqcoco.webapp;
 
 import java.util.Collections;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
 import springfox.documentation.builders.PathSelectors;
@@ -16,12 +17,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-public class ReqApplication {
-
+public class ReqApplication extends SpringBootServletInitializer {
+    
     public static void main(String[] args) {
-        SpringApplication.run(ReqApplication.class, args);
+        configureApplication(new SpringApplicationBuilder()).run(args);
     }
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return configureApplication(builder);
+    }
+
+    private static SpringApplicationBuilder configureApplication(final SpringApplicationBuilder builder) {
+        builder.sources(ReqApplication.class);
+        return builder;
+    }
+    
     @Bean
     public Docket swaggerSettings() {
         return new Docket(DocumentationType.SWAGGER_2)

@@ -14,14 +14,16 @@
   <name>ReqCoCo Web App</name>
 
   <properties>
-    <spring.module.version>1.5.3.RELEASE</spring.module.version>
+    <spring.module.version>1.5.4.RELEASE</spring.module.version>
   </properties>
 
   <build>
+
     <finalName>reqcoco</finalName>
 
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
@@ -32,6 +34,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring.module.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -58,9 +67,20 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <version>${spring.module.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>1.4.195</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>6.0.6</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -92,6 +112,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-docs</artifactId>
       <version>${spring.module.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>${spring.module.version}</version>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 
