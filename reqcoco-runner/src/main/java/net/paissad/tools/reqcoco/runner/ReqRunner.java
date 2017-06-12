@@ -181,17 +181,17 @@ public class ReqRunner {
 
             LOGGER.info("{} Archive all reports into a single .zip file : {}", LOGGER_PREFIX_TAG, zipFilePath);
 
-            Path temporaryZipFile = null;
+            File temporaryZipFile = null;
             try {
-                temporaryZipFile = Files.createTempFile("reqcoco", "zip");
+                temporaryZipFile = Files.createTempFile("reqcoco", "zip").toFile();
                 FileUtils.deleteQuietly(zipFilePath.toFile()); // Remove the eventually already existing ZIP file before packing the folder.
-                ZipUtil.pack(this.getReportOutputDirPath(getOptions()).toFile(), temporaryZipFile.toFile());
-                Files.move(temporaryZipFile, zipFilePath);
+                ZipUtil.pack(this.getReportOutputDirPath(getOptions()).toFile(), temporaryZipFile);
+                Files.move(temporaryZipFile.toPath(), zipFilePath);
 
             } catch (Exception e) {
                 throw new ReqReportBuilderException("Error while creating the report zip file", e);
             } finally {
-                FileUtils.deleteQuietly(temporaryZipFile.toFile());
+                FileUtils.deleteQuietly(temporaryZipFile);
             }
         }
     }
