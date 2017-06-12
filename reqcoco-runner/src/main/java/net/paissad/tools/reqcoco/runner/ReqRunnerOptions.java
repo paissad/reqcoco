@@ -54,6 +54,8 @@ public class ReqRunnerOptions {
 
     public static final String  CONFIG_REPORT_EXCEL           = "report.excel";
 
+    public static final String  CONFIG_REPORT_ZIP             = "report.zip";
+
     public static final String  CONFIG_CREATE_RAW_REPORT_FILE = "create.raw.report.file";
 
     private String              logLevel;
@@ -73,6 +75,8 @@ public class ReqRunnerOptions {
     private boolean             reportHtml;
 
     private boolean             reportExcel;
+
+    private boolean             reportZip;
 
     private boolean             createRawReportFile;
 
@@ -152,6 +156,7 @@ public class ReqRunnerOptions {
         this.setReportConsole(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_CONSOLE, Boolean.FALSE.toString())));
         this.setReportHtml(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_HTML, Boolean.TRUE.toString())));
         this.setReportExcel(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_EXCEL, Boolean.TRUE.toString())));
+        this.setReportZip(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_ZIP, Boolean.TRUE.toString())));
         this.setCreateRawReportFile(Boolean.parseBoolean(props.getProperty(CONFIG_CREATE_RAW_REPORT_FILE, Boolean.FALSE.toString())));
     }
 

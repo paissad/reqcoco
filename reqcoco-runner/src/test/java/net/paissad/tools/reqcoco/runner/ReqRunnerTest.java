@@ -61,6 +61,8 @@ public class ReqRunnerTest {
 		Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
 		Assert.assertEquals("TRACE", runner.getOptions().getLogLevel());
 		Assert.assertTrue("The HTML report directory must exist", Files.exists(Paths.get(this.reportOutputDirPath.toString(), "html")));
+        Assert.assertTrue("The ZIP file must exit by default",
+                Files.exists(Paths.get(this.reportOutputDirPath.toString(), AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + ".zip")));
         Assert.assertFalse("The raw report coverage file must not be created by default",
                 Files.exists(Paths.get(this.reportOutputDirPath.toString(), AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + ".xml")));
 	}
@@ -105,6 +107,16 @@ public class ReqRunnerTest {
         runner.getOptions().setReportExcel(false);
         Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
         Assert.assertTrue("The EXCEL report directory should not exist", Files.notExists(Paths.get(this.reportOutputDirPath.toString(), "excel")));
+    }
+
+    @Test
+    public void testMainNoZipReport() throws URISyntaxException {
+        List<String> args = getSetupArgs(null);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
+        runner.getOptions().setReportZip(false);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
+        Assert.assertTrue("The ZIP report file should not exist",
+                Files.notExists(Paths.get(this.reportOutputDirPath.toString(), AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + ".zip")));
     }
 
     @Test
