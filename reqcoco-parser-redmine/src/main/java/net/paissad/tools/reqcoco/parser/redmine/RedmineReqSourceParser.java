@@ -153,7 +153,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 				declaredRequirements.add(req);
 			});
 
-			LOGGER.info("{} requirements were built from Redmine issues", declaredRequirements.size());
+			LOGGER.info("{} requirements have been built from Redmine issues", declaredRequirements.size());
 			return declaredRequirements;
 
 		} catch (NullPointerException | ClassCastException e) {
@@ -162,7 +162,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 			throw new ReqSourceParserException(errMsg, e);
 
 		} catch (RedmineException e) {
-			String errMsg = "Error while retrieving redmine issues : " + e.getMessage();
+			String errMsg = "Error while retrieving Redmine issues : " + e.getMessage();
 			LOGGER.error(errMsg, e);
 			throw new ReqSourceParserException(errMsg, e);
 		}
@@ -196,12 +196,12 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 		final String reqVersion = (issueVersion != null) ? issueVersion.getName() : Requirement.VERSION_UNKNOWN;
 		final String revision = issueSubjectMustContainTag ? this.getRevisionFromSubject(issue, tagConfig) : null;
 		final Requirement req = new Requirement(issue.getId().toString(), reqVersion, revision);
-		req.setShortDescription(issue.getSubject());
+		req.setShortDescription(ReqTagUtil.stripTagAndTrim(issue.getSubject(), tagConfig));
 		req.setFullDescription(issue.getDescription());
 		req.setLink(rootUri.toString().replaceAll("/+$", "") + "/issues/" + issue.getId());
 		return req;
 	}
-	
+
 	private String getRevisionFromSubject(final Issue issue, final ReqDeclTagConfig tagConfig) {
 	    return ReqTagUtil.extractFieldValue(issue.getSubject(), tagConfig.getRevisionRegex(), 1);
 	}
