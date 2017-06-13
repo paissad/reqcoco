@@ -35,6 +35,7 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
         mojo.execute();
         Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
         Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.zip").toFile().exists());
     }
 
     @Test
@@ -45,6 +46,7 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
         mojo.execute();
         Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
         Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.zip").toFile().exists());
     }
 
     @Test
@@ -55,6 +57,18 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
         mojo.execute();
         Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
         Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.zip").toFile().exists());
+    }
+
+    @Test
+    public void testExecuteNoZipReport() throws Exception {
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/no-zip-report-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
+        mojo.execute();
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+        Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.zip").toFile().exists());
     }
 
     @Test
@@ -65,8 +79,10 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
         mojo.execute();
         Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
         Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
+        Assert.assertFalse(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.zip").toFile().exists());
         Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/new_report_name.xlsx").toFile().exists());
         Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/new_report_name.html").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "new_report_name.zip").toFile().exists());
     }
 
     @Test
@@ -77,6 +93,7 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
         mojo.execute();
         Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/html/REPORT-requirements.html").toFile().exists());
         Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "/excel/REPORT-requirements.xlsx").toFile().exists());
+        Assert.assertTrue(Paths.get(hardcoded_outputdir.toString(), "REPORT-requirements.zip").toFile().exists());
     }
 
     @Test

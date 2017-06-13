@@ -23,6 +23,7 @@
           <testCodePath>${basedir}/src/test/java</testCodePath>
           <htmlreport>true</htmlreport>
           <excelreport>false</excelreport>
+          <zipreport>true</zipreport>
           <project implementation="net.paissad.tools.reqcoco.maven.plugin.stub.ReqCoCoProjectStub" />
         </configuration>
         <executions>

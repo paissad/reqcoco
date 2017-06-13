@@ -69,6 +69,12 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
     private boolean       excelreport;
 
     /**
+     * Whether or not to generate the ZIP report.
+     */
+    @Parameter(property = "reqcoco.report.zip", required = false, defaultValue = "true")
+    private boolean       zipreport;
+
+    /**
      * The report name. If not specified, the default value will be used. The default value is hold by the ReqCoCo Core project, not by this Maven
      * plugin.
      */
@@ -86,17 +92,18 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
     public void execute() throws MojoExecutionException {
 
         String format = "############# %-15s : %s";
-        getLog().debug("======================= ReqCoCo parameters =====================================");
-        getLog().debug(String.format(format, "config", this.config));
-        getLog().debug(String.format(format, "sourcetype", this.sourcetype));
-        getLog().debug(String.format(format, "sourcelocation", this.sourcelocation));
-        getLog().debug(String.format(format, "outputdir", this.outputdir));
-        getLog().debug(String.format(format, "sourceCodePath", this.sourceCodePath));
-        getLog().debug(String.format(format, "testCodePath", this.testCodePath));
-        getLog().debug(String.format(format, "htmlreport", this.htmlreport));
-        getLog().debug(String.format(format, "excelreport", this.excelreport));
-        getLog().debug(String.format(format, "reportname", this.reportname));
-        getLog().debug("================================================================================");
+        getLog().info("======================= ReqCoCo Parameters =====================================");
+        getLog().info(String.format(format, "config", this.config));
+        getLog().info(String.format(format, "sourcetype", this.sourcetype));
+        getLog().info(String.format(format, "sourcelocation", this.sourcelocation));
+        getLog().info(String.format(format, "outputdir", this.outputdir));
+        getLog().info(String.format(format, "sourceCodePath", this.sourceCodePath));
+        getLog().info(String.format(format, "testCodePath", this.testCodePath));
+        getLog().info(String.format(format, "htmlreport", this.htmlreport));
+        getLog().info(String.format(format, "excelreport", this.excelreport));
+        getLog().info(String.format(format, "zipreport", this.zipreport));
+        getLog().info(String.format(format, "reportname", this.reportname));
+        getLog().info("================================================================================");
 
         try {
 
@@ -132,6 +139,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
                 options.setReportConsole(false);
                 options.setReportHtml(this.htmlreport);
                 options.setReportExcel(this.excelreport);
+                options.setReportZip(this.zipreport);
 
                 final int generateReportsStatus = reqRunner.generateReports();
 
