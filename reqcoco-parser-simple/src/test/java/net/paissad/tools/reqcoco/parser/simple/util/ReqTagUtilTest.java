@@ -39,6 +39,6 @@ public class ReqTagUtilTest {
 
     @Test
     public void testStripTagAndTrim() {
-        Assert.assertEquals("foobar", ReqTagUtil.stripTagAndTrim("@Req(key=val) foobar  ", new SimpleReqDeclTagConfig()));
+        Assert.assertEquals("foobar", ReqTagUtil.stripTagAndTrim("  @Req(key=val) foobar  ", new SimpleReqDeclTagConfig()));
     }
 }

@@ -218,7 +218,7 @@ public class RedmineReqSourceParserTest {
 
 		this.stubUri = new URI("http://localhost:3000/for_sure_i_dont_exist");
 		thrown.expect(ReqSourceParserException.class);
-		thrown.expectMessage("Error while retrieving redmine issues : ");
+		thrown.expectMessage("Error while retrieving Redmine issues : ");
 		thrown.expectCause(Is.isA(RedmineException.class));
 		this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 	}
