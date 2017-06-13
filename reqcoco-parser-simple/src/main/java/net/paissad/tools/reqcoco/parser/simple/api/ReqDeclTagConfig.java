@@ -10,7 +10,7 @@ public interface ReqDeclTagConfig {
 	/**
 	 * <strong>IMPORTANT : </strong> The regex should be defined so that <code>Matcher.group(1)</code> should return the value.
 	 * 
-	 * @return The regular expression rule to use for extracting a requirement tag from the code.
+	 * @return The regular expression rule to use for extracting a requirement tag definition.
 	 */
 	String getCompleteRegex();
 
