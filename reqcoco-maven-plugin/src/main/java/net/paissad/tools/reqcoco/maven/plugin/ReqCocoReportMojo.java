@@ -77,10 +77,9 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
     private boolean       zipreport;
 
     /**
-     * The report name. If not specified, the default value will be used. The default value is hold by the ReqCoCo Core project, not by this Maven
-     * plugin.
+     * The name to use for all report files generated.
      */
-    @Parameter(property = "reqcoco.report.name", required = false)
+    @Parameter(property = "reqcoco.report.name", required = false, defaultValue = "${project.artifactId}-${project.version}-requirements-coverage")
     private String        reportname;
 
     @Parameter(readonly = true, required = false, defaultValue = "${project}")

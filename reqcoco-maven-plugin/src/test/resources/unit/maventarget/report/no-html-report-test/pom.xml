@@ -24,6 +24,10 @@
           <htmlreport>false</htmlreport>
           <excelreport>true</excelreport>
           <zipreport>true</zipreport>
+          <!-- For some reason i don't figure out yet, the name/property resolution is not done during the run of the unit tests -->
+          <!-- For that reason, the dirty current workaround was to hardcode (again) the name of the report rather than expecting the injection to be done correctly -->
+          <!-- TODO : This really needs to be fixed !!! -->
+          <reportname>reqcoco-maven-plugin-test-9.8.7.6-requirements-coverage</reportname>
           <project implementation="net.paissad.tools.reqcoco.maven.plugin.stub.ReqCoCoProjectStub" />
         </configuration>
         <executions>
