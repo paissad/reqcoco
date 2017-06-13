@@ -21,6 +21,12 @@ import net.paissad.tools.reqcoco.runner.ReqSourceType;
 public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 
     /**
+     * Whether or not to skip the execution of this plugin.
+     */
+    @Parameter(property = "reqcoco.skip", required = false, defaultValue = "false")
+    private boolean       skip;
+
+    /**
      * The configuration file to use for building the report.
      */
     @Parameter(property = "reqcoco.report.config", required = true, defaultValue = "${basedir}${file.separator}reqcoco.properties")
@@ -91,6 +97,11 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
      * @see org.apache.maven.plugin.Mojo#execute()
      */
     public void execute() throws MojoExecutionException {
+        
+        if (skip) {
+           getLog().info("Skipping the generation or requirements coverage reports");
+           return;
+        }
 
         String format = "############# %-15s : %s";
         getLog().info("======================= ReqCoCo Parameters =====================================");

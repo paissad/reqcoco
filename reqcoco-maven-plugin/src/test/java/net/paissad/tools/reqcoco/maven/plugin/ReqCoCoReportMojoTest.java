@@ -86,6 +86,15 @@ public class ReqCoCoReportMojoTest extends AbstractMojoTestCase {
     }
 
     @Test
+    public void testExecuteSkip() throws Exception {
+        final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/skip-execution-test/pom.xml";
+        final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
+        Assert.assertNotNull(mojo);
+        mojo.execute();
+        Assert.assertFalse(Paths.get(hardcoded_outputdir.toString()).toFile().exists());
+    }
+    
+    @Test
     public void testExecuteUnhandledProperties() throws Exception {
         final String pluginPom = getBasedir() + "/src/test/resources/unit/maventarget/report/unhandled-properties-test/pom.xml";
         final ReqCocoReportMojo mojo = (ReqCocoReportMojo) lookupMojo("report", pluginPom);
