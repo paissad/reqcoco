@@ -27,13 +27,15 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
     private String        config;
 
     /**
-     * The type of the source which contains the declarations of the requirements.
+     * The type of the source which contains the declarations of the requirements.<br>
+     * Possible values are 'FILE | DOCX | XLSX | REDMINE'.
      */
     @Parameter(property = "reqcoco.report.source.type", required = true, defaultValue = "FILE")
     private ReqSourceType sourcetype;
 
     /**
-     * The location where all requirements are declared.
+     * The location where all requirements are declared. It either can be a Microsoft Word document file (.docx), or Excel file (.xlsx), or Redmine,
+     * or a simple regular file, etc ...
      */
     @Parameter(property = "reqcoco.report.source.location", required = true)
     private String        sourcelocation;
@@ -51,7 +53,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
     private String        testCodePath;
 
     /**
-     * The output directory where to store the reports.
+     * The output directory where to store all the generated reports.
      */
     @Parameter(property = "reqcoco.report.outputdir", required = true, defaultValue = "${project.build.directory}${file.separator}reqcoco-reports")
     private File          outputdir;
@@ -69,7 +71,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
     private boolean       excelreport;
 
     /**
-     * Whether or not to generate the ZIP report.
+     * Whether or not to generate the ZIP report which is only an aggregation of all other reports.
      */
     @Parameter(property = "reqcoco.report.zip", required = false, defaultValue = "true")
     private boolean       zipreport;
