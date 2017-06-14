@@ -4,7 +4,7 @@
 
   <groupId>net.paissad.tools.reqcoco</groupId>
   <artifactId>reqcoco-parent</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>ReqCoCo</name>
@@ -373,7 +373,6 @@
     <module>reqcoco-parser-docx</module>
     <module>reqcoco-parser-xlsx</module>
     <module>reqcoco-distribution</module>
-    <module>reqcoco-webapp</module>
   </modules>
 
 </project>
