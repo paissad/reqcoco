@@ -4,7 +4,7 @@
   <parent>
     <groupId>net.paissad.tools.reqcoco</groupId>
     <artifactId>reqcoco-parent</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
   </parent>
 
   <artifactId>reqcoco-core</artifactId>
@@ -15,7 +15,7 @@
     <dependency>
       <groupId>net.paissad.tools.reqcoco</groupId>
       <artifactId>reqcoco-api</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
