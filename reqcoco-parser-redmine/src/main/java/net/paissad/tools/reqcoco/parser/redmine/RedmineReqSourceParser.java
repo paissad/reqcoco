@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.taskadapter.redmineapi.RedmineException;
 import com.taskadapter.redmineapi.RedmineManagerFactory;
+import com.taskadapter.redmineapi.bean.CustomField;
 import com.taskadapter.redmineapi.bean.Issue;
 import com.taskadapter.redmineapi.bean.Version;
 import com.taskadapter.redmineapi.internal.Transport;
@@ -34,212 +35,249 @@ import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
 public class RedmineReqSourceParser implements ReqSourceParser {
 
-	private static final Logger	LOGGER									= LoggerFactory.getLogger(RedmineReqSourceParser.class);
+    private static final Logger LOGGER                                   = LoggerFactory.getLogger(RedmineReqSourceParser.class);
 
-	public static final String	OPTION_PROJECT_KEY						= "redmine.project.id";
+    public static final String  OPTION_PROJECT_KEY                       = "redmine.project.id";
 
-	public static final String	OPTION_INCLUDE_CHILDREN					= "redmine.include.children";
+    public static final String  OPTION_INCLUDE_CHILDREN                  = "redmine.include.children";
 
-	public static final String	OPTION_INCLUDE_RELATIONS				= "redmine.include.relations";
+    public static final String  OPTION_INCLUDE_RELATIONS                 = "redmine.include.relations";
 
-	public static final String	OPTION_TARGET_VERSIONS					= "redmine.target.versions";
+    public static final String  OPTION_TARGET_VERSIONS                   = "redmine.target.versions";
 
-	public static final String	OPTION_TRACKER_FILTER					= "redmine.tracker.filter";
+    public static final String  OPTION_TRACKER_FILTER                    = "redmine.tracker.filter";
 
-	public static final String	OPTION_STATUS_FILTER					= "redmine.status.filter";
+    public static final String  OPTION_STATUS_FILTER                     = "redmine.status.filter";
 
-	public static final String	OPTION_AUTH_USER_NAME					= "redmine.auth.username";
+    public static final String  OPTION_AUTH_USER_NAME                    = "redmine.auth.username";
 
-	public static final String	OPTION_AUTH_USER_PASS					= "redmine.auth.password";
+    public static final String  OPTION_AUTH_USER_PASS                    = "redmine.auth.password";
 
-	public static final String	OPTION_AUTH_API_KEY						= "redmine.auth.apikey";
+    public static final String  OPTION_AUTH_API_KEY                      = "redmine.auth.apikey";
 
-	public static final String	OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT	= "redmine.req.tag.required";
+    public static final String  OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT   = "redmine.req.tag.required";
 
-	public static final String	OPTION_EXTRA_PROPERTIES					= "redmine.extra.properties";
+    public static final String  OPTION_REQUIREMENT_DECL_CUSTOM_FIELD     = "redmine.req.declaration.customfield";
 
-	public static final boolean	DEFAULT_VALUE_INCLUDE_CHILDREN			= true;
+    public static final String  OPTION_REQUIREMENT_REVISION_CUSTOM_FIELD = "redmine.req.revision.customfield";
 
-	public static final boolean	DEFAULT_VALUE_INCLUDE_RELATIONS			= true;
+    public static final String  OPTION_EXTRA_PROPERTIES                  = "redmine.extra.properties";
 
-	public static final String	DEFAULT_VALUE_STATUS_FILTER				= "*";
+    public static final boolean DEFAULT_VALUE_INCLUDE_CHILDREN           = true;
 
-	public static final boolean	DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE	= true;
+    public static final boolean DEFAULT_VALUE_INCLUDE_RELATIONS          = true;
 
-	@Override
-	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options)
-	        throws ReqSourceParserException {
+    public static final String  DEFAULT_VALUE_STATUS_FILTER              = "*";
 
-		if (uri == null) {
-			throw new ReqSourceParserException("The root URL of Redmine cannot be null !", null);
-		}
+    public static final boolean DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE   = true;
 
-		if (options == null || options.isEmpty()) {
-			throw new ReqSourceParserException("Non null and non empty options must be passed in order to parse a Redmine project", null);
-		}
+    @Override
+    public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options) throws ReqSourceParserException {
 
-		try {
+        if (uri == null) {
+            throw new ReqSourceParserException("The root URL of Redmine cannot be null !", null);
+        }
 
-			// Retrieve options
-			final String projectKey = (String) options.get(OPTION_PROJECT_KEY);
-			final boolean includeChildren = (Boolean) options.getOrDefault(OPTION_INCLUDE_CHILDREN, DEFAULT_VALUE_INCLUDE_CHILDREN);
-			final boolean includeRelations = (Boolean) options.getOrDefault(OPTION_INCLUDE_RELATIONS, DEFAULT_VALUE_INCLUDE_RELATIONS);
+        if (options == null || options.isEmpty()) {
+            throw new ReqSourceParserException("Non null and non empty options must be passed in order to parse a Redmine project", null);
+        }
 
-			final String statusFilter = (String) options.getOrDefault(OPTION_STATUS_FILTER, DEFAULT_VALUE_STATUS_FILTER);
-			final String trackerFilter = (String) options.get(OPTION_TRACKER_FILTER);
+        try {
 
-			@SuppressWarnings("unchecked")
-			final Collection<String> targetVersions = (Collection<String>) options.getOrDefault(OPTION_TARGET_VERSIONS,
-			        getDefautValueForTargetVersions());
+            // Retrieve options
+            final String projectKey = (String) options.get(OPTION_PROJECT_KEY);
+            final boolean includeChildren = (Boolean) options.getOrDefault(OPTION_INCLUDE_CHILDREN, DEFAULT_VALUE_INCLUDE_CHILDREN);
+            final boolean includeRelations = (Boolean) options.getOrDefault(OPTION_INCLUDE_RELATIONS, DEFAULT_VALUE_INCLUDE_RELATIONS);
 
-			final String authUsername = (String) options.get(OPTION_AUTH_USER_NAME);
-			final String authPassword = (String) options.get(OPTION_AUTH_USER_PASS);
-			final String authApiAccessKey = (String) options.get(OPTION_AUTH_API_KEY);
+            final String statusFilter = (String) options.getOrDefault(OPTION_STATUS_FILTER, DEFAULT_VALUE_STATUS_FILTER);
+            final String trackerFilter = (String) options.get(OPTION_TRACKER_FILTER);
 
-			final boolean reqTagMustBePresent = (Boolean) options.getOrDefault(OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, true);
+            @SuppressWarnings("unchecked")
+            final Collection<String> targetVersions = (Collection<String>) options.getOrDefault(OPTION_TARGET_VERSIONS, getDefautValueForTargetVersions());
 
-			final Properties extraProperties = (Properties) options.getOrDefault(OPTION_EXTRA_PROPERTIES, new Properties());
+            final String authUsername = (String) options.get(OPTION_AUTH_USER_NAME);
+            final String authPassword = (String) options.get(OPTION_AUTH_USER_PASS);
+            final String authApiAccessKey = (String) options.get(OPTION_AUTH_API_KEY);
 
-			// Check that all options meet minimum requirements
-			if (StringUtils.isBlank(projectKey)) {
-				throw new ReqSourceParserException("A non null project id or name must be provided for parsing requirements from Redmine", null);
-			}
+            final boolean reqTagMustBePresent = (Boolean) options.getOrDefault(OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, true);
+            final String customFieldDecl = (String) options.get(OPTION_REQUIREMENT_DECL_CUSTOM_FIELD);
+            final String customFieldRevision = (String) options.get(OPTION_REQUIREMENT_REVISION_CUSTOM_FIELD);
 
-			LOGGER.info("Retrieving Redmine issues ...");
+            final Properties extraProperties = (Properties) options.getOrDefault(OPTION_EXTRA_PROPERTIES, new Properties());
 
-			final Transport transport = buildTransport(uri.toString(), authApiAccessKey, authUsername, authPassword);
+            // Check that all options meet minimum requirements
+            if (StringUtils.isBlank(projectKey)) {
+                throw new ReqSourceParserException("A non null project id or name must be provided for parsing requirements from Redmine", null);
+            }
 
-			final List<String> includes = new ArrayList<>();
-			if (includeChildren) {
-				LOGGER.debug("Include Redmine children issues");
-				includes.add("children");
-			}
-			if (includeRelations) {
-				LOGGER.debug("Includes Redmine related issues");
-				includes.add("relations");
-			}
+            LOGGER.info("Retrieving Redmine issues ...");
 
-			LOGGER.debug("Building the API request parameters to pass to Redmine");
-			final List<NameValuePair> parameters = new ArrayList<>();
+            final Transport transport = buildTransport(uri.toString(), authApiAccessKey, authUsername, authPassword);
 
-			parameters.add(new BasicNameValuePair("project_id", projectKey));
+            final List<String> includes = new ArrayList<>();
+            if (includeChildren) {
+                LOGGER.debug("Include Redmine children issues");
+                includes.add("children");
+            }
+            if (includeRelations) {
+                LOGGER.debug("Includes Redmine related issues");
+                includes.add("relations");
+            }
 
-			if (!StringUtils.isBlank(trackerFilter)) {
-				parameters.add(new BasicNameValuePair("tracker_id", trackerFilter));
-			}
+            LOGGER.debug("Building the API request parameters to pass to Redmine");
+            final List<NameValuePair> parameters = new ArrayList<>();
 
-			parameters.add(new BasicNameValuePair("status_id", statusFilter));
+            parameters.add(new BasicNameValuePair("project_id", projectKey));
 
-			if (!includes.isEmpty()) {
-				parameters.add(new BasicNameValuePair("include", includes.stream().collect(Collectors.joining(","))));
-			}
+            if (!StringUtils.isBlank(trackerFilter)) {
+                parameters.add(new BasicNameValuePair("tracker_id", trackerFilter));
+            }
 
-			if (!extraProperties.isEmpty()) {
-				extraProperties.keySet().stream().map(Object::toString)
-				        .forEach(key -> parameters.add(new BasicNameValuePair(key, extraProperties.getProperty(key))));
-			}
+            parameters.add(new BasicNameValuePair("status_id", statusFilter));
 
-			LOGGER.info("Making HTTP request to Redmine API");
+            if (!includes.isEmpty()) {
+                parameters.add(new BasicNameValuePair("include", includes.stream().collect(Collectors.joining(","))));
+            }
 
-			final List<Issue> issues = Collections.synchronizedList(transport.getObjectsList(Issue.class, parameters));
+            if (!extraProperties.isEmpty()) {
+                extraProperties.keySet().stream().map(Object::toString).forEach(key -> parameters.add(new BasicNameValuePair(key, extraProperties.getProperty(key))));
+            }
 
-			final Collection<Requirement> declaredRequirements = Collections.synchronizedList(new ArrayList<>());
+            LOGGER.info("Making HTTP request to Redmine API");
 
-			final Predicate<Issue> reqIssuePredicate = new IssueMatchPredicate(tagConfig, reqTagMustBePresent, targetVersions);
+            final List<Issue> issues = Collections.synchronizedList(transport.getObjectsList(Issue.class, parameters));
 
-			LOGGER.info("Building requirements objects from Redmine issues");
-			issues.parallelStream().filter(reqIssuePredicate).forEach(issue -> {
-				final Requirement req = buildRequirementFromIssue(uri, issue, reqTagMustBePresent, tagConfig);
-				declaredRequirements.add(req);
-			});
+            final Collection<Requirement> declaredRequirements = Collections.synchronizedList(new ArrayList<>());
 
-			LOGGER.info("{} requirements have been built from Redmine issues", declaredRequirements.size());
-			return declaredRequirements;
+            final Predicate<Issue> reqIssuePredicate = new IssueMatchPredicate(tagConfig, reqTagMustBePresent, customFieldDecl, targetVersions);
 
-		} catch (NullPointerException | ClassCastException e) {
-			String errMsg = "Error either while retrieving options, or while processing the API result";
-			LOGGER.error(errMsg, e);
-			throw new ReqSourceParserException(errMsg, e);
+            LOGGER.info("Building requirements objects from Redmine issues");
+            issues.parallelStream().filter(reqIssuePredicate).forEach(issue -> {
+                final Requirement req = buildRequirementFromIssue(uri, issue, reqTagMustBePresent, customFieldRevision, tagConfig);
+                declaredRequirements.add(req);
+            });
 
-		} catch (RedmineException e) {
-			String errMsg = "Error while retrieving Redmine issues : " + e.getMessage();
-			LOGGER.error(errMsg, e);
-			throw new ReqSourceParserException(errMsg, e);
-		}
-	}
+            LOGGER.info("{} requirements have been built from Redmine issues", declaredRequirements.size());
+            return declaredRequirements;
 
-	private Transport buildTransport(final String uri, String authApiAccessKey, String authUsername, String authPassword) {
+        } catch (NullPointerException | ClassCastException e) {
+            String errMsg = "Error either while retrieving options, or while processing the API result";
+            LOGGER.error(errMsg, e);
+            throw new ReqSourceParserException(errMsg, e);
 
-		Transport transport;
+        } catch (RedmineException e) {
+            String errMsg = "Error while retrieving Redmine issues : " + e.getMessage();
+            LOGGER.error(errMsg, e);
+            throw new ReqSourceParserException(errMsg, e);
+        }
+    }
 
-		if (!StringUtils.isBlank(authApiAccessKey)) {
-			LOGGER.info("Prepare to log into Redmine '{}' by using API access key method", uri);
-			transport = new Transport(new URIConfigurator(uri, authApiAccessKey), RedmineManagerFactory.createDefaultHttpClient());
+    private Transport buildTransport(final String uri, String authApiAccessKey, String authUsername, String authPassword) {
 
-		} else if (!StringUtils.isBlank(authUsername)) {
-			LOGGER.info("Prepare to log into Redmine '{}' by using username/password method", uri);
-			transport = new Transport(new URIConfigurator(uri, null), RedmineManagerFactory.createDefaultHttpClient());
-			transport.setCredentials(authUsername, authPassword);
+        Transport transport;
 
-		} else {
-			LOGGER.info("Prepare to log into Redmine '{}' without authentication", uri);
-			transport = new Transport(new URIConfigurator(uri, null), RedmineManagerFactory.createDefaultHttpClient());
-			transport.setCredentials(null, null);
-		}
+        if (!StringUtils.isBlank(authApiAccessKey)) {
+            LOGGER.info("Prepare to log into Redmine '{}' by using API access key method", uri);
+            transport = new Transport(new URIConfigurator(uri, authApiAccessKey), RedmineManagerFactory.createDefaultHttpClient());
 
-		return transport;
-	}
+        } else if (!StringUtils.isBlank(authUsername)) {
+            LOGGER.info("Prepare to log into Redmine '{}' by using username/password method", uri);
+            transport = new Transport(new URIConfigurator(uri, null), RedmineManagerFactory.createDefaultHttpClient());
+            transport.setCredentials(authUsername, authPassword);
 
-    private Requirement buildRequirementFromIssue(final URI rootUri, final Issue issue, final boolean issueSubjectMustContainTag, final ReqDeclTagConfig tagConfig) {
+        } else {
+            LOGGER.info("Prepare to log into Redmine '{}' without authentication", uri);
+            transport = new Transport(new URIConfigurator(uri, null), RedmineManagerFactory.createDefaultHttpClient());
+            transport.setCredentials(null, null);
+        }
 
-		final Version issueVersion = issue.getTargetVersion();
-		final String reqVersion = (issueVersion != null) ? issueVersion.getName() : Requirement.VERSION_UNKNOWN;
-		final String revision = issueSubjectMustContainTag ? this.getRevisionFromSubject(issue, tagConfig) : null;
-		final Requirement req = new Requirement(issue.getId().toString(), reqVersion, revision);
-		req.setShortDescription(ReqTagUtil.stripTagAndTrim(issue.getSubject(), tagConfig));
-		req.setFullDescription(issue.getDescription());
-		req.setLink(rootUri.toString().replaceAll("/+$", "") + "/issues/" + issue.getId());
-		return req;
-	}
+        return transport;
+    }
 
-	private String getRevisionFromSubject(final Issue issue, final ReqDeclTagConfig tagConfig) {
-	    return ReqTagUtil.extractFieldValue(issue.getSubject(), tagConfig.getRevisionRegex(), 1);
-	}
+    private Requirement buildRequirementFromIssue(final URI rootUri, final Issue issue, final boolean issueSubjectMustContainTag, final String revisionFromCustomField,
+            final ReqDeclTagConfig tagConfig) {
 
-	public static Set<String> getDefautValueForTargetVersions() {
-		return new HashSet<>();
-	}
+        final Version issueVersion = issue.getTargetVersion();
+        final String reqVersion = (issueVersion != null) ? issueVersion.getName() : Requirement.VERSION_UNKNOWN;
+        String revision = null;
+        // The revision from the custom field takes precedence over the revision defined from the tag into the subject.
+        if (!StringUtils.isBlank(revisionFromCustomField)) {
+            revision = getRevisionFromCustomField(issue, revisionFromCustomField);
+        }
+        if (StringUtils.isBlank(revision)) {
+            revision = issueSubjectMustContainTag ? getRevisionFromSubject(issue, tagConfig) : null;
+        }
+        final Requirement req = new Requirement(issue.getId().toString(), reqVersion, revision);
+        req.setShortDescription(ReqTagUtil.stripTagAndTrim(issue.getSubject(), tagConfig));
+        req.setFullDescription(issue.getDescription());
+        req.setLink(rootUri.toString().replaceAll("/+$", "") + "/issues/" + issue.getId());
+        return req;
+    }
 
-	private static class IssueMatchPredicate implements Predicate<Issue> {
+    private static String getRevisionFromSubject(final Issue issue, final ReqDeclTagConfig tagConfig) {
+        return ReqTagUtil.extractFieldValue(issue.getSubject(), tagConfig.getRevisionRegex(), 1);
+    }
 
-		private final Pattern		reqTagPattern;
+    private static String getRevisionFromCustomField(final Issue issue, final String customFieldName) {
+        if (!StringUtils.isBlank(customFieldName)) {
+            final CustomField customField = issue.getCustomFieldByName(customFieldName);
+            return customField != null ? customField.getValue() : null;
+        } else {
+            return null;
+        }
+    }
 
-		private final boolean		subjectMustContainTag;
+    public static Set<String> getDefautValueForTargetVersions() {
+        return new HashSet<>();
+    }
 
-		private Collection<String>	versionsToMatch;
+    private static class IssueMatchPredicate implements Predicate<Issue> {
 
-		public IssueMatchPredicate(final ReqDeclTagConfig tagConfig, final boolean subjectMustContainTag, final Collection<String> versionsToMatch) {
-			this.reqTagPattern = Pattern.compile(tagConfig.getCompleteRegex());
-			this.subjectMustContainTag = subjectMustContainTag;
-			this.versionsToMatch = versionsToMatch;
-		}
+        private final Pattern      reqTagPattern;
 
-		@Override
-		public boolean test(final Issue issue) {
-			return isRequirementTagMatch(issue) && isVersionMatch(issue);
-		}
+        private final boolean      subjectMustContainTag;
 
-		private boolean isRequirementTagMatch(final Issue issue) {
-			return subjectMustContainTag ? this.reqTagPattern.matcher(issue.getSubject()).find() : true;
-		}
+        private final String       declarationCustomFieldName;
 
-		private boolean isVersionMatch(final Issue issue) {
-			if (versionsToMatch.isEmpty()) {
-				return true;
-			} else {
-				return issue.getTargetVersion() != null && this.versionsToMatch.contains(issue.getTargetVersion().getName());
-			}
-		}
-	}
+        private Collection<String> versionsToMatch;
+
+        public IssueMatchPredicate(final ReqDeclTagConfig tagConfig, final boolean subjectMustContainTag, final String declarationCustomFieldName,
+                final Collection<String> versionsToMatch) {
+            this.reqTagPattern = Pattern.compile(tagConfig.getCompleteRegex());
+            this.subjectMustContainTag = subjectMustContainTag;
+            this.declarationCustomFieldName = declarationCustomFieldName;
+            this.versionsToMatch = versionsToMatch;
+        }
+
+        @Override
+        public boolean test(final Issue issue) {
+            return (isRequirementTagMatch(issue) || isCustomFieldDeclarationTrue(issue)) && isVersionMatch(issue);
+        }
+
+        private boolean isRequirementTagMatch(final Issue issue) {
+            return subjectMustContainTag ? this.reqTagPattern.matcher(issue.getSubject()).find() : true;
+        }
+
+        /**
+         * @param issue - The issue to check.
+         * @return <code>true</code> if the issue has the specified custom field <strong>AND</strong> has the value <strong>true</strong>. The
+         *         verification is case insensitive.
+         */
+        private boolean isCustomFieldDeclarationTrue(final Issue issue) {
+            if (!StringUtils.isBlank(this.declarationCustomFieldName)) {
+                final CustomField customField = issue.getCustomFieldByName(this.declarationCustomFieldName);
+                return customField != null && Boolean.parseBoolean(customField.getValue());
+            }
+            return false;
+        }
+
+        private boolean isVersionMatch(final Issue issue) {
+            if (versionsToMatch.isEmpty()) {
+                return true;
+            } else {
+                return issue.getTargetVersion() != null && this.versionsToMatch.contains(issue.getTargetVersion().getName());
+            }
+        }
+    }
 
 }
