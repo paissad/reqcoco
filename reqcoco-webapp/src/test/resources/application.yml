@@ -1,7 +1,0 @@
-# https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#common-application-properties
-#spring.devtools.reload.trigger-file=.reloadtrigger
-
-reqcoco:
-  banner: false
-  server:
-    port: 4444
