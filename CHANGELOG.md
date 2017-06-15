@@ -11,7 +11,7 @@
  - Redmine : strip tag, if they are used, from the generated all reports (issue #4)
  - Maven plugin : set default report name to ${artifactId}-requirements-coverage (issue #2)
  - Maven plugin : add more documentation for 'sourceType' and other fields (issue #3)
- - The name of the fied containing the ID of the requirements is now named 'name' rather than 'id' (for all reports)
+ - The name of the field containing the ID of the requirements is now named 'name' rather than 'id' (for all reports)
  - Excel report : the zoom is set by default to 100% rather than 150%
 
 ## 1.0.0 - 2017-05-20
