@@ -4,6 +4,7 @@
 
 ----------
 
+[![Latest version](https://badge.fury.io/gh/paissad%2Freqcoco.svg)](https://badge.fury.io/gh/paissad%2Freqcoco)
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0)
 [![Stories in progress](https://badge.waffle.io/paissad/reqcoco.png?label=ready&title=Issues%20In%20Progress)](http://waffle.io/paissad/reqcoco) 
 [![Join the chat at https://gitter.im/reqcoco/Lobby](https://badges.gitter.im/reqcoco/Lobby.svg)](https://gitter.im/reqcoco/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
