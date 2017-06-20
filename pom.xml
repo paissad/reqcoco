@@ -4,7 +4,7 @@
 
   <groupId>net.paissad.tools.reqcoco</groupId>
   <artifactId>reqcoco-parent</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>ReqCoCo</name>
@@ -26,7 +26,7 @@
     <connection>scm:git:https://github.com/paissad/reqcoco.git</connection>
     <developerConnection>scm:git:https://github.com/paissad/reqcoco.git</developerConnection>
     <url>https://github.com/paissad/reqcoco.git</url>
-    <tag>v1.0.2</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <licenses>
