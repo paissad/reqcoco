@@ -19,7 +19,6 @@ import org.junit.rules.ExpectedException;
 import com.taskadapter.redmineapi.RedmineException;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.parser.redmine.RedmineReqSourceParser;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
@@ -222,6 +221,18 @@ public class RedmineReqSourceParserTest {
 		thrown.expectCause(Is.isA(RedmineException.class));
 		this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
 	}
+	
+    @Test
+    public void testIncompatibilityOfSubjectTagAndDeclarationCustomField() throws ReqSourceParserException {
+
+        RedmineTestUtil.assumeRedminePublicApiReachable();
+        this.options.put(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, true);
+        this.options.put(RedmineReqSourceParser.OPTION_REQUIREMENT_DECL_CUSTOM_FIELD, "someValue");
+        thrown.expect(ReqSourceParserException.class);
+        thrown.expectMessage("Unexpected error ==> You cannot set 'redmine.req.tag.required' to 'true' and use 'redmine.req.declaration.customfield' at the same time");
+        thrown.expectCause(Is.isA(IllegalStateException.class));
+        this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
+    }
 
 	private void initOptions() {
 		this.options = new HashMap<>();

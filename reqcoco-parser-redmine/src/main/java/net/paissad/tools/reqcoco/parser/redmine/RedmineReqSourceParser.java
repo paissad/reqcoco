@@ -69,7 +69,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
     public static final String  DEFAULT_VALUE_STATUS_FILTER              = "*";
 
-    public static final boolean DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE   = true;
+    public static final boolean DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE   = false;
 
     @Override
     public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options) throws ReqSourceParserException {
@@ -99,7 +99,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
             final String authPassword = (String) options.get(OPTION_AUTH_USER_PASS);
             final String authApiAccessKey = (String) options.get(OPTION_AUTH_API_KEY);
 
-            final boolean reqTagMustBePresent = (Boolean) options.getOrDefault(OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, true);
+            final boolean reqTagMustBePresent = (Boolean) options.getOrDefault(OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE);
             final String customFieldDecl = (String) options.get(OPTION_REQUIREMENT_DECL_CUSTOM_FIELD);
             final String customFieldRevision = (String) options.get(OPTION_REQUIREMENT_REVISION_CUSTOM_FIELD);
 
@@ -169,6 +169,11 @@ public class RedmineReqSourceParser implements ReqSourceParser {
             String errMsg = "Error while retrieving Redmine issues : " + e.getMessage();
             LOGGER.error(errMsg, e);
             throw new ReqSourceParserException(errMsg, e);
+
+        } catch (Exception e) {
+            String errMsg = "Unexpected error ==> " + e.getMessage();
+            LOGGER.error(errMsg, e);
+            throw new ReqSourceParserException(errMsg, e);
         }
     }
 
@@ -218,9 +223,9 @@ public class RedmineReqSourceParser implements ReqSourceParser {
         return ReqTagUtil.extractFieldValue(issue.getSubject(), tagConfig.getRevisionRegex(), 1);
     }
 
-    private static String getRevisionFromCustomField(final Issue issue, final String customFieldName) {
-        if (!StringUtils.isBlank(customFieldName)) {
-            final CustomField customField = issue.getCustomFieldByName(customFieldName);
+    private static String getRevisionFromCustomField(final Issue issue, final String revisionCustomFieldName) {
+        if (!StringUtils.isBlank(revisionCustomFieldName)) {
+            final CustomField customField = issue.getCustomFieldByName(revisionCustomFieldName);
             return customField != null ? customField.getValue() : null;
         } else {
             return null;
@@ -251,11 +256,35 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
         @Override
         public boolean test(final Issue issue) {
-            return (isRequirementTagMatch(issue) || isCustomFieldDeclarationTrue(issue)) && isVersionMatch(issue);
+            this.checkRules();
+            return isRequirement(issue) && isVersionMatch(issue);
         }
 
-        private boolean isRequirementTagMatch(final Issue issue) {
-            return subjectMustContainTag ? this.reqTagPattern.matcher(issue.getSubject()).find() : true;
+        /**
+         * @throws IllegalStateException If all expected rules are not respected.
+         */
+        private void checkRules() {
+            if (this.subjectMustContainTag && !StringUtils.isBlank(this.declarationCustomFieldName)) {
+                throw new IllegalStateException(
+                        "You cannot set '" + OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT + "' to 'true' and use '" + OPTION_REQUIREMENT_DECL_CUSTOM_FIELD + "' at the same time");
+            }
+        }
+
+        /**
+         * @param issue - The issue to check.
+         * @return <code>true</code> if the issue has to be considered as a requirement, <code>false</code> otherwise.
+         */
+        private boolean isRequirement(final Issue issue) {
+
+            if (this.subjectMustContainTag) {
+                return this.reqTagPattern.matcher(issue.getSubject()).find();
+
+            } else if (!StringUtils.isBlank(this.declarationCustomFieldName)) {
+                return isCustomFieldDeclarationTrue(issue);
+
+            } else {
+                return true; // All issues are considered as requirements
+            }
         }
 
         /**
@@ -264,11 +293,8 @@ public class RedmineReqSourceParser implements ReqSourceParser {
          *         verification is case insensitive.
          */
         private boolean isCustomFieldDeclarationTrue(final Issue issue) {
-            if (!StringUtils.isBlank(this.declarationCustomFieldName)) {
-                final CustomField customField = issue.getCustomFieldByName(this.declarationCustomFieldName);
-                return customField != null && Boolean.parseBoolean(customField.getValue());
-            }
-            return false;
+            final CustomField customField = issue.getCustomFieldByName(this.declarationCustomFieldName);
+            return customField != null && Boolean.parseBoolean(customField.getValue());
         }
 
         private boolean isVersionMatch(final Issue issue) {
