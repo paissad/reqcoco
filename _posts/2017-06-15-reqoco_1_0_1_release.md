@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ReqCoCo 1.0.1 is out!
-subtitle: new release of ReqCoCo
+subtitle: New release of ReqCoCo
 date: 2017-06-15 01:47:27
 author: paissad
 ---
@@ -11,6 +11,6 @@ Check the CHANGELOG [here][changelog].
 
 File all bugs/feature requests at [ReqCoCo GitHub Issue Page][gh-issues-page].
 
-[release-download-1.0.1]: https://github.com/paissad/reqcoco/releases/tag/reqcoco-1.0.1
+[release-download-1.0.1]: https://github.com/paissad/reqcoco/releases/tag/v1.0.1
 [changelog]: https://github.com/paissad/reqcoco/blob/master/CHANGELOG.md#101---2017-06-15
 [gh-issues-page]: https://github.com/paissad/reqcoco/issues

@@ -9,6 +9,6 @@ The first release `1.0.0` of the project is available at the [download page][rel
 
 Check out the [QuickStart][quickstart-link] for more info on how to get the most out of ReqCoCo. File all bugs/feature requests at [ReqCoCo GitHub Issue Page][gh-issues-page]. 
 
-[release-download-1.0.0]: https://github.com/paissad/reqcoco/releases/tag/reqcoco-1.0.0
+[release-download-1.0.0]: https://github.com/paissad/reqcoco/releases/tag/v1.0.0
 [quickstart-link]:   {{ site.baseurl }}/quickstart
 [gh-issues-page]: https://github.com/paissad/reqcoco/issues
