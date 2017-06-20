@@ -1,6 +1,10 @@
 
 ## [Unreleased]
 
+## [1.0.2] - 2017-06-20
+### Fixed
+ - Redmine: Now it is not compatible to use a tag & a custom field (issue #16)
+
 ## [1.0.1] - 2017-06-15
 ### Added
  - Runner : aggregate all reports (excel, html, ...) into a single ZIP file on top of all reports subfolders (issue #5)
@@ -17,5 +21,6 @@
 ## 1.0.0 - 2017-05-20
  - Initial version
 
-[Unreleased]: https://github.com/paissad/reqcoco/compare/reqcoco-1.0.1...HEAD
-[1.0.1]: https://github.com/paissad/reqcoco/compare/reqcoco-1.0.0...reqcoco-1.0.1
+[Unreleased]: https://github.com/paissad/reqcoco/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/paissad/reqcoco/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/paissad/reqcoco/compare/v1.0.0...v1.0.1
