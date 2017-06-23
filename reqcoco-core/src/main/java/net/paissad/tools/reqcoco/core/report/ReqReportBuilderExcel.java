@@ -209,7 +209,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
 
         final CreationHelper creationHelper = wb.getCreationHelper();
 
-        for (final CELL_CONFIG cellConfig : CELL_CONFIG.values()) {
+        for (final CellConfig cellConfig : CellConfig.values()) {
             final Cell cell = row.createCell(cellConfig.position);
             cell.setCellValue(creationHelper.createRichTextString(cellConfig.header));
             addBordersToCellStyle(cellStyle, BorderStyle.MEDIUM);
@@ -404,7 +404,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
 
         final Sheet currentSheet = row.getSheet();
 
-        for (final CELL_CONFIG cellConfig : CELL_CONFIG.values()) {
+        for (final CellConfig cellConfig : CellConfig.values()) {
 
             final Cell cell = row.createCell(cellConfig.position);
             final Cell headerCell = currentSheet.getRow(HEADERS_ROW_POSITION).getCell(cellConfig.position);
@@ -447,7 +447,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
             cell.setCellStyle(currentCellStyle);
             currentCellStyle.setAlignment(headerCellStyle.getAlignmentEnum());
             currentCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            if (req.isIgnore() && !(CELL_CONFIG.CODE == cellConfig || CELL_CONFIG.TEST == cellConfig)) {
+            if (req.isIgnore() && !(CellConfig.CODE == cellConfig || CellConfig.TEST == cellConfig)) {
                 currentCellStyle.setFillForegroundColor(IndexedColors.DARK_YELLOW.getIndex());
                 currentCellStyle.setFillPattern(FillPatternType.FINE_DOTS);
             }
@@ -507,29 +507,8 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
     }
 
     @Override
-    protected String getDefaultFileReporttExtension() {
+    protected String getDefaultFileReportExtension() {
         return EXCEL_REPORT_FILE_DEFAULT_EXTENSION;
-    }
-
-    private enum CELL_CONFIG {
-
-                              NAME("Name", 0),
-                              VERSION("Version", 1),
-                              REVISION("Revision", 2),
-                              DESCRIPTION("Short Description", 3),
-                              CODE("Code", 4),
-                              CODE_AUTHOR("Code Author", 5),
-                              TEST("Test", 6),
-                              TEST_AUTHOR("Test Author", 7),
-                              LINK("Link", 8);
-
-        private final String header;
-        private final int    position;
-
-        private CELL_CONFIG(String columnHeaderName, int columnPosition) {
-            this.header = columnHeaderName;
-            this.position = columnPosition;
-        }
     }
 
     private enum CODE_TYPE {

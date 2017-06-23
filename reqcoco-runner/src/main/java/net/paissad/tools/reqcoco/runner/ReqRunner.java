@@ -30,6 +30,7 @@ import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderExcel;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
+import net.paissad.tools.reqcoco.core.report.ReqReportBuilderPdf;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorExecutionException;
@@ -229,6 +230,16 @@ public class ReqRunner {
                     : new ReqReportBuilderExcel(excelReportOutputDirPath, options.getReportName() + ReqReportBuilderExcel.EXCEL_REPORT_FILE_DEFAULT_EXTENSION);
 
             reportBuilders.add(excelReportBuilder);
+        }
+
+        if (getOptions().isReportPdf()) {
+            LOGGER.debug("{} Including PDF report", LOGGER_PREFIX_TAG);
+            final Path pdfReportOutputDirPath = Paths.get(getReportOutputDirPath(options).toString(), "pdf");
+
+            final ReqReportBuilderPdf pdfReportBuilder = StringUtils.isBlank(options.getReportName()) ? new ReqReportBuilderPdf(pdfReportOutputDirPath)
+                    : new ReqReportBuilderPdf(pdfReportOutputDirPath, options.getReportName() + ReqReportBuilderPdf.PDF_REPORT_FILE_DEFAULT_EXTENSION);
+
+            reportBuilders.add(pdfReportBuilder);
         }
 
         return reportBuilders;

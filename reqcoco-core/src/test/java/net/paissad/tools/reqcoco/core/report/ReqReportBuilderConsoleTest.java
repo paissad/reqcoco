@@ -36,6 +36,11 @@ public class ReqReportBuilderConsoleTest {
 	public void testGetOutput() {
 		Assert.assertEquals(System.out, this.reqReportBuilderConsole.getOutput());
 	}
+	
+	@Test
+	public void testGetDefaultFileReportExtension() {
+	    Assert.assertEquals("", this.reqReportBuilderConsole.getDefaultFileReportExtension());
+	}
 
 	private void setUpByUsingUri(final URI uri) throws ReqReportParserException, ReqReportBuilderException {
 		Collection<Requirement> reqs = TestUtil.getRequirementsFromStub(uri, null);

@@ -133,7 +133,7 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 	}
 
 	@Override
-	protected String getDefaultFileReporttExtension() {
+	protected String getDefaultFileReportExtension() {
 		return HTML_REPORT_FILE_DEFAULT_EXTENSION;
 	}
 
