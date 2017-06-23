@@ -22,19 +22,19 @@ import net.paissad.tools.reqcoco.api.exception.ReqReportParserException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.core.TestUtil;
 
-public class ReqReportBuilderExcelTest {
+public class ReqReportBuilderPdfTest {
 
-    private ReqReportBuilderExcel reqReportBuilderExcel;
+    private ReqReportBuilderPdf reqReportBuilderPdf;
 
     /** The directory where to save the report */
-    private Path                  reportOutputPath;
+    private Path                reportOutputPath;
 
     @Rule
-    public ExpectedException      thrown = ExpectedException.none();
+    public ExpectedException    thrown = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
-        this.reportOutputPath = Files.createTempDirectory("__reqcoco_excel_report__");
+        this.reportOutputPath = Files.createTempDirectory("__reqcoco_pdf_report__");
         FileUtils.forceDeleteOnExit(this.reportOutputPath.toFile());
         this.setUpByUsingUri(TestUtil.REQUIREMENTS_INPUT_FILE2_XML_URI, null);
     }
@@ -46,23 +46,23 @@ public class ReqReportBuilderExcelTest {
 
     @Test
     public void testRun() throws ReqReportBuilderException {
-        this.reqReportBuilderExcel.run();
+        this.reqReportBuilderPdf.run();
     }
 
     @Test
     public void testRunWithCustomReportName() throws ReqReportBuilderException, ReqReportParserException {
         this.setUpByUsingUri(TestUtil.REQUIREMENTS_INPUT_FILE2_XML_URI, "customReportName");
-        this.reqReportBuilderExcel.run();
+        this.reqReportBuilderPdf.run();
     }
 
     @Test
     public void testRunWhenOutputExistAndIsAFile() throws ReqReportBuilderException, IOException, ReqReportParserException {
 
-        this.reportOutputPath = Paths.get(this.reportOutputPath.toString(), this.reqReportBuilderExcel.getDefaultReportFilename());
+        this.reportOutputPath = Paths.get(this.reportOutputPath.toString(), this.reqReportBuilderPdf.getDefaultReportFilename());
         Files.createFile(this.reportOutputPath);
 
         thrown.expect(ReqReportBuilderException.class);
-        thrown.expectMessage("Error while creating the directory which is supposed to contain the EXCEL coverage report");
+        thrown.expectMessage("Error while creating the directory which is supposed to contain the PDF coverage report");
         thrown.expectCause(Is.isA(IOException.class));
 
         this.setUpByUsingUri(TestUtil.REQUIREMENTS_INPUT_FILE2_XML_URI, null);
@@ -71,25 +71,25 @@ public class ReqReportBuilderExcelTest {
     @Test
     public void testRunWhenOutputExistAndIsADirectory() throws ReqReportBuilderException, IOException {
 
-        this.reportOutputPath = Paths.get(this.reportOutputPath.toString(), this.reqReportBuilderExcel.getDefaultReportFilename());
+        this.reportOutputPath = Paths.get(this.reportOutputPath.toString(), this.reqReportBuilderPdf.getDefaultReportFilename());
         Files.createDirectory(this.reportOutputPath);
 
         thrown.expect(ReqReportBuilderException.class);
-        thrown.expectMessage("Error while building the EXCEL coverage report : ");
+        thrown.expectMessage("Error while building the PDF coverage report : ");
         thrown.expectCause(Is.isA(IOException.class));
 
-        this.reqReportBuilderExcel.run();
+        this.reqReportBuilderPdf.run();
     }
 
     @Test
     public void testGetOutput() throws IOException {
-        Assert.assertNull(this.reqReportBuilderExcel.getOutput());
+        Assert.assertNull(this.reqReportBuilderPdf.getOutput());
     }
 
     private void setUpByUsingUri(final URI uri, final String customReportFilename) throws ReqReportParserException, ReqReportBuilderException {
         final Collection<Requirement> reqs = TestUtil.getRequirementsFromStub(uri, null);
-        this.reqReportBuilderExcel = StringUtils.isBlank(customReportFilename) ? new ReqReportBuilderExcel(this.reportOutputPath)
-                : new ReqReportBuilderExcel(this.reportOutputPath, customReportFilename);
-        this.reqReportBuilderExcel.configure(reqs, null);
+        this.reqReportBuilderPdf = StringUtils.isBlank(customReportFilename) ? new ReqReportBuilderPdf(this.reportOutputPath)
+                : new ReqReportBuilderPdf(this.reportOutputPath, customReportFilename);
+        this.reqReportBuilderPdf.configure(reqs, null);
     }
 }

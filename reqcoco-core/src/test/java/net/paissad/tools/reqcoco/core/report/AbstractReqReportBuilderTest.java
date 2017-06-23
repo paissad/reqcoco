@@ -33,7 +33,7 @@ public class AbstractReqReportBuilderTest {
 			}
 
 			@Override
-			protected String getDefaultFileReporttExtension() {
+			protected String getDefaultFileReportExtension() {
 				return null;
 			}
 
@@ -147,7 +147,7 @@ public class AbstractReqReportBuilderTest {
 	public void testGetDefaultReportFilename() {
 		Assert.assertEquals(
 		        AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION
-		                + abstractRequirementReportBuilder.getDefaultFileReporttExtension(),
+		                + abstractRequirementReportBuilder.getDefaultFileReportExtension(),
 		        this.abstractRequirementReportBuilder.getDefaultReportFilename());
 	}
 }

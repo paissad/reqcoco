@@ -72,7 +72,7 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 	}
 
 	@Override
-	protected String getDefaultFileReporttExtension() {
+	protected String getDefaultFileReportExtension() {
 		return "";
 	}
 
