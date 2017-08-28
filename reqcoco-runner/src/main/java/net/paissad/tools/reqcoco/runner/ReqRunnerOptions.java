@@ -54,8 +54,6 @@ public class ReqRunnerOptions {
 
     public static final String  CONFIG_REPORT_EXCEL           = "report.excel";
 
-    public static final String  CONFIG_REPORT_PDF             = "report.pdf";
-
     public static final String  CONFIG_REPORT_ZIP             = "report.zip";
 
     public static final String  CONFIG_CREATE_RAW_REPORT_FILE = "create.raw.report.file";
@@ -77,8 +75,6 @@ public class ReqRunnerOptions {
     private boolean             reportHtml;
 
     private boolean             reportExcel;
-
-    private boolean             reportPdf;
 
     private boolean             reportZip;
 
@@ -160,14 +156,13 @@ public class ReqRunnerOptions {
         this.setReportConsole(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_CONSOLE, Boolean.FALSE.toString())));
         this.setReportHtml(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_HTML, Boolean.TRUE.toString())));
         this.setReportExcel(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_EXCEL, Boolean.TRUE.toString())));
-        this.setReportPdf(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_PDF, Boolean.TRUE.toString())));
         this.setReportZip(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_ZIP, Boolean.TRUE.toString())));
         this.setCreateRawReportFile(Boolean.parseBoolean(props.getProperty(CONFIG_CREATE_RAW_REPORT_FILE, Boolean.FALSE.toString())));
     }
 
     /**
-     * This method update the properties loaded from the configuration file by setting the correct value type (Boolean, Collection ...) in order to
-     * avoid ClassCastException exception.
+     * This method update the properties loaded from the configuration file by setting the correct value type (Boolean, Collection ...) in order to avoid ClassCastException
+     * exception.
      * 
      * @param props
      */
@@ -178,15 +173,18 @@ public class ReqRunnerOptions {
         props.put(RedmineReqSourceParser.OPTION_STATUS_FILTER, statusFilter);
 
         final boolean includeChildren = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN))
-                ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_CHILDREN : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN));
+                ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_CHILDREN
+                : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN));
         props.put(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN, includeChildren);
 
         final boolean includeRelations = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS))
-                ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_RELATIONS : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS));
+                ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_RELATIONS
+                : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS));
         props.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, includeRelations);
 
         final Collection<String> targetVersions = StringUtils.isBlank((String) props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS))
-                ? RedmineReqSourceParser.getDefautValueForTargetVersions() : Arrays.asList(props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS).toString().split(","));
+                ? RedmineReqSourceParser.getDefautValueForTargetVersions()
+                : Arrays.asList(props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS).toString().split(","));
         props.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, targetVersions);
 
         final boolean reqTagMustBePresent = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT))
