@@ -12,7 +12,7 @@
   <artifactId>reqcoco-parser-docx</artifactId>
 
   <name>ReqCoCo Parser Docx</name>
-  <description>Extrat requirements from a Microsoft Word .docx document</description>
+  <description>Extract requirements from a Microsoft Word .docx document</description>
 
   <dependencies>
     <dependency>
