@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.paissad.tools.reqcoco</groupId>
+    <artifactId>reqcoco-parent</artifactId>
+    <version>1.0.3-SNAPSHOT</version>
+  </parent>
+  <groupId>net.paissad.tools.reqcoco.parser</groupId>
+  <artifactId>reqcoco-parser-github</artifactId>
+
+  <name>ReqCoCo Parser Github</name>
+  <description>Extract requirements from Github's project issues page</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.paissad.tools.reqcoco.parser</groupId>
+      <artifactId>reqcoco-parser-simple</artifactId>
+      <version>1.0.3-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.mylyn.github</groupId>
+      <artifactId>org.eclipse.egit.github.core</artifactId>
+      <version>2.1.5</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>fluent-hc</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
