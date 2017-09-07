@@ -373,6 +373,7 @@
     <module>reqcoco-maven-plugin</module>
     <module>reqcoco-runner</module>
     <module>reqcoco-parser-simple</module>
+    <module>reqcoco-parser-github</module>
     <module>reqcoco-parser-redmine</module>
     <module>reqcoco-parser-docx</module>
     <module>reqcoco-parser-xlsx</module>
