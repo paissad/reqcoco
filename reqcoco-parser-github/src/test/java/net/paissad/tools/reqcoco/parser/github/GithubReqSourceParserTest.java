@@ -1,5 +1,7 @@
 package net.paissad.tools.reqcoco.parser.github;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,7 +91,7 @@ public class GithubReqSourceParserTest {
 
     private void initOptions() {
         this.options = new HashMap<>();
-        this.options.put(GithubReqSourceParser.OPTION_AUTH_API_KEY, "bc0e43dab001a9bcde1aa78ffea3dc1b6298cf68");
+        this.options.put(GithubReqSourceParser.OPTION_AUTH_API_KEY, new String(Base64.getDecoder().decode("YjVhNGE5MDA5YjViZThmMjRhNmYwYjVmM2RjYmIyMzQxM2M4ZWI1NQ=="), StandardCharsets.UTF_8));
         this.options.put(GithubReqSourceParser.OPTION_REPO_OWNER, "paissad");
         this.options.put(GithubReqSourceParser.OPTION_REPO_NAME, "reqcoco");
         this.options.put(GithubReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, false);
