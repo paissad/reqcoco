@@ -229,7 +229,7 @@ public class RedmineReqSourceParserTest {
         this.options.put(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, true);
         this.options.put(RedmineReqSourceParser.OPTION_REQUIREMENT_DECL_CUSTOM_FIELD, "someValue");
         thrown.expect(ReqSourceParserException.class);
-        thrown.expectMessage("Unexpected error ==> You cannot set 'redmine.req.tag.required' to 'true' and use 'redmine.req.declaration.customfield' at the same time");
+        thrown.expectMessage("You cannot set 'redmine.req.tag.required' to 'true' and use 'redmine.req.declaration.customfield' at the same time");
         thrown.expectCause(Is.isA(IllegalStateException.class));
         this.redmineReqSourceParser.parse(stubUri, tagConfig, options);
     }
