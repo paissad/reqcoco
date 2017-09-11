@@ -38,7 +38,7 @@ public class GithubReqSourceParser implements ReqSourceParser {
 
     public static final String  OPTION_REPO_NAME                       = "github.repo.name";
 
-    public static final String  OPTION_ISSUES_FILTER_DATA              = "github.issues.filter.data";
+    public static final String  OPTION_ISSUES_FILTER_DATA              = "github.issues.filter";
 
     public static final String  OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT = "github.req.tag.required";
 
@@ -71,6 +71,8 @@ public class GithubReqSourceParser implements ReqSourceParser {
             } else {
                 LOGGER.warn("No authentication method is specified for GITHUB. Continuing without authentication informations ...");
             }
+
+            LOGGER.debug("Remaining requests : {}", gitHubClient.getRemainingRequests());
 
             final RepositoryService repositoryService = new RepositoryService(gitHubClient);
 
