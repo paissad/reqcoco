@@ -34,7 +34,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 
     /**
      * The type of the source which contains the declarations of the requirements.<br>
-     * Possible values are 'FILE | DOCX | XLSX | REDMINE'.
+     * Possible values are 'FILE | DOCX | XLSX | REDMINE | GITHUB'.
      */
     @Parameter(property = "reqcoco.report.source.type", required = true, defaultValue = "FILE")
     private ReqSourceType sourcetype;
