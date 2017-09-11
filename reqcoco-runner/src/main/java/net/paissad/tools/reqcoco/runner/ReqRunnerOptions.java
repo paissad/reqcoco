@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import lombok.Getter;
 import lombok.Setter;
 import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
+import net.paissad.tools.reqcoco.parser.github.GithubReqSourceParser;
 import net.paissad.tools.reqcoco.parser.redmine.RedmineReqSourceParser;
 
 @Getter
@@ -137,6 +138,7 @@ public class ReqRunnerOptions {
             this.getConfigProperties().load(in);
             this.buildOptionsFromProperties(getConfigProperties());
             this.updatePropertiesForRedmine(getConfigProperties());
+            this.updatePropertiesForGithub(getConfigProperties());
 
         } catch (NullPointerException | IOException e) {
             String errMsg = "Error while parsing the configuration file : " + e.getMessage();
@@ -199,25 +201,34 @@ public class ReqRunnerOptions {
     }
 
     public Properties getRedmineExtraProperties() {
+        return getComplexProperties(RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES);
+    }
 
-        Properties extraProps = null;
+    private void updatePropertiesForGithub(final Properties props) {
+        final Properties githubIssuesFilters = getComplexProperties(GithubReqSourceParser.OPTION_ISSUES_FILTER_DATA);
+        if (githubIssuesFilters != null) {
+            props.put(GithubReqSourceParser.OPTION_ISSUES_FILTER_DATA,
+                    githubIssuesFilters.entrySet().stream().collect(Collectors.toMap(e -> (String) e.getKey(), e -> (String) e.getValue())));
+        }
+    }
 
-        final String prefix = RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES;
+    private Properties getComplexProperties(final String prefix) {
+        Properties complexProps = null;
         final Predicate<String> predicate = Pattern.compile(Pattern.quote(prefix + ".key.")).asPredicate();
 
-        final Set<String> extraPropertyKeys = getConfigProperties().keySet().stream().map(Object::toString).filter(predicate).collect(Collectors.toSet());
+        final Set<String> filterKeys = getConfigProperties().keySet().stream().map(Object::toString).filter(predicate).collect(Collectors.toSet());
 
-        if (!extraPropertyKeys.isEmpty()) {
-            extraProps = new Properties();
-            for (final String key : extraPropertyKeys) {
+        if (!filterKeys.isEmpty()) {
+            complexProps = new Properties();
+            for (final String key : filterKeys) {
                 String suffix = key.substring((prefix + ".key.").length(), key.length());
                 String extraPropsKey = getConfigProperties().getProperty(key);
                 String extraPropsValue = getConfigProperties().getProperty(prefix + ".value." + suffix);
-                extraProps.put(extraPropsKey, extraPropsValue);
+                complexProps.put(extraPropsKey, extraPropsValue);
             }
         }
 
-        return extraProps;
+        return complexProps;
     }
 
     public static Map<String, Object> mapFromProperties(final Properties properties) {
