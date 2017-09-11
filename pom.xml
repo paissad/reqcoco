@@ -379,7 +379,6 @@
     <module>reqcoco-parser-xlsx</module>
     <module>reqcoco-distribution</module>
     <module>reqcoco-webapp</module>
-    <module>reqcoco-parser-github</module>
   </modules>
 
 </project>
