@@ -1,5 +1,6 @@
 
 ## [Unreleased]
+ - GitHub: add support for parsing GitHub issues
 
 ## [1.0.2] - 2017-06-20
 ### Fixed
