@@ -1,6 +1,13 @@
 
 ## [Unreleased]
+
+## [1.0.3] - 2018-09-19
+### Added
  - GitHub: add support for parsing GitHub issues
+ 
+### Fixed
+ - Do not stop the requirement computation when unable to read files (issue #19) 
+ 
 
 ## [1.0.2] - 2017-06-20
 ### Fixed
@@ -22,6 +29,7 @@
 ## 1.0.0 - 2017-05-20
  - Initial version
 
-[Unreleased]: https://github.com/paissad/reqcoco/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/paissad/reqcoco/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/paissad/reqcoco/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/paissad/reqcoco/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/paissad/reqcoco/compare/v1.0.0...v1.0.1
