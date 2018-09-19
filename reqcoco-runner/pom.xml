@@ -5,7 +5,7 @@
   <parent>
     <groupId>net.paissad.tools.reqcoco</groupId>
     <artifactId>reqcoco-parent</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
   </parent>
 
   <artifactId>reqcoco-runner</artifactId>
@@ -42,22 +42,22 @@
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
       <artifactId>reqcoco-parser-docx</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.3</version>
     </dependency>
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
       <artifactId>reqcoco-parser-xlsx</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.3</version>
     </dependency>
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
       <artifactId>reqcoco-parser-redmine</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.3</version>
     </dependency>
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
       <artifactId>reqcoco-parser-github</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.3</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>

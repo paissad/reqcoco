@@ -5,7 +5,7 @@
   <parent>
     <groupId>net.paissad.tools.reqcoco</groupId>
     <artifactId>reqcoco-parent</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
   </parent>
 
   <groupId>net.paissad.tools.reqcoco.parser</groupId>
@@ -18,7 +18,7 @@
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
       <artifactId>reqcoco-parser-simple</artifactId>
-      <version>1.0.3-SNAPSHOT</version>
+      <version>1.0.3</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
