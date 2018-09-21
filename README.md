@@ -10,7 +10,7 @@
 [![Join the chat at https://gitter.im/reqcoco/Lobby](https://badges.gitter.im/reqcoco/Lobby.svg)](https://gitter.im/reqcoco/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 <a target="_blank" href ="https://travis-ci.org/paissad/reqcoco"><img src="https://travis-ci.org/paissad/reqcoco.svg?branch=master"/></a>
 [![Coverage Status](https://coveralls.io/repos/github/paissad/reqcoco/badge.svg?branch=master)](https://coveralls.io/github/paissad/reqcoco?branch=master)
-[![Sonar Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=net.paissad.tools.reqcoco%3Areqcoco-parent&metric=alert_status)](https://sonarcloud.io/api/project_badges/measure?project=net.paissad.tools.reqcoco%3Areqcoco-parent&metric=alert_status)
+[![Sonar Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=net.paissad.tools.reqcoco%3Areqcoco-parent&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.paissad.tools.reqcoco%3Areqcoco-parent)
 
 
 ----------
