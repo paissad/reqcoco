@@ -14,9 +14,9 @@ notifications:
     on_failure: always
     on_start: never    
 before_install:
-  - wget https://archive.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.zip
-  - unzip -qq apache-maven-3.5.0-bin.zip
-  - export M2_HOME=$PWD/apache-maven-3.5.0
+  - wget https://archive.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.4-bin.zip
+  - unzip -qq apache-maven-3.5.4-bin.zip
+  - export M2_HOME=$PWD/apache-maven-3.5.4
   - export PATH=$M2_HOME/bin:$PATH
 install: true
 cache:
@@ -28,5 +28,6 @@ addons:
     organization: paissad
     branches:
       - master
+      - develop
 script:
   - mvn clean jacoco:prepare-agent install jacoco:report sonar:sonar coveralls:report
