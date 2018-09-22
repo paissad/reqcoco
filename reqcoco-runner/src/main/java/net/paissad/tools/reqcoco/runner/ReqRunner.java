@@ -30,6 +30,7 @@ import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderExcel;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderHtml;
+import net.paissad.tools.reqcoco.core.report.ReqReportBuilderJson;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorExecutionException;
@@ -207,6 +208,17 @@ public class ReqRunner {
         if (getOptions().isReportConsole()) {
             LOGGER.debug("{} Including console report", LOGGER_PREFIX_TAG);
             reportBuilders.add(new ReqReportBuilderConsole());
+        }
+
+        if (getOptions().isReportJson()) {
+
+            LOGGER.debug("{} Including JSON report", LOGGER_PREFIX_TAG);
+            final Path jsonReportOutputDirPath = Paths.get(getReportOutputDirPath(options).toString(), "json");
+
+            final ReqReportBuilderJson jsonReportBuilder = StringUtils.isBlank(options.getReportName()) ? new ReqReportBuilderJson(jsonReportOutputDirPath)
+                    : new ReqReportBuilderJson(jsonReportOutputDirPath, options.getReportName() + ReqReportBuilderJson.JSON_REPORT_FILE_DEFAULT_EXTENSION);
+
+            reportBuilders.add(jsonReportBuilder);
         }
 
         if (getOptions().isReportHtml()) {

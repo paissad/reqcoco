@@ -1,5 +1,8 @@
 
 ## [Unreleased]
+### Added
+ - Retrieve requirements declarations recursively from files of a directory (issue #20)
+ - Generate JSON output coverage report (issue #22)
 
 ## [1.0.3] - 2018-09-19
 ### Added

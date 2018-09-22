@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,7 +28,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 
 public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
@@ -145,33 +143,17 @@ public class ReqReportBuilderHtml extends AbstractReqReportBuilder {
 		LOGGER.trace("{} Building data model to use for the template", LOGGER_PREFIX_TAG);
 
 		final Map<String, Object> model = new HashMap<>();
-		final Map<String, Collection<Requirement>> requirementsMap = new HashMap<>();
 
 		final StringBuilder dataCode = new StringBuilder();
 		final StringBuilder dataTests = new StringBuilder();
+		
+		final Collection<ReqReport> reqReports = buildReqReports();
+		
+        final String dataSetEntryFormat = "{Version:'Version %s',freq:{Done:%s, Undone:%s, Ignored:%s}},\n";
 
-		// Retrieves available versions
-		final Stream<String> versions = getRequirements().stream().map(Requirement::getVersion).distinct();
-
-		versions.sorted().forEach(version -> {
-
-			// Group requirements by version
-			requirementsMap.put(version, Requirements.getByVersion(getRequirements(), version));
-
-			// This variable holds the number of declared requirements which are ignored for coverage.
-			long reqsIgnoredCount = getIgnoredRequirementsCount(version);
-
-			long codeDoneCount = getCodeDoneCount(version);
-			long codeUndoneCount = getCodeUndoneCount(version);
-
-			long testsDoneCount = getTestsDoneCount(version);
-			long testsUndoneCount = getTestsUndoneCount(version);
-
-			final String dataSetEntryFormat = "{Version:'Version %s',freq:{Done:%s, Undone:%s, Ignored:%s}},\n";
-
-			dataCode.append(String.format(dataSetEntryFormat, version, codeDoneCount, codeUndoneCount, reqsIgnoredCount));
-			dataTests.append(String.format(dataSetEntryFormat, version, testsDoneCount, testsUndoneCount, reqsIgnoredCount));
-
+        reqReports.stream().forEach(r -> {		    
+            dataCode.append(String.format(dataSetEntryFormat, r.getVersion(), r.getCodeDoneCount(), r.getCodeUndoneCount(), r.getIgnoredRequirementsCount()));
+            dataTests.append(String.format(dataSetEntryFormat, r.getVersion(), r.getTestsDoneCount(), r.getTestsUndoneCount(), r.getIgnoredRequirementsCount()));
 		});
 
 		model.put("coverage_title", getReportConfig().getTitle());

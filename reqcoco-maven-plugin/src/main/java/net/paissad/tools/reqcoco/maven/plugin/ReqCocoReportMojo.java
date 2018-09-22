@@ -65,6 +65,12 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
     private File          outputdir;
 
     /**
+     * Whether or not to generate the JSON report.
+     */
+    @Parameter(property = "reqcoco.report.jsonreport", required = false, defaultValue = "true")
+    private boolean       jsonreport;
+
+    /**
      * Whether or not to generate the HTML report.
      */
     @Parameter(property = "reqcoco.report.htmlreport", required = false, defaultValue = "true")
@@ -111,6 +117,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
         getLog().info(String.format(format, "outputdir", this.outputdir));
         getLog().info(String.format(format, "sourceCodePath", this.sourceCodePath));
         getLog().info(String.format(format, "testCodePath", this.testCodePath));
+        getLog().info(String.format(format, "jsonreport", this.jsonreport));
         getLog().info(String.format(format, "htmlreport", this.htmlreport));
         getLog().info(String.format(format, "excelreport", this.excelreport));
         getLog().info(String.format(format, "zipreport", this.zipreport));
@@ -149,6 +156,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
                 options.setTestCodePath(this.testCodePath);
 
                 options.setReportConsole(false);
+                options.setReportJson(this.jsonreport);
                 options.setReportHtml(this.htmlreport);
                 options.setReportExcel(this.excelreport);
                 options.setReportZip(this.zipreport);

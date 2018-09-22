@@ -396,10 +396,6 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
         return new DecimalFormat("##.#").format(ratio * 100) + " %";
     }
 
-    private float getRequirementsIgnoredRatio(final String version) {
-        return 1f * getIgnoredRequirementsCount(version) / getRequirementByVersion(version).size();
-    }
-
     private void populateRow(final Workbook wb, final Row row, final Requirement req) {
 
         final Sheet currentSheet = row.getSheet();

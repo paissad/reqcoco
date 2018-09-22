@@ -23,6 +23,7 @@
           <testCodePath>${basedir}/src/test/java</testCodePath>
           <htmlreport>false</htmlreport>
           <excelreport>true</excelreport>
+          <jsonreport>true</jsonreport>
           <zipreport>true</zipreport>
           <!-- For some reason i don't figure out yet, the name/property resolution is not done during the run of the unit tests -->
           <!-- For that reason, the dirty current workaround was to hardcode (again) the name of the report rather than expecting the injection to be done correctly -->

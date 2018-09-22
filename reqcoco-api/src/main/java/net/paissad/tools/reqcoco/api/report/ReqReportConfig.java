@@ -1,20 +1,22 @@
 package net.paissad.tools.reqcoco.api.report;
 
-public interface ReqReportConfig {
+import com.google.gson.annotations.Expose;
 
-	default String getTitle() {
-		return "Requirements Coverage";
-	}
+import lombok.Getter;
 
-	default String getCodeCoverageDiagramName() {
-		return "Source Code Coverage";
-	}
+@Getter
+public class ReqReportConfig {
 
-	default String getTestsCoverageDiagramName() {
-		return "Tests Code Coverage";
-	}
+    @Expose
+    private String title                    = "Requirements Coverage";
 
-	default String getRequirementsTableLegend() {
-		return "Table of requirements";
-	}
+    @Expose
+    private String codeCoverageDiagramName  = "Source Code Coverage";
+
+    @Expose
+    private String testsCoverageDiagramName = "Tests Code Coverage";
+
+    @Expose
+    private String requirementsTableLegend  = "Table of requirements";
+
 }

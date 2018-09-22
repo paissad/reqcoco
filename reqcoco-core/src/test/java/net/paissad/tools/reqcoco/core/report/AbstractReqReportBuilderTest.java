@@ -49,8 +49,7 @@ public class AbstractReqReportBuilderTest {
 
 	@Test
 	public void testConfigureWithNonNullConfig() throws ReqReportBuilderException {
-		this.abstractRequirementReportBuilder.configure(requirements, new ReqReportConfig() {
-		});
+		this.abstractRequirementReportBuilder.configure(requirements, new ReqReportConfig());
 		Assert.assertFalse(this.abstractRequirementReportBuilder.getDefaultReportConfig() == this.abstractRequirementReportBuilder.getReportConfig());
 	}
 

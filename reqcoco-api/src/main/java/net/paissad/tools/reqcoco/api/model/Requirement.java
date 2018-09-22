@@ -12,6 +12,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.gson.annotations.Expose;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,42 +29,54 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
 
     @XmlAttribute(required = true)
     @XmlID
+    @Expose
     private String             name;
 
     @XmlAttribute
+    @Expose
     private boolean            ignore;
 
     @XmlElement(required = true)
+    @Expose
     private String             shortDescription;
 
     @XmlElement
+    @Expose
     private String             fullDescription;
 
     @XmlAttribute(required = true)
+    @Expose
     private String             version;
 
     @XmlAttribute(required = true)
     private String             revision;
 
     @XmlElement(required = true)
+    @Expose
     private boolean            codeDone;
 
     @XmlElement
+    @Expose
     private String             codeAuthor;
 
     @XmlElement
+    @Expose
     private String             codeAuthorComment;
 
     @XmlElement(required = true)
+    @Expose
     private boolean            testDone;
 
     @XmlElement
+    @Expose
     private String             testAuthor;
 
     @XmlElement
+    @Expose
     private String             testAuthorComment;
 
     @XmlElement
+    @Expose
     private String             link;
 
     public Requirement() {
