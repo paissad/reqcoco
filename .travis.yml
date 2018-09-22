@@ -12,11 +12,13 @@ notifications:
       - secure: "flRQlBYWC3iRN/W1jFR6UjhAzPpL41C/Q7HQL92wCbKdOvjLyaZv056zc1byTaL5BkVUde+vGe1bmaKDB7i1IjD/1hIVLCqpjGSotHzrWpSgN+r2JZkRyK0I397aRI66pIkftNA0q9XDGZ9m7XG9V6fPwc8lc/PUIOoOLfBRQszDFKS2ZB0RApd55Wvrj08D4uDmMX4OKHuHrNCiS3B92ooYg53KRONEqOPrDDomuvmK04lgMUdML+pt4LlIyzSQ7QVwY5r8gDrO5zT2HzU/UwrFzi1CHY78uQnpseDGlYadkwuq7djLC9GwTmN8WUDvbrz+2nmkUtRZxRa2GXv2od1eDcuPXCaSKbBBaOv9dZOtfG5yk1nq8AZDsCZ6C5ugpOa5ZYwyI/dYfxsDFMK6aRksMTol79nwkIRwd1/ER40BKRlxC/SRvyYELVK02E938rwwKt9ooNUOiyujiT6WVOC6v7cCsl8GICGk6ckoMkqGrPZDZxNFuLaMEJoqnY514Vz63aWlJTKK5LcnKvGNBzHoHXIL8YOE8jeyMpk5GVd/B0MPB4hIs+4f1vhA/Eu+UldP5vQk1C52Wrc3nrCbolItso792bKLCd/4GKrGp9WMbDoG7uPTlB3OhLMpWT4vSneNWEhJJOe5QpQIkCteEJuAvcTarB9U2hUhK1Jaa34="
     on_success: change
     on_failure: always
-    on_start: never    
+    on_start: never
+env:
+  - APACHE_MVN_VERSION=3.5.4
 before_install:
-  - wget https://archive.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.4-bin.zip
-  - unzip -qq apache-maven-3.5.4-bin.zip
-  - export M2_HOME=$PWD/apache-maven-3.5.4
+  - wget https://archive.apache.org/dist/maven/maven-3/$APACHE_MVN_VERSION/binaries/apache-maven-$APACHE_MVN_VERSION-bin.zip
+  - unzip -qq apache-maven-$APACHE_MVN_VERSION-bin.zip
+  - export M2_HOME=$PWD/apache-maven-$APACHE_MVN_VERSION
   - export PATH=$M2_HOME/bin:$PATH
 install: true
 cache:
