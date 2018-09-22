@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
-public abstract class AbstractReqSourceParser implements ReqSourceParser {
+public abstract class AbstractReqDeclParser implements ReqDeclParser {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractReqSourceParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractReqDeclParser.class);
 
 	/**
 	 * @param declTagConfig - Configuration to use for retrieving the requirement tags.

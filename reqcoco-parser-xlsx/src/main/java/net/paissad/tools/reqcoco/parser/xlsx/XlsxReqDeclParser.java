@@ -22,16 +22,16 @@ import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
-public class XlsxReqSourceParser implements ReqSourceParser {
+public class XlsxReqDeclParser implements ReqDeclParser {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(XlsxReqSourceParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(XlsxReqDeclParser.class);
 
 	@Override
-	public Collection<Requirement> parse(URI uri, ReqDeclTagConfig declTagConfig, Map<String, Object> options) throws ReqSourceParserException {
+	public Collection<Requirement> parse(URI uri, ReqDeclTagConfig declTagConfig, Map<String, Object> options) throws ReqParserException {
 
 		try (final InputStream in = Files.newInputStream(Paths.get(uri)); final XSSFWorkbook workbook = new XSSFWorkbook(in)) {
 
@@ -85,7 +85,7 @@ public class XlsxReqSourceParser implements ReqSourceParser {
 		} catch (IOException e) {
 			String errMsg = "Error while reading the xlsx file : " + e.getMessage();
 			LOGGER.error(errMsg, e);
-			throw new ReqSourceParserException(errMsg, e);
+			throw new ReqParserException(errMsg, e);
 		}
 
 	}

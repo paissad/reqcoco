@@ -15,14 +15,14 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.parser.docx.DocxReqSourceParser;
+import net.paissad.tools.reqcoco.parser.docx.DocxReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
 
 public class DocxReqSourceParserTest {
 
-	private DocxReqSourceParser		docxReqSourceParser;
+	private DocxReqDeclParser		docxReqSourceParser;
 
 	private URI						uri;
 
@@ -35,14 +35,14 @@ public class DocxReqSourceParserTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.docxReqSourceParser = new DocxReqSourceParser();
+		this.docxReqSourceParser = new DocxReqDeclParser();
 		this.uri = this.getUriForStub("/samples/input/req_declarations_1.docx");
 		this.declTagConfig = new SimpleReqDeclTagConfig();
 		this.options = new HashMap<>();
 	}
 
 	@Test
-	public void testParse() throws ReqSourceParserException {
+	public void testParse() throws ReqParserException {
 
 		final Collection<Requirement> extractedRequirements = this.docxReqSourceParser.parse(uri, declTagConfig, options);
 		Assert.assertEquals(1, extractedRequirements.size());
@@ -52,10 +52,10 @@ public class DocxReqSourceParserTest {
 	}
 	
 	@Test
-	public void testParseUnexistentFile() throws ReqSourceParserException {
+	public void testParseUnexistentFile() throws ReqParserException {
 
 		this.uri = Paths.get("__unexistent_docx_file__").toUri();
-		this.thrown.expect(Is.isA(ReqSourceParserException.class));
+		this.thrown.expect(Is.isA(ReqParserException.class));
 		this.thrown.expectMessage("Error while reading the docx file : ");
 		this.docxReqSourceParser.parse(uri, declTagConfig, options);
 	}

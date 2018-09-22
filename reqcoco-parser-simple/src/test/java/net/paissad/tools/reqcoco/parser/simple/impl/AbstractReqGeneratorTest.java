@@ -24,10 +24,10 @@ import org.junit.rules.ExpectedException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGeneratorConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorExecutionException;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqGenerator;
 import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqGeneratorConfig;
 
@@ -166,7 +166,7 @@ public class AbstractReqGeneratorTest {
 
 		thrown.expect(ReqGeneratorExecutionException.class);
 		thrown.expectMessage("Error while parsing the source of declared requirements");
-		thrown.expectCause(Is.isA(ReqSourceParserException.class));
+		thrown.expectCause(Is.isA(ReqParserException.class));
 		this.reqGenerator.run();
 	}
 
@@ -206,8 +206,8 @@ public class AbstractReqGeneratorTest {
 			}
 
 			@Override
-			public ReqSourceParser getSourceParser() {
-				return new FileReqSourceParser();
+			public ReqDeclParser getSourceParser() {
+				return new FileReqDeclParser();
 			}
 
 			@Override

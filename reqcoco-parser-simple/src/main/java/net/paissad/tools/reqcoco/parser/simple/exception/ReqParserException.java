@@ -5,11 +5,11 @@ package net.paissad.tools.reqcoco.parser.simple.exception;
  * 
  * @author paissad
  */
-public class ReqSourceParserException extends Exception {
+public class ReqParserException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public ReqSourceParserException(String msg, Throwable cause) {
+	public ReqParserException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 

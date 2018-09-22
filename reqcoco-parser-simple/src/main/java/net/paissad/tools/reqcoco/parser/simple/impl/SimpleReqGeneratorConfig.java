@@ -5,7 +5,7 @@ import java.nio.file.Path;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ public class SimpleReqGeneratorConfig extends AbstractReqGeneratorConfig {
 
 	private URI				sourceRequirements;
 
-	private ReqSourceParser	sourceParser;
+	private ReqDeclParser	sourceParser;
 
 	private Path			sourceCodePath;
 

@@ -5,7 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 
 public class ReqSourceParserExceptionTest {
 
@@ -13,11 +13,11 @@ public class ReqSourceParserExceptionTest {
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
-	public void testReqSourceParserException() throws ReqSourceParserException {
-		thrown.expect(ReqSourceParserException.class);
+	public void testReqSourceParserException() throws ReqParserException {
+		thrown.expect(ReqParserException.class);
 		thrown.expectCause(Is.isA(NullPointerException.class));
 		thrown.expectMessage("eee");
-		throw new ReqSourceParserException("eee", new NullPointerException());
+		throw new ReqParserException("eee", new NullPointerException());
 	}
 
 }

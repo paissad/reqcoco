@@ -21,12 +21,12 @@ import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 
-public class GithubReqSourceParser implements ReqSourceParser {
+public class GithubReqDeclParser implements ReqDeclParser {
 
-    private static final Logger LOGGER                                 = LoggerFactory.getLogger(GithubReqSourceParser.class);
+    private static final Logger LOGGER                                 = LoggerFactory.getLogger(GithubReqDeclParser.class);
 
     public static final String  OPTION_AUTH_USERNAME                   = "github.auth.username";
 
@@ -45,10 +45,10 @@ public class GithubReqSourceParser implements ReqSourceParser {
     public static final boolean DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE = false;
 
     @Override
-    public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options) throws ReqSourceParserException {
+    public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options) throws ReqParserException {
 
         if (options == null || options.isEmpty()) {
-            throw new ReqSourceParserException("Non null and non empty options must be passed in order to parse a Github project", null);
+            throw new ReqParserException("Non null and non empty options must be passed in order to parse a Github project", null);
         }
 
         try {
@@ -104,7 +104,7 @@ public class GithubReqSourceParser implements ReqSourceParser {
         } catch (Exception e) {
             String errMsg = "Error while retrieving Github issues : " + e.getMessage();
             LOGGER.error(errMsg, e);
-            throw new ReqSourceParserException(errMsg, e);
+            throw new ReqParserException(errMsg, e);
         }
     }
 
@@ -121,7 +121,11 @@ public class GithubReqSourceParser implements ReqSourceParser {
 
         @Override
         public boolean test(final Issue issue) {
-            return reqTagRequired ? this.reqTagPattern.matcher(issue.getTitle()).find() : true;
+            if (reqTagRequired) {
+                return this.reqTagPattern.matcher(issue.getTitle()).find();
+            } else {
+                return true;
+            }
         }
     }
 

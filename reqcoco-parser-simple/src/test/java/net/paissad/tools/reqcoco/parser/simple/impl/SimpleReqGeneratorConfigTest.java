@@ -17,7 +17,7 @@ public class SimpleReqGeneratorConfigTest {
 	public void setUp() throws Exception {
 		this.simpleReqGeneratorConfig = new SimpleReqGeneratorConfig();
 		this.simpleReqGeneratorConfig.setSourceRequirements(URI.create("file:/foo/bar"));
-		this.simpleReqGeneratorConfig.setSourceParser(new FileReqSourceParser());
+		this.simpleReqGeneratorConfig.setSourceParser(new FileReqDeclParser());
 		this.simpleReqGeneratorConfig.setSourceCodePath(Paths.get("dummy_source_code_path"));
 		this.simpleReqGeneratorConfig.setTestsCodePath(Paths.get("dummy_tests_code_path"));
 		this.simpleReqGeneratorConfig.setCoverageOutput(Paths.get("dummy_output"));

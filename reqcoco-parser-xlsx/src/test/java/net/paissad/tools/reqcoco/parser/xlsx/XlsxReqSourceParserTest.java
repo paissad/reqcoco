@@ -16,13 +16,13 @@ import org.junit.rules.ExpectedException;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.xlsx.XlsxReqSourceParser;
+import net.paissad.tools.reqcoco.parser.xlsx.XlsxReqDeclParser;
 
 public class XlsxReqSourceParserTest {
 
-	private XlsxReqSourceParser		xlsxReqSourceParser;
+	private XlsxReqDeclParser		xlsxReqSourceParser;
 
 	private URI						uri;
 
@@ -35,14 +35,14 @@ public class XlsxReqSourceParserTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.xlsxReqSourceParser = new XlsxReqSourceParser();
+		this.xlsxReqSourceParser = new XlsxReqDeclParser();
 		this.uri = this.getUriForStub("/samples/input/req_declarations_1.xlsx");
 		this.declTagConfig = new SimpleReqDeclTagConfig();
 		this.options = new HashMap<>();
 	}
 
 	@Test
-	public void testParse() throws ReqSourceParserException {
+	public void testParse() throws ReqParserException {
 
 		final Collection<Requirement> extractedRequirements = this.xlsxReqSourceParser.parse(uri, declTagConfig, options);
 		Assert.assertEquals(1, extractedRequirements.size());
@@ -52,10 +52,10 @@ public class XlsxReqSourceParserTest {
 	}
 
 	@Test
-	public void testParseUnexistentFile() throws ReqSourceParserException {
+	public void testParseUnexistentFile() throws ReqParserException {
 
 		this.uri = Paths.get("__unexistent_xlsx_file__").toUri();
-		this.thrown.expect(Is.isA(ReqSourceParserException.class));
+		this.thrown.expect(Is.isA(ReqParserException.class));
 		this.thrown.expectMessage("Error while reading the xlsx file : ");
 		this.xlsxReqSourceParser.parse(uri, declTagConfig, options);
 	}

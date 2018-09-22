@@ -59,7 +59,7 @@ public class ReqReportBuilderConsole extends AbstractReqReportBuilder {
 				throw new ReqReportBuilderException(errMsg, e);
 			}
 
-			LOGGER.info("Finished generating console report", LOGGER_PREFIX_TAG);
+			LOGGER.info("{} Finished generating console report", LOGGER_PREFIX_TAG);
 		}
 	}
 

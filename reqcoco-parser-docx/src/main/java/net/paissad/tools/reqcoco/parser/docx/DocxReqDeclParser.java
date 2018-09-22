@@ -19,16 +19,16 @@ import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
-import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
+import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqDeclParser;
 
-public class DocxReqSourceParser extends AbstractReqSourceParser {
+public class DocxReqDeclParser extends AbstractReqDeclParser {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DocxReqSourceParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DocxReqDeclParser.class);
 
 	@Override
 	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options)
-	        throws ReqSourceParserException {
+	        throws ReqParserException {
 
 		try (final InputStream in = Files.newInputStream(Paths.get(uri)); final XWPFDocument document = new XWPFDocument(in)) {
 
@@ -45,7 +45,7 @@ public class DocxReqSourceParser extends AbstractReqSourceParser {
 		} catch (IOException e) {
 			String errMsg = "Error while reading the docx file : " + e.getMessage();
 			LOGGER.error(errMsg, e);
-			throw new ReqSourceParserException(errMsg, e);
+			throw new ReqParserException(errMsg, e);
 		}
 	}
 

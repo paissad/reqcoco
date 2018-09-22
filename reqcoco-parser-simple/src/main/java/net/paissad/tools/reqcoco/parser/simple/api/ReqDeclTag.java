@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = { "summary" })
 public class ReqDeclTag {
 
 	private String	id;

@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory;
 import lombok.Getter;
 import lombok.Setter;
 import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
-import net.paissad.tools.reqcoco.parser.github.GithubReqSourceParser;
-import net.paissad.tools.reqcoco.parser.redmine.RedmineReqSourceParser;
+import net.paissad.tools.reqcoco.parser.github.GithubReqDeclParser;
+import net.paissad.tools.reqcoco.parser.redmine.RedmineReqDeclParser;
 
 @Getter
 @Setter
@@ -170,44 +170,44 @@ public class ReqRunnerOptions {
      */
     private void updatePropertiesForRedmine(final Properties props) {
 
-        final String statusFilter = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_STATUS_FILTER)) ? RedmineReqSourceParser.DEFAULT_VALUE_STATUS_FILTER
-                : props.getProperty(RedmineReqSourceParser.OPTION_STATUS_FILTER);
-        props.put(RedmineReqSourceParser.OPTION_STATUS_FILTER, statusFilter);
+        final String statusFilter = StringUtils.isBlank(props.getProperty(RedmineReqDeclParser.OPTION_STATUS_FILTER)) ? RedmineReqDeclParser.DEFAULT_VALUE_STATUS_FILTER
+                : props.getProperty(RedmineReqDeclParser.OPTION_STATUS_FILTER);
+        props.put(RedmineReqDeclParser.OPTION_STATUS_FILTER, statusFilter);
 
-        final boolean includeChildren = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN))
-                ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_CHILDREN
-                : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN));
-        props.put(RedmineReqSourceParser.OPTION_INCLUDE_CHILDREN, includeChildren);
+        final boolean includeChildren = StringUtils.isBlank(props.getProperty(RedmineReqDeclParser.OPTION_INCLUDE_CHILDREN))
+                ? RedmineReqDeclParser.DEFAULT_VALUE_INCLUDE_CHILDREN
+                : Boolean.parseBoolean(props.getProperty(RedmineReqDeclParser.OPTION_INCLUDE_CHILDREN));
+        props.put(RedmineReqDeclParser.OPTION_INCLUDE_CHILDREN, includeChildren);
 
-        final boolean includeRelations = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS))
-                ? RedmineReqSourceParser.DEFAULT_VALUE_INCLUDE_RELATIONS
-                : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS));
-        props.put(RedmineReqSourceParser.OPTION_INCLUDE_RELATIONS, includeRelations);
+        final boolean includeRelations = StringUtils.isBlank(props.getProperty(RedmineReqDeclParser.OPTION_INCLUDE_RELATIONS))
+                ? RedmineReqDeclParser.DEFAULT_VALUE_INCLUDE_RELATIONS
+                : Boolean.parseBoolean(props.getProperty(RedmineReqDeclParser.OPTION_INCLUDE_RELATIONS));
+        props.put(RedmineReqDeclParser.OPTION_INCLUDE_RELATIONS, includeRelations);
 
-        final Collection<String> targetVersions = StringUtils.isBlank((String) props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS))
-                ? RedmineReqSourceParser.getDefautValueForTargetVersions()
-                : Arrays.asList(props.get(RedmineReqSourceParser.OPTION_TARGET_VERSIONS).toString().split(","));
-        props.put(RedmineReqSourceParser.OPTION_TARGET_VERSIONS, targetVersions);
+        final Collection<String> targetVersions = StringUtils.isBlank((String) props.get(RedmineReqDeclParser.OPTION_TARGET_VERSIONS))
+                ? RedmineReqDeclParser.getDefautValueForTargetVersions()
+                : Arrays.asList(props.get(RedmineReqDeclParser.OPTION_TARGET_VERSIONS).toString().split(","));
+        props.put(RedmineReqDeclParser.OPTION_TARGET_VERSIONS, targetVersions);
 
-        final boolean reqTagMustBePresent = StringUtils.isBlank(props.getProperty(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT))
-                ? RedmineReqSourceParser.DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE
-                : Boolean.parseBoolean(props.getProperty(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT));
-        props.put(RedmineReqSourceParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, reqTagMustBePresent);
+        final boolean reqTagMustBePresent = StringUtils.isBlank(props.getProperty(RedmineReqDeclParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT))
+                ? RedmineReqDeclParser.DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE
+                : Boolean.parseBoolean(props.getProperty(RedmineReqDeclParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT));
+        props.put(RedmineReqDeclParser.OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT, reqTagMustBePresent);
 
         final Properties redmineExtraProperties = getRedmineExtraProperties();
         if (redmineExtraProperties != null) {
-            props.put(RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES, redmineExtraProperties);
+            props.put(RedmineReqDeclParser.OPTION_EXTRA_PROPERTIES, redmineExtraProperties);
         }
     }
 
     public Properties getRedmineExtraProperties() {
-        return getComplexProperties(RedmineReqSourceParser.OPTION_EXTRA_PROPERTIES);
+        return getComplexProperties(RedmineReqDeclParser.OPTION_EXTRA_PROPERTIES);
     }
 
     private void updatePropertiesForGithub(final Properties props) {
-        final Properties githubIssuesFilters = getComplexProperties(GithubReqSourceParser.OPTION_ISSUES_FILTER_DATA);
+        final Properties githubIssuesFilters = getComplexProperties(GithubReqDeclParser.OPTION_ISSUES_FILTER_DATA);
         if (githubIssuesFilters != null) {
-            props.put(GithubReqSourceParser.OPTION_ISSUES_FILTER_DATA,
+            props.put(GithubReqDeclParser.OPTION_ISSUES_FILTER_DATA,
                     githubIssuesFilters.entrySet().stream().collect(Collectors.toMap(e -> (String) e.getKey(), e -> (String) e.getValue())));
         }
     }

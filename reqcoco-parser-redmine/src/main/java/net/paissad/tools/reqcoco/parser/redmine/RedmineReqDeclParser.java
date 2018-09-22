@@ -29,13 +29,13 @@ import com.taskadapter.redmineapi.internal.URIConfigurator;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
-public class RedmineReqSourceParser implements ReqSourceParser {
+public class RedmineReqDeclParser implements ReqDeclParser {
 
-    private static final Logger LOGGER                                   = LoggerFactory.getLogger(RedmineReqSourceParser.class);
+    private static final Logger LOGGER                                   = LoggerFactory.getLogger(RedmineReqDeclParser.class);
 
     public static final String  OPTION_PROJECT_KEY                       = "redmine.project.id";
 
@@ -72,14 +72,14 @@ public class RedmineReqSourceParser implements ReqSourceParser {
     public static final boolean DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE   = false;
 
     @Override
-    public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options) throws ReqSourceParserException {
+    public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options) throws ReqParserException {
 
         if (uri == null) {
-            throw new ReqSourceParserException("The root URL of Redmine cannot be null !", null);
+            throw new ReqParserException("The root URL of Redmine cannot be null !", null);
         }
 
         if (options == null || options.isEmpty()) {
-            throw new ReqSourceParserException("Non null and non empty options must be passed in order to parse a Redmine project", null);
+            throw new ReqParserException("Non null and non empty options must be passed in order to parse a Redmine project", null);
         }
 
         try {
@@ -107,7 +107,7 @@ public class RedmineReqSourceParser implements ReqSourceParser {
 
             // Check that all options meet minimum requirements
             if (StringUtils.isBlank(projectKey)) {
-                throw new ReqSourceParserException("A non null project id or name must be provided for parsing requirements from Redmine", null);
+                throw new ReqParserException("A non null project id or name must be provided for parsing requirements from Redmine", null);
             }
 
             LOGGER.info("Retrieving Redmine issues ...");
@@ -163,17 +163,17 @@ public class RedmineReqSourceParser implements ReqSourceParser {
         } catch (NullPointerException | ClassCastException e) {
             String errMsg = "Error either while retrieving options, or while processing the API result";
             LOGGER.error(errMsg, e);
-            throw new ReqSourceParserException(errMsg, e);
+            throw new ReqParserException(errMsg, e);
 
         } catch (RedmineException e) {
             String errMsg = "Error while retrieving Redmine issues : " + e.getMessage();
             LOGGER.error(errMsg, e);
-            throw new ReqSourceParserException(errMsg, e);
+            throw new ReqParserException(errMsg, e);
 
         } catch (Exception e) {
             String errMsg = "Unexpected error ==> " + e.getMessage();
             LOGGER.error(errMsg, e);
-            throw new ReqSourceParserException(errMsg, e);
+            throw new ReqParserException(errMsg, e);
         }
     }
 

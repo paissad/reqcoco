@@ -249,7 +249,7 @@ public class ReqRunner {
     private static void setLoggingLevelSafely(final String logLevel) {
         final ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
         final Logger appLogger = loggerFactory.getLogger("net.paissad.tools.reqcoco");
-        if (appLogger != null && appLogger instanceof ch.qos.logback.classic.Logger) {
+        if (appLogger instanceof ch.qos.logback.classic.Logger) {
             ((ch.qos.logback.classic.Logger) appLogger).setLevel(Level.valueOf(logLevel));
         } else {
             // The log level cannot be changed since it relies on the implementation ...

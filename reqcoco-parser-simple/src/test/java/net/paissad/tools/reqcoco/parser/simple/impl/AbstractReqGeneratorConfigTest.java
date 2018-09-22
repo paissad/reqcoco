@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqGeneratorConfig;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqTagSourceConfig;
@@ -31,7 +31,7 @@ public class AbstractReqGeneratorConfigTest {
 			}
 
 			@Override
-			public ReqSourceParser getSourceParser() {
+			public ReqDeclParser getSourceParser() {
 				return null;
 			}
 

@@ -21,7 +21,7 @@ public interface ReqGeneratorConfig {
 	/**
 	 * @return The parser to use for retrieving the list of declared requirements.
 	 */
-	ReqSourceParser getSourceParser();
+	ReqDeclParser getSourceParser();
 
 	/**
 	 * @return The configuration which tell how to parse the source where all requirements are declared.

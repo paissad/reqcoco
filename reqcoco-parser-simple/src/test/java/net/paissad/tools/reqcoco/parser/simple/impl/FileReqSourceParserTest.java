@@ -17,13 +17,13 @@ import org.junit.rules.ExpectedException;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
-import net.paissad.tools.reqcoco.parser.simple.impl.FileReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
+import net.paissad.tools.reqcoco.parser.simple.impl.FileReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
 
 public class FileReqSourceParserTest {
 
-	private FileReqSourceParser	reqSourceParser;
+	private FileReqDeclParser	reqSourceParser;
 
 	private URI					uri;
 
@@ -36,14 +36,14 @@ public class FileReqSourceParserTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.reqSourceParser = new FileReqSourceParser();
+		this.reqSourceParser = new FileReqDeclParser();
 		this.uri = this.getUriForStub("/samples/input/req_declarations_1.txt");
 		this.declTagConfig = new SimpleReqDeclTagConfig();
 		this.options = new HashMap<>();
 	}
 
 	@Test
-	public void testParse() throws ReqSourceParserException {
+	public void testParse() throws ReqParserException {
 
 		final Collection<Requirement> declaredRequirements = reqSourceParser.parse(uri, declTagConfig, options);
 		Assert.assertNotNull(declaredRequirements);
@@ -56,12 +56,29 @@ public class FileReqSourceParserTest {
 		Assert.assertEquals("r2", req5.getRevision());
 		Assert.assertEquals("There is some other content not processed ...", req5.getShortDescription());
 	}
+	
+	@Test
+	public void testParseDirectory() throws ReqParserException, URISyntaxException {
+	    
+        this.uri = this.getUriForStub("/samples/input/req_declarations_dir");
+
+        final Collection<Requirement> declaredRequirements = reqSourceParser.parse(uri, declTagConfig, options);
+        Assert.assertNotNull(declaredRequirements);
+        Assert.assertEquals(2, declaredRequirements.size());
+
+        final Collection<Requirement> requirementsReq99 = getRequirementsHavingId("req_99", declaredRequirements);
+        Assert.assertEquals(1, requirementsReq99.size());
+        Requirement req99 = requirementsReq99.iterator().next();
+        Assert.assertEquals("1.0", req99.getVersion());
+        Assert.assertEquals("r1", req99.getRevision());
+        Assert.assertEquals("short summary n°99", req99.getShortDescription());
+	}
 
 	@Test
-	public void testParseUnexistentFile() throws ReqSourceParserException {
+	public void testParseUnexistentFile() throws ReqParserException {
 
 		this.uri = Paths.get("i_bet_this_file_does_not_exit").toUri();
-		thrown.expect(Is.isA(ReqSourceParserException.class));
+		thrown.expect(Is.isA(ReqParserException.class));
 		thrown.expectMessage("I/O error while parsing the source for retrieving the declared requirements");
 		reqSourceParser.parse(uri, declTagConfig, options);
 	}

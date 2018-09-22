@@ -28,10 +28,10 @@ import net.paissad.tools.reqcoco.parser.simple.api.ReqCodeTag;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqCodeTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGeneratorConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqSourceParser;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorExecutionException;
-import net.paissad.tools.reqcoco.parser.simple.exception.ReqSourceParserException;
+import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqGeneratorUtil;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
@@ -57,7 +57,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
             LOGGER.info("Running the requirements coverage generator ...");
             LOGGER.info("The source for declared requirements is --> {}", sourceOfDeclaredReqs);
 
-            final ReqSourceParser sourceParser = getConfig().getSourceParser();
+            final ReqDeclParser sourceParser = getConfig().getSourceParser();
 
             LOGGER.info("Retrieving declared requirements by parsing the source {}", sourceOfDeclaredReqs);
             final Collection<Requirement> declaredRequirements = Collections
@@ -103,7 +103,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
             LOGGER.info("Finished executing the generator.");
             return declaredRequirements;
 
-        } catch (ReqSourceParserException | IOException e) {
+        } catch (ReqParserException | IOException e) {
             String errMsg = "Error while parsing the source of declared requirements";
             LOGGER.error(errMsg, e);
             throw new ReqGeneratorExecutionException(errMsg, e);
