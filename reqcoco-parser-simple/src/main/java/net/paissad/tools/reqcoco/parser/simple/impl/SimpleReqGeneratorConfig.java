@@ -5,7 +5,7 @@ import java.nio.file.Path;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 
 @Getter
 @Setter

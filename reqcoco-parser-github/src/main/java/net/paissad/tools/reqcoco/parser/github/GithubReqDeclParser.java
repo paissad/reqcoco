@@ -21,12 +21,14 @@ import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 
 public class GithubReqDeclParser implements ReqDeclParser {
 
     private static final Logger LOGGER                                 = LoggerFactory.getLogger(GithubReqDeclParser.class);
+
+    public static final String  PARSER_IDENTIFIER                      = "GITHUB";
 
     public static final String  OPTION_AUTH_USERNAME                   = "github.auth.username";
 
@@ -43,6 +45,11 @@ public class GithubReqDeclParser implements ReqDeclParser {
     public static final String  OPTION_REQUIREMENT_TAG_MUST_BE_PRESENT = "github.req.tag.required";
 
     public static final boolean DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE = false;
+
+    @Override
+    public String getIdentitier() {
+        return PARSER_IDENTIFIER;
+    }
 
     @Override
     public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options) throws ReqParserException {
@@ -106,6 +113,11 @@ public class GithubReqDeclParser implements ReqDeclParser {
             LOGGER.error(errMsg, e);
             throw new ReqParserException(errMsg, e);
         }
+    }
+
+    @Override
+    public Collection<String> getRegisteredFileExtensions() {
+        return null;
     }
 
     private static class IssueMatchPredicate implements Predicate<Issue> {

@@ -10,6 +10,8 @@ import org.junit.rules.ExpectedException;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
+import net.paissad.tools.reqcoco.parser.simple.impl.FileReqDeclParser;
+
 public class ReqRunnerOptionsTest {
 
 	private ReqRunnerOptions	options;
@@ -22,7 +24,7 @@ public class ReqRunnerOptionsTest {
 	@Before
 	public void setUp() throws Exception {
 		this.options = new ReqRunnerOptions();
-		options.parseOptions("--config", "/path/to/reqcoco.props", "--input-type", "file", "--input", "/path/to/source", "--output",
+		options.parseOptions("--config", "/path/to/reqcoco.props", "--input-type", "FILE", "--input", "/path/to/source", "--output",
 		        "/path/to/outputdir", "arg1", "arg2");
 		parser = new CmdLineParser(this);
 	}
@@ -57,7 +59,7 @@ public class ReqRunnerOptionsTest {
 
 	@Test
 	public void testGetSourceType() {
-		Assert.assertEquals(ReqSourceType.FILE, options.getSourceType());
+		Assert.assertEquals(FileReqDeclParser.PARSER_IDENTIFIER, options.getSourceType());
 	}
 
 	@Test

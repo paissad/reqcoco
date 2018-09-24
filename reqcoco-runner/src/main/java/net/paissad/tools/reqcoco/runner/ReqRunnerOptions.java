@@ -94,7 +94,7 @@ public class ReqRunnerOptions {
     private File                configFile;
 
     @Option(name = "--input-type", required = true, usage = "The type of the requirements source declaration.")
-    private ReqSourceType       sourceType;
+    private String              sourceType;
 
     @Option(name = "--input", required = true, metaVar = "<input>", usage = "Source containing the requirements to parse.")
     private String              requirementSource;

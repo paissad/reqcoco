@@ -24,12 +24,12 @@ import org.junit.rules.ExpectedException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGeneratorConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqGenerator;
 import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqGeneratorConfig;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 
 public class AbstractReqGeneratorTest {
 

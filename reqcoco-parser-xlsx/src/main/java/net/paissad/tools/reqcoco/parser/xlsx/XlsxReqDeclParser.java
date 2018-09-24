@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,13 +23,20 @@ import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
 public class XlsxReqDeclParser implements ReqDeclParser {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(XlsxReqDeclParser.class);
+    private static final Logger LOGGER            = LoggerFactory.getLogger(XlsxReqDeclParser.class);
+
+    public static final String  PARSER_IDENTIFIER = "XLSX";
+
+    @Override
+    public String getIdentitier() {
+        return PARSER_IDENTIFIER;
+    }
 
 	@Override
 	public Collection<Requirement> parse(URI uri, ReqDeclTagConfig declTagConfig, Map<String, Object> options) throws ReqParserException {
@@ -89,6 +97,11 @@ public class XlsxReqDeclParser implements ReqDeclParser {
 		}
 
 	}
+
+    @Override
+    public Collection<String> getRegisteredFileExtensions() {
+        return Arrays.asList(".xlsx");
+    }
 
 	private Map<String, Integer> getCellHeadersPositions(final Row row) {
 		final Map<String, Integer> headers = new HashMap<>();

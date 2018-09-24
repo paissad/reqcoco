@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>net.paissad.tools.reqcoco</groupId>
+    <artifactId>reqcoco-parent</artifactId>
+    <version>1.0.4-SNAPSHOT</version>
+  </parent>
+
+  <groupId>net.paissad.tools.reqcoco.parser</groupId>
+  <artifactId>reqcoco-parser-aggregator</artifactId>
+  <name>ReqCoCo Parser Aggregator</name>
+  <description>Extract requirements from files by using the most accurate parser depending on the file extension</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.paissad.tools.reqcoco.parser</groupId>
+      <artifactId>reqcoco-parser-simple</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.paissad.tools.reqcoco.parser</groupId>
+      <artifactId>reqcoco-parser-docx</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.paissad.tools.reqcoco.parser</groupId>
+      <artifactId>reqcoco-parser-xlsx</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+</project>

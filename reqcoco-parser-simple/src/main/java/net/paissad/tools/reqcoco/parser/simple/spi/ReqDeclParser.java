@@ -1,10 +1,11 @@
-package net.paissad.tools.reqcoco.parser.simple.api;
+package net.paissad.tools.reqcoco.parser.simple.spi;
 
 import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
+import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 
 /**
@@ -12,8 +13,17 @@ import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
  * 
  * @author paissad
  */
-@FunctionalInterface
 public interface ReqDeclParser {
+
+    /**
+     * Represents all files extensions. This is supposed to be used when the parser is made for parsing local files without knowing the file extensions.
+     */
+    String ALL_EXTENSIONS = "__ALL_EXTENSIONS__";
+
+    /**
+     * @return The identifier for the parser. It must be unique among all registered/available parsers into the classpath.
+     */
+    String getIdentitier();
 
     /**
      * @param uri - The {@link URI} containing the declarations of the requirements to parse.
@@ -23,4 +33,11 @@ public interface ReqDeclParser {
      * @throws ReqParserException If an error occurs while parsing the source of requirements.
      */
     Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options) throws ReqParserException;
+
+    /**
+     * @return The files extensions that are supported for the parser.<br>
+     *         Any extension is case insensitive.<br>
+     *         This result can be <code>null</code> or empty.
+     */
+    Collection<String> getRegisteredFileExtensions();
 }

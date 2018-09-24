@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
 public abstract class AbstractReqDeclParser implements ReqDeclParser {

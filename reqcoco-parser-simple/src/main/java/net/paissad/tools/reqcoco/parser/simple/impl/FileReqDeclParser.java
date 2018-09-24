@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,7 +32,14 @@ import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
  */
 public class FileReqDeclParser extends AbstractReqDeclParser {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileReqDeclParser.class);
+    private static final Logger LOGGER            = LoggerFactory.getLogger(FileReqDeclParser.class);
+
+    public static final String  PARSER_IDENTIFIER = "FILE";
+
+    @Override
+    public String getIdentitier() {
+        return PARSER_IDENTIFIER;
+    }
 
     /**
      * Can be used when the {@link URI} is a link to a file.
@@ -84,6 +92,11 @@ public class FileReqDeclParser extends AbstractReqDeclParser {
             LOGGER.error(errMsg, e);
             throw new ReqParserException(errMsg, e);
         }
+    }
+
+    @Override
+    public Collection<String> getRegisteredFileExtensions() {
+        return Arrays.asList(ALL_EXTENSIONS);
     }
 
     private Collection<Requirement> parseSingleFile(final ReqDeclTagConfig declTagConfig, final Path resourcePath) throws IOException {

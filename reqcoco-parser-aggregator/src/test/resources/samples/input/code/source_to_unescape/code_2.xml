@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <foobar>... @ReqSourceCode(id = &quot;req_3&quot;, version = &quot;1.1&quot;, revision = &quot;r4&quot;, author = &quot;BBB&quot;)</foobar>
+  <baz>@ReqSourceCode(id = &quot;req_5&quot;, version = &quot;1.1&quot;, revision = &quot;r2&quot;, author = &quot;AAA&quot;)</baz>
+</root>

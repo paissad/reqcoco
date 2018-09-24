@@ -261,6 +261,51 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>net.paissad.tools.reqcoco</groupId>
+        <artifactId>reqcoco-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.paissad.tools.reqcoco</groupId>
+        <artifactId>reqcoco-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.paissad.tools.reqcoco</groupId>
+        <artifactId>reqcoco-runner</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.paissad.tools.reqcoco.parser</groupId>
+        <artifactId>reqcoco-parser-simple</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.paissad.tools.reqcoco.parser</groupId>
+        <artifactId>reqcoco-parser-aggregator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.paissad.tools.reqcoco.parser</groupId>
+        <artifactId>reqcoco-parser-docx</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.paissad.tools.reqcoco.parser</groupId>
+        <artifactId>reqcoco-parser-xlsx</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.paissad.tools.reqcoco.parser</groupId>
+        <artifactId>reqcoco-parser-redmine</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.paissad.tools.reqcoco.parser</groupId>
+        <artifactId>reqcoco-parser-github</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>1.16.16</version>
@@ -352,9 +397,14 @@
         <version>5.5.11</version>
       </dependency>
       <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>layout</artifactId>
-        <version>7.0.2</version>
+        <groupId>com.taskadapter</groupId>
+        <artifactId>redmine-java-api</artifactId>
+        <version>3.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.mylyn.github</groupId>
+        <artifactId>org.eclipse.egit.github.core</artifactId>
+        <version>2.1.5</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -383,6 +433,7 @@
     <module>reqcoco-parser-docx</module>
     <module>reqcoco-parser-xlsx</module>
     <module>reqcoco-distribution</module>
+    <module>reqcoco-parser-aggregator</module>
   </modules>
 
 </project>

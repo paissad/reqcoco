@@ -15,10 +15,10 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
-import net.paissad.tools.reqcoco.parser.docx.DocxReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParserProvider;
 
 public class DocxReqSourceParserTest {
 
@@ -40,6 +40,22 @@ public class DocxReqSourceParserTest {
 		this.declTagConfig = new SimpleReqDeclTagConfig();
 		this.options = new HashMap<>();
 	}
+
+    @Test
+    public void testGetIdentitier() {
+        Assert.assertEquals(DocxReqDeclParser.PARSER_IDENTIFIER, this.docxReqSourceParser.getIdentitier());
+    }
+
+    @Test
+    public void testgetRegisteredFileExtensions() {
+        Assert.assertTrue(this.docxReqSourceParser.getRegisteredFileExtensions().size() == 1);
+        Assert.assertEquals(".docx", this.docxReqSourceParser.getRegisteredFileExtensions().iterator().next());
+    }
+
+    @Test
+    public void testGetParserForFileExtension_docx() {
+        Assert.assertEquals(DocxReqDeclParser.class, ReqDeclParserProvider.getInstance().getParserForFileExtension(".DOcx").getClass());
+    }
 
 	@Test
 	public void testParse() throws ReqParserException {

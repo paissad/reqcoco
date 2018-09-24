@@ -29,13 +29,15 @@ import com.taskadapter.redmineapi.internal.URIConfigurator;
 
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 
 public class RedmineReqDeclParser implements ReqDeclParser {
 
     private static final Logger LOGGER                                   = LoggerFactory.getLogger(RedmineReqDeclParser.class);
+
+    public static final String  PARSER_IDENTIFIER                        = "REDMINE";
 
     public static final String  OPTION_PROJECT_KEY                       = "redmine.project.id";
 
@@ -70,6 +72,11 @@ public class RedmineReqDeclParser implements ReqDeclParser {
     public static final String  DEFAULT_VALUE_STATUS_FILTER              = "*";
 
     public static final boolean DEFAULT_VALUE_REQUIREMENT_TAG_PRESENCE   = false;
+
+    @Override
+    public String getIdentitier() {
+        return PARSER_IDENTIFIER;
+    }
 
     @Override
     public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig tagConfig, final Map<String, Object> options) throws ReqParserException {
@@ -175,6 +182,11 @@ public class RedmineReqDeclParser implements ReqDeclParser {
             LOGGER.error(errMsg, e);
             throw new ReqParserException(errMsg, e);
         }
+    }
+
+    @Override
+    public Collection<String> getRegisteredFileExtensions() {
+        return null;
     }
 
     private Transport buildTransport(final String uri, String authApiAccessKey, String authUsername, String authPassword) {
@@ -289,8 +301,7 @@ public class RedmineReqDeclParser implements ReqDeclParser {
 
         /**
          * @param issue - The issue to check.
-         * @return <code>true</code> if the issue has the specified custom field <strong>AND</strong> has the value <strong>true</strong>. The
-         *         verification is case insensitive.
+         * @return <code>true</code> if the issue has the specified custom field <strong>AND</strong> has the value <strong>true</strong>. The verification is case insensitive.
          */
         private boolean isCustomFieldDeclarationTrue(final Issue issue) {
             final CustomField customField = issue.getCustomFieldByName(this.declarationCustomFieldName);

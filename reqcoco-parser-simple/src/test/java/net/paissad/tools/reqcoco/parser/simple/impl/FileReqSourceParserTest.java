@@ -18,8 +18,8 @@ import org.junit.rules.ExpectedException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
-import net.paissad.tools.reqcoco.parser.simple.impl.FileReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 
 public class FileReqSourceParserTest {
 
@@ -41,6 +41,17 @@ public class FileReqSourceParserTest {
 		this.declTagConfig = new SimpleReqDeclTagConfig();
 		this.options = new HashMap<>();
 	}
+
+    @Test
+    public void testGetIdentitier() {
+        Assert.assertEquals(FileReqDeclParser.PARSER_IDENTIFIER, this.reqSourceParser.getIdentitier());
+    }
+
+    @Test
+    public void testgetRegisteredFileExtensions() {
+        Assert.assertTrue(this.reqSourceParser.getRegisteredFileExtensions().size() == 1);
+        Assert.assertEquals(ReqDeclParser.ALL_EXTENSIONS, this.reqSourceParser.getRegisteredFileExtensions().iterator().next());
+    }
 
 	@Test
 	public void testParse() throws ReqParserException {

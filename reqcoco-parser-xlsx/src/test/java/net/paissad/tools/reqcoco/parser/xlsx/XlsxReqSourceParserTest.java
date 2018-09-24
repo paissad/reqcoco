@@ -18,7 +18,7 @@ import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
-import net.paissad.tools.reqcoco.parser.xlsx.XlsxReqDeclParser;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParserProvider;
 
 public class XlsxReqSourceParserTest {
 
@@ -40,6 +40,22 @@ public class XlsxReqSourceParserTest {
 		this.declTagConfig = new SimpleReqDeclTagConfig();
 		this.options = new HashMap<>();
 	}
+
+    @Test
+    public void testGetIdentitier() {
+        Assert.assertEquals(XlsxReqDeclParser.PARSER_IDENTIFIER, this.xlsxReqSourceParser.getIdentitier());
+    }
+
+    @Test
+    public void testgetRegisteredFileExtensions() {
+        Assert.assertTrue(this.xlsxReqSourceParser.getRegisteredFileExtensions().size() == 1);
+        Assert.assertEquals(".xlsx", this.xlsxReqSourceParser.getRegisteredFileExtensions().iterator().next());
+    }
+
+    @Test
+    public void testGetParserForFileExtension_xlsx() {
+        Assert.assertEquals(XlsxReqDeclParser.class, ReqDeclParserProvider.getInstance().getParserForFileExtension(".XLsx").getClass());
+    }
 
 	@Test
 	public void testParse() throws ReqParserException {

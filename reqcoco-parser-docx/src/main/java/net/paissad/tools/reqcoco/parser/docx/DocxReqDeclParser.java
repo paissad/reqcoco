@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,7 +25,14 @@ import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqDeclParser;
 
 public class DocxReqDeclParser extends AbstractReqDeclParser {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DocxReqDeclParser.class);
+    private static final Logger LOGGER            = LoggerFactory.getLogger(DocxReqDeclParser.class);
+
+    public static final String  PARSER_IDENTIFIER = "DOCX";
+
+    @Override
+    public String getIdentitier() {
+        return PARSER_IDENTIFIER;
+    }
 
 	@Override
 	public Collection<Requirement> parse(final URI uri, final ReqDeclTagConfig declTagConfig, final Map<String, Object> options)
@@ -48,5 +56,10 @@ public class DocxReqDeclParser extends AbstractReqDeclParser {
 			throw new ReqParserException(errMsg, e);
 		}
 	}
+
+    @Override
+    public Collection<String> getRegisteredFileExtensions() {
+        return Arrays.asList(".docx");
+    }
 
 }

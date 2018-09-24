@@ -36,6 +36,8 @@ import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigExcep
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqGenerator;
 import net.paissad.tools.reqcoco.parser.simple.impl.SimpleReqGeneratorConfig;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParserProvider;
 
 public class ReqRunner {
 
@@ -110,7 +112,13 @@ public class ReqRunner {
 
             coverageGeneratorCfg.setSourceCodePath(Paths.get(getOptions().getSourceCodePath()));
             coverageGeneratorCfg.setTestsCodePath(Paths.get(getOptions().getTestCodePath()));
-            coverageGeneratorCfg.setSourceParser(getOptions().getSourceType().getParser());
+            
+            final String parserIdentitfier = getOptions().getSourceType();
+            final ReqDeclParser reqDeclParser = ReqDeclParserProvider.getInstance().getParserHavingIdentifier(parserIdentitfier);
+            if (reqDeclParser == null) {
+                throw new ReqGeneratorConfigException("Unable to find a requirements declarations parser with the following identifier --> " + parserIdentitfier, null);
+            }
+            coverageGeneratorCfg.setSourceParser(reqDeclParser);
 
             coverageGeneratorCfg.getFileIncludes().addAll(Arrays.asList(getOptions().getResourceIncludes().split(",")));
             coverageGeneratorCfg.getFileExcludes().addAll(Arrays.asList(getOptions().getResourceExcludes().split(",")));

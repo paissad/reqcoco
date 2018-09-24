@@ -17,12 +17,10 @@
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
       <artifactId>reqcoco-parser-simple</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.taskadapter</groupId>
       <artifactId>redmine-java-api</artifactId>
-      <version>3.0.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

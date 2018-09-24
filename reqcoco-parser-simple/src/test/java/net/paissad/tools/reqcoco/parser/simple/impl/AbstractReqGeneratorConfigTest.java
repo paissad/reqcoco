@@ -7,10 +7,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.impl.AbstractReqGeneratorConfig;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqDeclTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.impl.tag.SimpleReqTagSourceConfig;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 
 public class AbstractReqGeneratorConfigTest {
 

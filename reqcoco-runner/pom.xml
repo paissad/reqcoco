@@ -31,6 +31,15 @@
               <finalName>${project.artifactId}-${project.version}-shaded</finalName>
               <shadedClassifierName>workaround</shadedClassifierName> <!-- Avoid replacement of the default and main artifact by the shaded artifact -->
               <shadedArtifactAttached>false</shadedArtifactAttached> <!-- Do not deploy the shaded artifact into the Maven repository -->
+              <filters>
+                <filter>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
             </configuration>
           </execution>
         </executions>
@@ -41,23 +50,15 @@
   <dependencies>
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
-      <artifactId>reqcoco-parser-docx</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>net.paissad.tools.reqcoco.parser</groupId>
-      <artifactId>reqcoco-parser-xlsx</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
+      <artifactId>reqcoco-parser-aggregator</artifactId>
     </dependency>
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
       <artifactId>reqcoco-parser-redmine</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>net.paissad.tools.reqcoco.parser</groupId>
       <artifactId>reqcoco-parser-github</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>

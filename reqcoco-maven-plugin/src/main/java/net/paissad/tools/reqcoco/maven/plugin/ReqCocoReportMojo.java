@@ -12,10 +12,10 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 import net.paissad.tools.reqcoco.runner.ExitStatus;
 import net.paissad.tools.reqcoco.runner.ReqRunner;
 import net.paissad.tools.reqcoco.runner.ReqRunnerOptions;
-import net.paissad.tools.reqcoco.runner.ReqSourceType;
 
 @Mojo(name = "report", defaultPhase = LifecyclePhase.SITE, requiresProject = true, threadSafe = true, aggregator = true)
 public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
@@ -33,11 +33,12 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
     private String        config;
 
     /**
-     * The type of the source which contains the declarations of the requirements.<br>
-     * Possible values are 'FILE | DOCX | XLSX | REDMINE | GITHUB'.
+     * The type / identifier of the parser to use for retrieving the requirements declarations.<br>
+     * Possible values are 'AGGREGATOR | FILE | DOCX | XLSX | REDMINE | GITHUB' or any other value which is an identifier of a parser.<br>
+     * A requirement parser is an implementation of {@link ReqDeclParser}.
      */
     @Parameter(property = "reqcoco.report.source.type", required = true, defaultValue = "FILE")
-    private ReqSourceType sourcetype;
+    private String       sourcetype;
 
     /**
      * The location where all requirements are declared. It either can be a Microsoft Word document file (.docx), or Excel file (.xlsx), or Redmine,
@@ -127,7 +128,7 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
         try {
 
             final List<String> arguments = new ArrayList<>(Arrays.asList(
-                    new String[] { "--config", this.config, "--input-type", this.sourcetype.name(), "--input", this.sourcelocation, "--output", this.outputdir.toString() }));
+                    new String[] { "--config", this.config, "--input-type", this.sourcetype, "--input", this.sourcelocation, "--output", this.outputdir.toString() }));
 
             if (!StringUtils.isBlank(this.reportname)) {
                 arguments.add("--report-name");

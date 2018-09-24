@@ -141,6 +141,14 @@ public class ReqRunnerTest {
     }
 
     @Test
+    public void testMainUnknownParserIdentifier() throws URISyntaxException {
+        List<String> args = getSetupArgs(null);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
+        runner.getOptions().setSourceType("__very_bad_parser_identifier__");
+        Assert.assertEquals(ExitStatus.BUILD_REPORT_ERROR.getCode(), runner.generateReports());
+    }
+
+    @Test
     public void testMainSourceIsABadURI() throws URISyntaxException, IOException {
 
         List<String> args = getSetupArgs("file:////this_is_a_bad_source_as_it_contains_too_many_forward_slashes", false);

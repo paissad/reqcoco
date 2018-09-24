@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
+
 /**
  * This interface represents the minimum configuration of the generator needed before execution.
  * 

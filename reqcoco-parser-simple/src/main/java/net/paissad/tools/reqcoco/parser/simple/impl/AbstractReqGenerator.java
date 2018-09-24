@@ -28,10 +28,10 @@ import net.paissad.tools.reqcoco.parser.simple.api.ReqCodeTag;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqCodeTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGenerator;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGeneratorConfig;
-import net.paissad.tools.reqcoco.parser.simple.api.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorConfigException;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqGeneratorExecutionException;
 import net.paissad.tools.reqcoco.parser.simple.exception.ReqParserException;
+import net.paissad.tools.reqcoco.parser.simple.spi.ReqDeclParser;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqGeneratorUtil;
 import net.paissad.tools.reqcoco.parser.simple.util.ReqTagUtil;
 

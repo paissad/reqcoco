@@ -44,7 +44,6 @@
     <dependency>
       <groupId>net.paissad.tools.reqcoco</groupId>
       <artifactId>reqcoco-runner</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

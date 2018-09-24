@@ -39,6 +39,16 @@ public class GithubReqSourceParserTest {
     }
 
     @Test
+    public void testGetIdentitier() {
+        Assert.assertEquals(GithubReqDeclParser.PARSER_IDENTIFIER, this.githubReqSourceParser.getIdentitier());
+    }
+
+    @Test
+    public void testgetRegisteredFileExtensions() {
+        Assert.assertNull(this.githubReqSourceParser.getRegisteredFileExtensions());
+    }
+
+    @Test
     public void testParse() throws ReqParserException {
         GithubTestUtil.assumePublicApiReachable();
         final Collection<Requirement> reqs = this.githubReqSourceParser.parse(null, tagConfig, options);

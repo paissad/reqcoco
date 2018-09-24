@@ -45,6 +45,16 @@ public class RedmineReqSourceParserTest {
 		this.initOptions();
 	}
 
+    @Test
+    public void testGetIdentitier() {
+        Assert.assertEquals(RedmineReqDeclParser.PARSER_IDENTIFIER, this.redmineReqSourceParser.getIdentitier());
+    }
+
+    @Test
+    public void testgetRegisteredFileExtensions() {
+        Assert.assertNull(this.redmineReqSourceParser.getRegisteredFileExtensions());
+    }
+
 	@Test
 	public void testParse() throws ReqParserException {
 
