@@ -27,7 +27,7 @@ Table of contents
 
 **ReqCoCo** is a set of tools which helps to generate reports of code coverage.
 
-The reports can generated in different ways (console, html, pdf, xlsx, ...)
+The reports can generated in different ways (console, html, json, xlsx)
 
 Custom generators can be built by anyone in order to generate a standard input source. And then **ReqCoCo** can be used to generate the reports in the
 desired format/output.
