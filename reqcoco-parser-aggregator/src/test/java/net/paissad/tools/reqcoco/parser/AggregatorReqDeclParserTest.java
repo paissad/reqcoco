@@ -49,7 +49,7 @@ public class AggregatorReqDeclParserTest {
 
     @Test
     public void testgetRegisteredFileExtensions() {
-        Assert.assertNull(this.reqSourceParser.getRegisteredFileExtensions());
+        Assert.assertTrue(this.reqSourceParser.getRegisteredFileExtensions().isEmpty());
     }
 
     @Test

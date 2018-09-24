@@ -117,7 +117,7 @@ public class GithubReqDeclParser implements ReqDeclParser {
 
     @Override
     public Collection<String> getRegisteredFileExtensions() {
-        return null;
+        return Collections.emptyList();
     }
 
     private static class IssueMatchPredicate implements Predicate<Issue> {

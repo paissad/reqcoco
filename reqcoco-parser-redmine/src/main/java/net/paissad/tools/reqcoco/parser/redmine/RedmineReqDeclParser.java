@@ -186,7 +186,7 @@ public class RedmineReqDeclParser implements ReqDeclParser {
 
     @Override
     public Collection<String> getRegisteredFileExtensions() {
-        return null;
+        return Collections.emptyList();
     }
 
     private Transport buildTransport(final String uri, String authApiAccessKey, String authUsername, String authPassword) {

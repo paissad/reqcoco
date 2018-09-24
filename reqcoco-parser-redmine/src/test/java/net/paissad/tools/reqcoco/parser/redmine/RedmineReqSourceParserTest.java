@@ -52,7 +52,7 @@ public class RedmineReqSourceParserTest {
 
     @Test
     public void testgetRegisteredFileExtensions() {
-        Assert.assertNull(this.redmineReqSourceParser.getRegisteredFileExtensions());
+        Assert.assertTrue(this.redmineReqSourceParser.getRegisteredFileExtensions().isEmpty());
     }
 
 	@Test

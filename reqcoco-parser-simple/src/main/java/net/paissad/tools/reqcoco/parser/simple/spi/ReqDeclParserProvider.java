@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,7 +42,7 @@ public class ReqDeclParserProvider {
 
         final List<ReqDeclParser> matchedParsers = getRegisteredParsers().stream().filter(p -> identitfier.equals(p.getIdentitier())).distinct().collect(Collectors.toList());
 
-        return matchedParsers.size() > 0 ? matchedParsers.get(0) : null;
+        return matchedParsers.isEmpty() ? null : matchedParsers.get(0);
     }
 
     public ReqDeclParser getParserForFileExtension(final String fileExtension) {
@@ -60,8 +59,7 @@ public class ReqDeclParserProvider {
                     defaultParser = reqDeclParser;
                 }
 
-                if (fileExtension != null && reqDeclParser.getRegisteredFileExtensions().stream().map(ext -> ext.toLowerCase(Locale.ENGLISH))
-                        .anyMatch(ext -> ext.equals(fileExtension.toLowerCase(Locale.ENGLISH)))) {
+                if (fileExtension != null && reqDeclParser.getRegisteredFileExtensions().stream().anyMatch(ext -> ext.equalsIgnoreCase(fileExtension))) {
                     return reqDeclParser;
                 }
             }

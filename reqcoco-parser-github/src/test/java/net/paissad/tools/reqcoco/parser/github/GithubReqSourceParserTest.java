@@ -45,7 +45,7 @@ public class GithubReqSourceParserTest {
 
     @Test
     public void testgetRegisteredFileExtensions() {
-        Assert.assertNull(this.githubReqSourceParser.getRegisteredFileExtensions());
+        Assert.assertTrue(this.githubReqSourceParser.getRegisteredFileExtensions().isEmpty());
     }
 
     @Test

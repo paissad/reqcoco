@@ -127,8 +127,8 @@ public class ReqCocoReportMojo extends AbstractReqCoCoMojo {
 
         try {
 
-            final List<String> arguments = new ArrayList<>(Arrays.asList(
-                    new String[] { "--config", this.config, "--input-type", this.sourcetype, "--input", this.sourcelocation, "--output", this.outputdir.toString() }));
+            final List<String> arguments = new ArrayList<>(
+                    Arrays.asList("--config", this.config, "--input-type", this.sourcetype, "--input", this.sourcelocation, "--output", this.outputdir.toString()));
 
             if (!StringUtils.isBlank(this.reportname)) {
                 arguments.add("--report-name");
