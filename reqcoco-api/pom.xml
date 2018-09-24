@@ -4,7 +4,7 @@
   <parent>
     <groupId>net.paissad.tools.reqcoco</groupId>
     <artifactId>reqcoco-parent</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
   </parent>
 
   <artifactId>reqcoco-api</artifactId>
