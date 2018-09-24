@@ -1,5 +1,7 @@
 
 ## [Unreleased]
+
+## [1.0.4] - 2018-09-24
 ### Added
  - Retrieve requirements declarations recursively from files of a directory (issue #20)
  - Add Aggregator Parser (issue #21)
@@ -33,7 +35,8 @@
 ## 1.0.0 - 2017-05-20
  - Initial version
 
-[Unreleased]: https://github.com/paissad/reqcoco/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/paissad/reqcoco/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/paissad/reqcoco/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/paissad/reqcoco/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/paissad/reqcoco/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/paissad/reqcoco/compare/v1.0.0...v1.0.1
