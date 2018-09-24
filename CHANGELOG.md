@@ -1,5 +1,7 @@
 
 ## [Unreleased]
+### Fixed
+ - Fix reqcoco runner shaded jar which were not runnable
 
 ## [1.0.4] - 2018-09-24
 ### Added
