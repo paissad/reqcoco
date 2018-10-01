@@ -18,10 +18,10 @@ public class RequirementTest {
         this.requirement.setRevision("myRevision");
         this.requirement.setShortDescription("myShortDesc");
         this.requirement.setFullDescription("myLongDesc");
-        this.requirement.setCodeDone(true);
+        this.requirement.setCodeStatus(Status.DONE);
         this.requirement.setCodeAuthor("developer1");
         this.requirement.setCodeAuthorComment("finished");
-        this.requirement.setTestDone(false);
+        this.requirement.setTestStatus(Status.TODO);
         this.requirement.setTestAuthor("dev2");
         this.requirement.setTestAuthorComment("wip ...");
         this.requirement.setIgnore(true);
@@ -59,8 +59,20 @@ public class RequirementTest {
     }
 
     @Test
-    public void testIsCodeDone() {
+    public void testIsCodeDone_when_done() {
         Assert.assertTrue(this.requirement.isCodeDone());
+    }
+
+    @Test
+    public void testIsCodeDone_when_not_done() {
+        final Requirement req2 = new Requirement();
+        req2.setCodeStatus(Status.IN_PROGRESS);
+        Assert.assertFalse(req2.isCodeDone());
+    }
+
+    @Test
+    public void testCodeStatus() {
+        Assert.assertEquals(Status.DONE, this.requirement.getCodeStatus());
     }
 
     @Test
@@ -74,8 +86,20 @@ public class RequirementTest {
     }
 
     @Test
-    public void testIsTestDone() {
+    public void testIsTestDone_when_not_done() {
         Assert.assertFalse(this.requirement.isTestDone());
+    }
+
+    @Test
+    public void testIsTestDone_when_done() {
+        final Requirement req3 = new Requirement();
+        req3.setTestStatus(Status.DONE);
+        Assert.assertTrue(req3.isTestDone());
+    }
+
+    @Test
+    public void testTestStatus() {
+        Assert.assertEquals(Status.TODO, this.requirement.getTestStatus());
     }
 
     @Test

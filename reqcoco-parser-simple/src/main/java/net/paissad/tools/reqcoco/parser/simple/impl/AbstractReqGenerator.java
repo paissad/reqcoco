@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.paissad.tools.reqcoco.api.model.Requirement;
+import net.paissad.tools.reqcoco.api.model.Status;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqCodeTag;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqCodeTagConfig;
 import net.paissad.tools.reqcoco.parser.simple.api.ReqGenerator;
@@ -213,18 +214,22 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
         // Retrieve the 'author' part of the tag
         final String author = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getAuthorRegex(), 1);
 
+        // Retrieve the 'status' part of the tag
+        final Status status = Status.valueOf(ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getStatusRegex(), 1));
+
         // Retrieve the 'comment' part of the tag
         final String comment = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getCommentRegex(), 1);
 
-        // Build the req tag object
-        final ReqCodeTag reqTag = new ReqCodeTag();
-        reqTag.setId(id);
-        reqTag.setVersion(version);
-        reqTag.setRevision(revision);
-        reqTag.setAuthor(author);
-        reqTag.setComment(comment);
+        // Build the req code tag object
+        final ReqCodeTag reqCodeTag = new ReqCodeTag();
+        reqCodeTag.setId(id);
+        reqCodeTag.setVersion(version);
+        reqCodeTag.setRevision(revision);
+        reqCodeTag.setStatus(status);
+        reqCodeTag.setAuthor(author);
+        reqCodeTag.setComment(comment);
 
-        return reqTag;
+        return reqCodeTag;
     }
 
     /**
@@ -238,14 +243,16 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
 
         switch (codeType) {
         case SOURCE:
-            requirement.setCodeDone(true);
+            requirement.setCodeStatus(tag.getStatus());
             requirement.setCodeAuthor(tag.getAuthor());
+            requirement.setCodeAuthorComment(tag.getComment());
             requirement.setCodeAuthorComment(tag.getComment());
             break;
 
         case TEST:
-            requirement.setTestDone(true);
+            requirement.setTestStatus(tag.getStatus());
             requirement.setTestAuthor(tag.getAuthor());
+            requirement.setTestAuthorComment(tag.getComment());
             requirement.setTestAuthorComment(tag.getComment());
             break;
 

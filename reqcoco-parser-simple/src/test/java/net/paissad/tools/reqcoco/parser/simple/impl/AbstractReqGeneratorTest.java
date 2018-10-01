@@ -108,9 +108,10 @@ public class AbstractReqGeneratorTest {
         this.reqGenerator.configure(this.reqGeneratorConfigStub);
         final Collection<Requirement> reqs = this.reqGenerator.run();
         Assert.assertTrue(Requirements.getByName(reqs, "req_1").iterator().next().isCodeDone());
-        Assert.assertTrue(Requirements.getByName(reqs, "req_2").iterator().next().isCodeDone());
+        Assert.assertFalse(Requirements.getByName(reqs, "req_2").iterator().next().isCodeDone());
         Assert.assertTrue(Requirements.getByName(reqs, "req_3").iterator().next().isCodeDone());
-        Assert.assertTrue(Requirements.getByName(reqs, "req_5").iterator().next().isCodeDone());
+        Assert.assertFalse(Requirements.getByName(reqs, "req_5").iterator().next().isCodeDone());
+        Assert.assertFalse(Requirements.getByName(reqs, "req_6").iterator().next().isCodeDone());
     }
 
     @Test

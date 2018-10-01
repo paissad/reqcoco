@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-  <foobar>... @ReqSourceCode(id = &quot;req_3&quot;, version = &quot;1.1&quot;, revision = &quot;r4&quot;, author = &quot;BBB&quot;)</foobar>
-  <baz>@ReqSourceCode(id = &quot;req_5&quot;, version = &quot;1.1&quot;, revision = &quot;r2&quot;, author = &quot;AAA&quot;)</baz>
+  <foobar>... @ReqSourceCode(id = &quot;req_3&quot;, version = &quot;1.1&quot;, revision = &quot;r4&quot;, author = &quot;BBB&quot;, status = &quot;DONE"&quot;)</foobar>
+  <baz>@ReqSourceCode(id = &quot;req_5&quot;, version = &quot;1.1&quot;, revision = &quot;r2&quot;, author = &quot;AAA&quot;, status = &quot;IN_PROGRESS&quot;)</baz>
+  <!-- Missing status for req_6 -->
+  <xxx>@ReqSourceCode(id = &quot;req_6&quot;, version = &quot;1.1&quot;, revision = &quot;r2&quot;, author = &quot;AAA&quot;)</xxx>
 </root>

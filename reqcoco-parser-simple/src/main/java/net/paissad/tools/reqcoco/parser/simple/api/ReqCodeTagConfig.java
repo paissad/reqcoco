@@ -42,6 +42,13 @@ public interface ReqCodeTagConfig {
 	 */
 	String getAuthorRegex();
 
+    /**
+     * <strong>IMPORTANT : </strong> The regex should be defined so that <code>Matcher.group(1)</code> should return the value.
+     * 
+     * @return The regex which returns the value of the 'status' contained into a tag.
+     */
+    String getStatusRegex();
+
 	/**
 	 * <strong>IMPORTANT : </strong> The regex should be defined so that <code>Matcher.group(1)</code> should return the value.
 	 * 

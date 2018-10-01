@@ -24,10 +24,15 @@ public abstract class AbstractReqCodeTagConfig implements ReqCodeTagConfig {
 		return "@Req.*?Code\\s*\\(.*revision\\s*=\\s*[\"|«|](.*?)[\"|»].*";
 	}
 
-	@Override
-	public String getAuthorRegex() {
-		return "@Req.*?Code\\s*\\(.*author\\s*=\\s*[\"|«|](.*?)[\"|»].*";
-	}
+    @Override
+    public String getAuthorRegex() {
+        return "@Req.*?Code\\s*\\(.*author\\s*=\\s*[\"|«|](.*?)[\"|»].*";
+    }
+
+    @Override
+    public String getStatusRegex() {
+        return "@Req.*?Code\\s*\\(.*status\\s*=\\s*[\"|«|](.*?)[\"|»].*";
+    }
 
 	@Override
 	public String getCommentRegex() {

@@ -53,7 +53,7 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
 
     @XmlElement(required = true)
     @Expose
-    private boolean            codeDone;
+    private Status             codeStatus;
 
     @XmlElement
     @Expose
@@ -65,7 +65,7 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
 
     @XmlElement(required = true)
     @Expose
-    private boolean            testDone;
+    private Status             testStatus;
 
     @XmlElement
     @Expose
@@ -88,6 +88,14 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
         this.version = version;
         this.revision = revision;
     }
+    
+    public boolean isCodeDone() {
+        return Status.DONE == this.getCodeStatus();
+    }
+    
+    public boolean isTestDone() {
+        return Status.DONE == this.getTestStatus();
+    }
 
     @Override
     public String toString() {
@@ -102,12 +110,12 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
         builder.append(version);
         builder.append(", revision=");
         builder.append(revision);
-        builder.append(", codeDone=");
-        builder.append(codeDone);
+        builder.append(", codeStatus=");
+        builder.append(codeStatus);
         builder.append(", codeAuthor=");
         builder.append(codeAuthor);
-        builder.append(", testDone=");
-        builder.append(testDone);
+        builder.append(", testStatus=");
+        builder.append(testStatus);
         builder.append(", testAuthor=");
         builder.append(testAuthor);
         builder.append("]");
