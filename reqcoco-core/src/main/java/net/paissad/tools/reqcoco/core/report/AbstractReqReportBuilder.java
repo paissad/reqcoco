@@ -3,8 +3,9 @@ package net.paissad.tools.reqcoco.core.report;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import lombok.AccessLevel;
@@ -24,7 +25,8 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
     public static final String      DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION = "REPORT-requirements";
 
     @Getter(value = AccessLevel.PROTECTED)
-    private Collection<Requirement> requirements                              = new LinkedList<>();
+    @Setter(value = AccessLevel.PRIVATE)
+    private Collection<Requirement> requirements;
 
     @Getter
     @Setter
@@ -37,10 +39,19 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
     private OutputStream            output;
 
     @Override
-    public void configure(Collection<Requirement> requirements, ReqReportConfig config) throws ReqReportBuilderException {
-        getRequirements().addAll(requirements);
+    public void configure(final Collection<Requirement> requirements, final ReqReportConfig config) throws ReqReportBuilderException {
+
         final ReqReportConfig cfg = config == null ? getDefaultReportConfig() : config;
+
         this.setReportConfig(cfg);
+
+        if (cfg.getFilteredVersions() == null || cfg.getFilteredVersions().isEmpty()) {
+            setRequirements(requirements);
+
+        } else {
+            final List<Requirement> filteredRequirements = requirements.stream().filter(req -> cfg.getFilteredVersions().contains(req.getVersion())).collect(Collectors.toList());
+            setRequirements(filteredRequirements);
+        }
     }
 
     /**

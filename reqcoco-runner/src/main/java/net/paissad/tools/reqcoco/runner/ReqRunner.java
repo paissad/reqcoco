@@ -26,6 +26,7 @@ import lombok.Getter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.report.ReqReportBuilder;
+import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 import net.paissad.tools.reqcoco.core.report.AbstractReqReportBuilder;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderConsole;
 import net.paissad.tools.reqcoco.core.report.ReqReportBuilderExcel;
@@ -174,10 +175,18 @@ public class ReqRunner {
 
     private void runReportBuilders(final Collection<ReqReportBuilder> reportBuilders, final Collection<Requirement> requirements) throws ReqReportBuilderException {
 
+        final ReqReportConfig reqReportConfig = new ReqReportConfig();
+        final String filteredVersions = getOptions().getVersionsInclude();
+
         for (ReqReportBuilder reportBuilder : reportBuilders) {
 
             LOGGER.info("{} Running report builder", LOGGER_PREFIX_TAG);
-            reportBuilder.configure(requirements, null);
+
+            if (!StringUtils.isBlank(filteredVersions)) {
+                reqReportConfig.setFilteredVersions(Arrays.asList(filteredVersions.split("\\s*,\\s*")));
+            }
+
+            reportBuilder.configure(requirements, reqReportConfig);
             reportBuilder.run();
             LOGGER.info("{} Finished running report builder", LOGGER_PREFIX_TAG);
         }

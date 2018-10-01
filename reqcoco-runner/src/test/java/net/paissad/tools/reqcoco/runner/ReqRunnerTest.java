@@ -68,6 +68,14 @@ public class ReqRunnerTest {
                 Files.exists(Paths.get(this.reportOutputDirPath.toString(), AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION + ".xml")));
 	}
 
+    @Test
+    public void testMainFilterVersionsIntoReports() throws URISyntaxException {
+        this.configFilePath = Paths.get(getClass().getResource("/config/reqcoco2.properties").toURI());
+        List<String> args = getSetupArgs(null);
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.parseArguments(args.toArray(new String[args.size()])));
+        Assert.assertEquals(ExitStatus.OK.getCode(), runner.generateReports());
+    }
+
 	@Test
 	public void testMainChangeReportName() throws URISyntaxException {
 		List<String> args = getSetupArgs(null);

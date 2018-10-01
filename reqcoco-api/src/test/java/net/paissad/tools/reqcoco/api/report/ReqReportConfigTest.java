@@ -1,5 +1,8 @@
 package net.paissad.tools.reqcoco.api.report;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,5 +36,14 @@ public class ReqReportConfigTest {
 	public void testGetRequirementsTableLegend() {
 		Assert.assertEquals("Table of requirements", cfg.getRequirementsTableLegend());
 	}
+	
+	public void testGetFileteredVersions_When_not_set() {
+	    Assert.assertNull(cfg.getFilteredVersions());
+	}
 
+    public void testGetFileteredVersions_When_set() {
+        final Collection<String> filteredVersions = Arrays.asList("v1", "v2");
+        cfg.setFilteredVersions(filteredVersions);
+        Assert.assertArrayEquals(filteredVersions.toArray(), cfg.getFilteredVersions().toArray());
+    }
 }

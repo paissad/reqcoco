@@ -1,6 +1,8 @@
 package net.paissad.tools.reqcoco.core.report;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,11 +25,6 @@ public class AbstractReqReportBuilderTest {
 		this.abstractRequirementReportBuilder = new AbstractReqReportBuilder() {
 
 			@Override
-			protected Collection<Requirement> getRequirements() {
-				return requirements;
-			}
-
-			@Override
 			public void run() throws ReqReportBuilderException {
 				// Do nothing
 			}
@@ -38,6 +35,7 @@ public class AbstractReqReportBuilderTest {
 			}
 
 		};
+        this.abstractRequirementReportBuilder.configure(requirements, null);
 	}
 
 	@Test
@@ -52,6 +50,22 @@ public class AbstractReqReportBuilderTest {
 		this.abstractRequirementReportBuilder.configure(requirements, new ReqReportConfig());
 		Assert.assertFalse(this.abstractRequirementReportBuilder.getDefaultReportConfig() == this.abstractRequirementReportBuilder.getReportConfig());
 	}
+
+    @Test
+    public void testConfigureWithEmptyFilteredVersions() throws ReqReportBuilderException {
+        final ReqReportConfig reportConfig = new ReqReportConfig();
+        reportConfig.setFilteredVersions(Collections.emptyList());
+        this.abstractRequirementReportBuilder.configure(requirements, reportConfig);
+        Assert.assertEquals(5, this.abstractRequirementReportBuilder.getRequirements().size());
+    }
+
+    @Test
+    public void testConfigureWithFilteredVersions() throws ReqReportBuilderException {
+        final ReqReportConfig reportConfig = new ReqReportConfig();
+        reportConfig.setFilteredVersions(Arrays.asList("1.1"));
+        this.abstractRequirementReportBuilder.configure(requirements, reportConfig);
+        Assert.assertTrue(this.abstractRequirementReportBuilder.getRequirements().size() == 1);
+    }
 
 	@Test
 	public void testGetCodeDoneCount() {
@@ -148,5 +162,13 @@ public class AbstractReqReportBuilderTest {
 		        AbstractReqReportBuilder.DEFAULT_REPORT_FILENAME_WITHOUT_EXTENSION
 		                + abstractRequirementReportBuilder.getDefaultFileReportExtension(),
 		        this.abstractRequirementReportBuilder.getDefaultReportFilename());
+	}
+
+	@Test
+	public void testBuildReqReports() throws ReqReportBuilderException {
+        this.abstractRequirementReportBuilder.configure(requirements, null);
+        final Collection<ReqReport> reqReports = this.abstractRequirementReportBuilder.buildReqReports();
+        Assert.assertEquals(2, reqReports.size()); // There are 2 requirement versions for which the reports have to be built
+        Assert.assertTrue(reqReports.stream().allMatch(report -> "1.0".equals(report.getVersion()) || "1.1".equals(report.getVersion())));
 	}
 }

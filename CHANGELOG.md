@@ -2,6 +2,8 @@
 ## [Unreleased]
 ### Fixed
  - Fix reqcoco runner shaded jar which were not runnable
+ - Possibility to limit the report to some specific versions (issue #25)
+ - Add requirement status for code and test (issue #26)
 
 ## [1.0.4] - 2018-09-24
 ### Added

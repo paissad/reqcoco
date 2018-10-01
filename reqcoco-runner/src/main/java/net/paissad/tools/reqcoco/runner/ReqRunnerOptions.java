@@ -60,6 +60,8 @@ public class ReqRunnerOptions {
     public static final String  CONFIG_REPORT_ZIP             = "report.zip";
 
     public static final String  CONFIG_CREATE_RAW_REPORT_FILE = "create.raw.report.file";
+    
+    public static final String  CONFIG_VERSIONS_INCLUDE       = "versions.include";
 
     private String              logLevel;
 
@@ -72,6 +74,8 @@ public class ReqRunnerOptions {
     private String              resourceExcludes;
 
     private String              ignores;
+    
+    private String              versionsInclude;
 
     private boolean             reportConsole;
 
@@ -159,6 +163,7 @@ public class ReqRunnerOptions {
         this.setResourceIncludes(props.getProperty(CONFIG_RESOURCE_INCLUDES, "*"));
         this.setResourceExcludes(props.getProperty(CONFIG_RESOURCE_EXCLUDES, ""));
         this.setIgnores(props.getProperty(CONFIG_REQUIREMENT_IGNORES, ""));
+        this.setVersionsInclude(props.getProperty(CONFIG_VERSIONS_INCLUDE));
         this.setReportConsole(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_CONSOLE, Boolean.FALSE.toString())));
         this.setReportHtml(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_HTML, Boolean.TRUE.toString())));
         this.setReportExcel(Boolean.parseBoolean(props.getProperty(CONFIG_REPORT_EXCEL, Boolean.TRUE.toString())));
