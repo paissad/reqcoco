@@ -21,6 +21,13 @@ public interface ReqDeclTagConfig {
 	 */
 	String getIdRegex();
 
+    /**
+     * <strong>IMPORTANT : </strong> The regex should be defined so that <code>Matcher.group(1)</code> should return the value.
+     * 
+     * @return The regex which returns the value of the 'group' contained into a tag.
+     */
+    String getGroupRegex();
+
 	/**
 	 * <strong>IMPORTANT : </strong> The regex should be defined so that <code>Matcher.group(1)</code> should return the value.
 	 * 

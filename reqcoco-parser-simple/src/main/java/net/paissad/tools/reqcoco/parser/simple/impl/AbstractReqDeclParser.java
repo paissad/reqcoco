@@ -52,9 +52,13 @@ public abstract class AbstractReqDeclParser implements ReqDeclParser {
 
 			// Retrieve the 'summary' part of the tag
 			final String summary = ReqTagUtil.trimString(ReqTagUtil.extractFieldValue(tag, declTagConfig.getSummaryRegex(), 1));
+			
+			// Retrieve the 'group' part of the tag
+			final String group = ReqTagUtil.trimString(ReqTagUtil.extractFieldValue(tag, declTagConfig.getGroupRegex(), 1));
 
 			final Requirement req = new Requirement(id, version, revision);
 			req.setShortDescription(summary);
+			req.setGroup(group);
 			extractedRequirements.add(req);
 		}
 

@@ -1,4 +1,4 @@
-@Req(id = "req_1", version = "1.0", revision = "r1", summary = "short summary n°1")
+@Req(id = "req_1", group = "group_foobar" version = "1.0", revision = "r1", summary = "short summary n°1")
 @Req(id = "req_2", version = "1.0", revision = "r1", summary = "summary number 2")
 @Req (id = "req_3", version = "1.1", revision = "r4", summary = "There is a space just before the 1st parenthesis")
 @Req

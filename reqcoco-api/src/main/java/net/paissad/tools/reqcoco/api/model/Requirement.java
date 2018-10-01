@@ -32,6 +32,10 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
     @Expose
     private String             name;
 
+    @XmlElement
+    @Expose
+    private String             group;
+
     @XmlAttribute
     @Expose
     private boolean            ignore;
@@ -102,6 +106,8 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
         StringBuilder builder = new StringBuilder();
         builder.append("Requirement [name=");
         builder.append(name);
+        builder.append(", group=");
+        builder.append(group);
         builder.append(", ignore=");
         builder.append(ignore);
         builder.append(", shortDescription=");

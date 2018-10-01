@@ -14,6 +14,7 @@ public class RequirementTest {
     public void setUp() throws Exception {
         this.requirement = new Requirement();
         this.requirement.setName("myId");
+        this.requirement.setGroup("myGroup");
         this.requirement.setVersion("myVersion");
         this.requirement.setRevision("myRevision");
         this.requirement.setShortDescription("myShortDesc");
@@ -31,6 +32,11 @@ public class RequirementTest {
     @Test
     public void testGetId() {
         Assert.assertEquals("myId", this.requirement.getName());
+    }
+
+    @Test
+    public void testGetGroup() {
+        Assert.assertEquals("myGroup", this.requirement.getGroup());
     }
 
     @Test
