@@ -109,8 +109,17 @@ public abstract class AbstractReqReportParser implements ReqReportParser {
 	}
 
 	private void sanitizeRequirements() {
-		getCachedRequirements().getRequirements().stream().filter(req -> StringUtils.isBlank(req.getVersion()))
-		        .forEach(req -> req.setVersion(Requirement.VERSION_UNKNOWN));
+		getCachedRequirements().getRequirements().stream().forEach(req -> {
+		    if (StringUtils.isBlank(req.getVersion())) {
+		        req.setVersion(Requirement.VERSION_UNKNOWN);
+		    }
+		    if (req.getCodeStatus() == null) {
+		        req.setCodeStatus(Requirement.DEFAULT_STATUS);
+		    }
+		    if (req.getTestStatus() == null) {
+		        req.setTestStatus(Requirement.DEFAULT_STATUS);
+		    }
+		});
 	}
 
 	protected abstract URI getURI() throws URISyntaxException;

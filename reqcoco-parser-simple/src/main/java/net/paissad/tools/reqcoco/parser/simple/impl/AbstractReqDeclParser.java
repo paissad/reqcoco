@@ -49,20 +49,26 @@ public abstract class AbstractReqDeclParser implements ReqDeclParser {
 
 			// Retrieve the 'revision' part of the tag
 			final String revision = ReqTagUtil.trimString(ReqTagUtil.extractFieldValue(tag, declTagConfig.getRevisionRegex(), 1));
-
+			
 			// Retrieve the 'summary' part of the tag
 			final String summary = ReqTagUtil.trimString(ReqTagUtil.extractFieldValue(tag, declTagConfig.getSummaryRegex(), 1));
 			
 			// Retrieve the 'group' part of the tag
 			final String group = ReqTagUtil.trimString(ReqTagUtil.extractFieldValue(tag, declTagConfig.getGroupRegex(), 1));
 
+            // Retrieve the 'link' part of the tag
+            final String link = ReqTagUtil.trimString(ReqTagUtil.extractFieldValue(tag, declTagConfig.getLinkRegex(), 1));
+
 			final Requirement req = new Requirement(id, version, revision);
 			req.setShortDescription(summary);
 			req.setGroup(group);
+            // Set default source code & test code statuses
+            req.setCodeStatus(Requirement.DEFAULT_STATUS);
+            req.setTestStatus(Requirement.DEFAULT_STATUS);
+			req.setLink(link);
 			extractedRequirements.add(req);
 		}
 
 		return extractedRequirements;
 	}
-
 }

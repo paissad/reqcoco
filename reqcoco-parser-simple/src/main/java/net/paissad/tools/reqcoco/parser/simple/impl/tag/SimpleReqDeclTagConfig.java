@@ -34,4 +34,8 @@ public class SimpleReqDeclTagConfig implements ReqDeclTagConfig {
 		return "@Req\\s*\\(.*summary\\s*=\\s*[\"|«|](.*?)[\"|»].*";
 	}
 
+    @Override
+    public String getLinkRegex() {
+        return "@Req\\s*\\(.*link\\s*=\\s*[\"|«|](.*?)[\"|»].*";
+    }
 }

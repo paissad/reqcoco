@@ -14,10 +14,15 @@
     <testStatus>TODO</testStatus>
   </requirement>
   <requirement name="req_name_3" version="1.0" revision="r2">
+    <group>demo_grp</group>
     <shortDescription>short desc 3</shortDescription>
     <fullDescription>very long desc number 3 ...</fullDescription>
     <codeStatus>IN_PROGRESS</codeStatus>
+    <codeAuthor>code_auth</codeAuthor>
+    <codeComment>code is well done</codeComment>
     <testStatus>TODO</testStatus>
+    <testAuthor>test_auth</testAuthor>
+    <testComment>test is not very reliable</testComment>
     <link>https://github.com/paissad/reqcoco</link>
   </requirement>
   <requirement name="req_name_4" version="1.0" revision="r2">
@@ -31,12 +36,12 @@
     <shortDescription>short desc</shortDescription>
     <fullDescription>very long desc ...</fullDescription>
     <codeStatus>DONE</codeStatus>
-    <testStatus>TODO</testStatus>
+    <testStatus>IGNORE</testStatus>
   </requirement>
   <requirement name="req_name_6" version="1.0" revision="r2">
     <shortDescription>short desc </shortDescription>
     <fullDescription>very long desc ...</fullDescription>
-    <codeStatus>IN_PROGRESS</codeStatus>
+    <codeStatus>IGNORE</codeStatus>
     <testStatus>TODO</testStatus>
   </requirement>
   <requirement name="req_name_7" version="1.1" revision="r3">

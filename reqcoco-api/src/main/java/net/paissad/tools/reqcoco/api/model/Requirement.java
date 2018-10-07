@@ -27,6 +27,8 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
 
     public static final String VERSION_UNKNOWN  = "N/A";
 
+    public static final Status DEFAULT_STATUS   = Status.TODO;
+
     @XmlAttribute(required = true)
     @XmlID
     @Expose
@@ -99,6 +101,14 @@ public class Requirement implements Serializable, Comparator<Requirement>, Compa
     
     public boolean isTestDone() {
         return Status.DONE == this.getTestStatus();
+    }
+    
+    public boolean isCodeIgnore() {
+        return Status.IGNORE == this.getCodeStatus() || isIgnore();
+    }
+    
+    public boolean isTestIgnore() {
+        return Status.IGNORE == this.getTestStatus() || isIgnore();
     }
 
     @Override

@@ -17,6 +17,7 @@ public class ReqDeclTagTest {
 		this.reqDeclTag.setVersion("ver");
 		this.reqDeclTag.setRevision("rev");
 		this.reqDeclTag.setSummary("desc");
+		this.reqDeclTag.setLink("http://site.xyz");
 	}
 
 	@Test
@@ -39,6 +40,11 @@ public class ReqDeclTagTest {
 		Assert.assertEquals("desc", this.reqDeclTag.getSummary());
 	}
 	
+    @Test
+    public void testGetLink() {
+        Assert.assertEquals("http://site.xyz", this.reqDeclTag.getLink());
+    }
+    
 	@Test
 	public void testEqualsAndHashCode() {
 

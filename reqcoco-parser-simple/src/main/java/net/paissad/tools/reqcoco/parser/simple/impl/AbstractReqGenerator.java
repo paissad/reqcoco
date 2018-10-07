@@ -82,6 +82,7 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
                 LOGGER.error(errMsg);
                 throw new ReqGeneratorExecutionException(errMsg, null);
             }
+
             parseCodeAndUpdateRequirements(declaredRequirements, sourceCodePath, CODE_TYPE.SOURCE);
 
             LOGGER.info("Parsing the tests code in order to compute the tests code coverage");
@@ -215,7 +216,14 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
         final String author = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getAuthorRegex(), 1);
 
         // Retrieve the 'status' part of the tag
-        final Status status = Status.valueOf(ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getStatusRegex(), 1));
+        final String statusAsString = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getStatusRegex(), 1);
+        Status status = null;
+        if (statusAsString != null) {
+            status = Status.valueOf(statusAsString);
+        } else {
+            LOGGER.warn("No status set for this tag --> {} <--- Status is going to be set to '{}'", tagAsString, Requirement.DEFAULT_STATUS.getDisplayName());
+            status = Requirement.DEFAULT_STATUS;
+        }
 
         // Retrieve the 'comment' part of the tag
         final String comment = ReqTagUtil.extractFieldValue(tagAsString, tagConfig.getCommentRegex(), 1);
@@ -241,18 +249,18 @@ public abstract class AbstractReqGenerator implements ReqGenerator {
      */
     private void updateRequirementFromTag(final Requirement requirement, final ReqCodeTag tag, CODE_TYPE codeType) {
 
+        final Status status = tag.getStatus() != null ? tag.getStatus() : Requirement.DEFAULT_STATUS;
+
         switch (codeType) {
         case SOURCE:
-            requirement.setCodeStatus(tag.getStatus());
+            requirement.setCodeStatus(status);
             requirement.setCodeAuthor(tag.getAuthor());
-            requirement.setCodeAuthorComment(tag.getComment());
             requirement.setCodeAuthorComment(tag.getComment());
             break;
 
         case TEST:
-            requirement.setTestStatus(tag.getStatus());
+            requirement.setTestStatus(status);
             requirement.setTestAuthor(tag.getAuthor());
-            requirement.setTestAuthorComment(tag.getComment());
             requirement.setTestAuthorComment(tag.getComment());
             break;
 

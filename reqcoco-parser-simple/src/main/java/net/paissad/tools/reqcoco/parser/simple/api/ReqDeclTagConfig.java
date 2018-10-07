@@ -48,4 +48,11 @@ public interface ReqDeclTagConfig {
 	 * @return The regex which returns the value of the 'summary' contained into a tag.
 	 */
 	String getSummaryRegex();
+
+    /**
+     * <strong>IMPORTANT : </strong> The regex should be defined so that <code>Matcher.group(1)</code> should return the value.
+     * 
+     * @return The regex which returns the value of the 'link' contained into a tag.
+     */
+    String getLinkRegex();
 }

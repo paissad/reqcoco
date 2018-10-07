@@ -25,7 +25,6 @@ public class RequirementTest {
         this.requirement.setTestStatus(Status.TODO);
         this.requirement.setTestAuthor("dev2");
         this.requirement.setTestAuthorComment("wip ...");
-        this.requirement.setIgnore(true);
         this.requirement.setLink("http://foobar");
     }
 
@@ -41,6 +40,7 @@ public class RequirementTest {
 
     @Test
     public void testIsIgnore() {
+        this.requirement.setIgnore(true);
         Assert.assertTrue(this.requirement.isIgnore());
     }
 
@@ -77,6 +77,18 @@ public class RequirementTest {
     }
 
     @Test
+    public void testIsCodeIgnored_when_not_ignored() {
+        Assert.assertFalse(this.requirement.isCodeIgnore());
+    }
+
+    @Test
+    public void testIsCodeIgnored_when_ignored() {
+        final Requirement req2 = new Requirement();
+        req2.setCodeStatus(Status.IGNORE);
+        Assert.assertTrue(req2.isCodeIgnore());
+    }
+
+    @Test
     public void testCodeStatus() {
         Assert.assertEquals(Status.DONE, this.requirement.getCodeStatus());
     }
@@ -101,6 +113,18 @@ public class RequirementTest {
         final Requirement req3 = new Requirement();
         req3.setTestStatus(Status.DONE);
         Assert.assertTrue(req3.isTestDone());
+    }
+
+    @Test
+    public void testIsTestIgnored_when_not_ignored() {
+        Assert.assertFalse(this.requirement.isTestIgnore());
+    }
+
+    @Test
+    public void testIsTestIgnored_when_ignored() {
+        final Requirement req2 = new Requirement();
+        req2.setTestStatus(Status.IGNORE);
+        Assert.assertTrue(req2.isTestIgnore());
     }
 
     @Test

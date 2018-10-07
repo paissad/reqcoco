@@ -58,7 +58,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
      * @return The number of code marked as done for any version.
      */
     protected long getCodeDoneCount() {
-        return getRequirements().stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count();
+        return getRequirements().stream().filter(req -> !req.isCodeIgnore() && req.isCodeDone()).count();
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
      * @return The number of code marked as done for the specified version.
      */
     protected long getCodeDoneCount(final String version) {
-        return getRequirementByVersion(version).stream().filter(req -> !req.isIgnore() && req.isCodeDone()).count();
+        return getRequirementByVersion(version).stream().filter(req -> !req.isCodeIgnore() && req.isCodeDone()).count();
     }
 
     /**
@@ -103,7 +103,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
      * @return The number of tests marked as done for any version
      */
     protected long getTestsDoneCount() {
-        return getRequirements().stream().filter(req -> !req.isIgnore() && req.isTestDone()).count();
+        return getRequirements().stream().filter(req -> !req.isCodeIgnore() && req.isTestDone()).count();
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class AbstractReqReportBuilder implements ReqReportBuilder {
      * @return The number of tests marked as done for the specified version.
      */
     protected long getTestsDoneCount(final String version) {
-        return getRequirementByVersion(version).stream().filter(req -> !req.isIgnore() && req.isTestDone()).count();
+        return getRequirementByVersion(version).stream().filter(req -> !req.isCodeIgnore() && req.isTestDone()).count();
     }
 
     /**

@@ -1,10 +1,15 @@
 
 ## [Unreleased]
 ### Fixed
+
+## [1.0.5] - 2018-10-08
+### Fixed
  - Fix reqcoco runner shaded jar which were not runnable
  - Possibility to limit the report to some specific versions (issue #25)
  - Add requirement status for code and test (issue #26)
  - Add 'group' information into requirements declarations (issue #28)
+ - Add more infos to excel and html report (issue #29)
+ - Set default status to TODO for all requirements (issue #30)
 
 ## [1.0.4] - 2018-09-24
 ### Added
@@ -40,7 +45,8 @@
 ## 1.0.0 - 2017-05-20
  - Initial version
 
-[Unreleased]: https://github.com/paissad/reqcoco/compare/v1.0.4...HEAD
+[Unreleased]: https://github.com/paissad/reqcoco/compare/v1.0.5...HEAD
+[1.0.5]: https://github.com/paissad/reqcoco/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/paissad/reqcoco/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/paissad/reqcoco/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/paissad/reqcoco/compare/v1.0.1...v1.0.2

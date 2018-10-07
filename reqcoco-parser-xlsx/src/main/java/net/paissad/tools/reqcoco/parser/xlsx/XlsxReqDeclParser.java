@@ -67,19 +67,30 @@ public class XlsxReqDeclParser implements ReqDeclParser {
 
 					} else {
 
-						final String name = ReqTagUtil.trimString(row.getCell(headersPositions.get("name")).getStringCellValue());
+                        final String name = ReqTagUtil.trimString(row.getCell(headersPositions.get("name")).getStringCellValue());
 						final String version = ReqTagUtil.trimString(row.getCell(headersPositions.get("version")).getStringCellValue());
-						final String revision = ReqTagUtil.trimString(row.getCell(headersPositions.get("revision")).getStringCellValue());
-						final String summary = ReqTagUtil.trimString(row.getCell(headersPositions.get("summary")).getStringCellValue());
 
-						final Map<String, String> tagMembers = new HashMap<>();
-						tagMembers.put("name", name);
-						tagMembers.put("version", version);
-						tagMembers.put("revision", revision);
-						tagMembers.put("summary", summary);
+						String revision = null;
+                        if (headersPositions.get("revision") != null) {
+                            revision = ReqTagUtil.trimString(row.getCell(headersPositions.get("revision")).getStringCellValue());    
+                        }
 
-						final Requirement req = new Requirement(name, version, revision);
-						req.setShortDescription(summary);
+                        final Requirement req = new Requirement(name, version, revision);
+
+                        if (headersPositions.get("group") != null) {
+                            final String group = ReqTagUtil.trimString(row.getCell(headersPositions.get("group")).getStringCellValue());
+                            req.setGroup(group);
+                        }
+                        
+                        if (headersPositions.get("summary") != null) {
+                            final String summary = ReqTagUtil.trimString(row.getCell(headersPositions.get("summary")).getStringCellValue());
+                            req.setShortDescription(summary);
+                        }
+
+                        if (headersPositions.get("link") != null) {
+                            final String link = ReqTagUtil.trimString(row.getCell(headersPositions.get("link")).getStringCellValue());
+                            req.setLink(link);
+                        }
 
 						declaredRequirements.add(req);
 					}

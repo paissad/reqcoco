@@ -3,14 +3,17 @@ package net.paissad.tools.reqcoco.core.report;
 enum CellConfig {
 
                  NAME("Name", 0),
-                 VERSION("Version", 1),
-                 REVISION("Revision", 2),
-                 DESCRIPTION("Short Description", 3),
-                 CODE("Code", 4),
-                 CODE_AUTHOR("Code Author", 5),
-                 TEST("Test", 6),
-                 TEST_AUTHOR("Test Author", 7),
-                 LINK("Link", 8);
+                 GROUP("Group", 1),
+                 VERSION("Version", 2),
+                 REVISION("Revision", 3),
+                 DESCRIPTION("Short Description", 4),
+                 CODE_STATUS("Code", 5),
+                 CODE_AUTHOR("Code Author", 6),
+                 CODE_COMMENT("Code Comment", 7),
+                 TEST_STATUS("Test", 8),
+                 TEST_AUTHOR("Test Author", 9),
+                 TEST_COMMENT("Test Comment", 10),
+                 LINK("Link", 11);
 
     public final String header;
     public final int    position;

@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * This class represents the tag which is to placed into the source to parse in order to retrieve the declared requirements.
+ * This class represents a requirement declaration.
  * 
  * @author paissad
  */
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = { "summary" })
+@EqualsAndHashCode(exclude = { "summary", "link" })
 public class ReqDeclTag {
 
 	private String	id;
@@ -21,5 +21,6 @@ public class ReqDeclTag {
 	private String	revision;
 
 	private String	summary;
-
+	
+    private String  link;
 }

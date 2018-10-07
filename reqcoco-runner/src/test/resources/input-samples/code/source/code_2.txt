@@ -1,1 +1,2 @@
 @ReqSourceCode(id = "req_2", version = "1.0", revision = "r1", author = "anonymous", status = "DONE")
+@ReqSourceCode(id = "req_9", version = "1.0", revision = "myRev", author = "dev_9", status = "IGNORE", comment = "I don't want to develop this requirement ...")

@@ -132,56 +132,82 @@ rect:hover {
                 <thead>
                     <tr>
                         <th data-sortable="true" data-halign="center" data-align="center">Name</th>
+                        <th data-sortable="true" data-halign="center" data-align="center" data-visible="false">Group</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-cell-style="cellVersionStatusStyle">Version</th>
                         <th data-halign="center" data-align="center">Revision</th>
                         <th data-halign="center" data-align="left">Short Description</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-cell-style="cellDoneStatusStyle">Code</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-visible="false"><span
                             class="glyphicon glyphicon-user"></span> Code Author</th>
+                        <th data-halign="center" data-align="left" data-visible="false">Code Comment</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-cell-style="cellDoneStatusStyle">Test</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-visible="false"><span
                             class="glyphicon glyphicon-user"></span> Test Author</th>
+                        <th data-halign="center" data-align="left" data-visible="false">Test Comment</th>
                         <th data-sortable="true" data-halign="center" data-align="center" data-formatter="fieldLinkFormatter"><span
                             class="glyphicon glyphicon-link"></span> Link</th>
                     </tr>
                 </thead>
                 <tbody>
                     <#list requirements as req> <!-- ${req_index + 1} -->
-                    <tr>
-                        <td>${req.name}</td>
-                        <#if req.version == "N/A">
-                            <td><span class="glyphicon glyphicon-question-sign"></span></td>
-                        <#else>
-                            <td>${req.version}</td>
-                        </#if>
-                        <td>${req.revision!''}</td>
-                        <td>${req.shortDescription!''}</td>
-                        <#if !req.ignore>
-                            <td>${req.codeDone?then('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}</td>
-                        <#else>
-                            <td data-toggle="tooltip" title="This requirement is marked as to be ignored"><span class="glyphicon glyphicon-exclamation-sign"></span></td>
-                        </#if>
-                        <#if req.codeAuthor?has_content>
-                            <td>${req.codeAuthor}</td>
-                        <#else>
-                            <td data-toggle="tooltip" title="No author for this source code !">N/A</td>
-                        </#if>
-                        <#if !req.ignore>
-                            <td>${req.testDone?then('<span class="glyphicon glyphicon-ok"></span>', '<span class="glyphicon glyphicon-remove"></span>')}
-                        <#else>
-                            <td data-toggle="tooltip" title="This requirement is marked as to be ignored"><span class="glyphicon glyphicon-exclamation-sign"></span></td>
-                        </#if>
-                        <#if req.testAuthor?has_content>
-                            <td>${req.testAuthor}</td>
-                        <#else>
-                            <td data-toggle="tooltip" title="No author for this test code !">N/A</td>
-                        </#if>
-                        <#if req.link?has_content>
-                            <td data-toggle="tooltip" title="Link to the place where the requirement was declared at the first place">${req.link}</td>
-                        <#else>
-                            <td></td>
-                        </#if>
-                    </tr>
+                    <#if !req.ignore>
+                        <tr>
+                    <#else>
+                        <tr class="table-secondary">
+                    </#if>
+                            <td>${req.name}</td>
+                            <td>${req.group!''}</td>
+                            <#if req.version == "N/A">
+                                <td><span class="glyphicon glyphicon-question-sign"></span></td>
+                            <#else>
+                                <td>${req.version}</td>
+                            </#if>
+                            <td>${req.revision!''}</td>
+                            <td>${req.shortDescription!''}</td>
+                            <td>
+                                <#if req.codeDone>
+                                    <span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="Done"></span>
+                                <#elseif req.codeStatus == 'IN_PROGRESS'>
+                                    <span class="glyphicon glyphicon-refresh" data-toggle="tooltip" title="In Progress"></span>
+                                <#elseif req.codeStatus == 'IGNORE'>
+                                    <span class="glyphicon glyphicon-minus" data-toggle="tooltip" title="Ignored"></span>
+                                <#elseif req.codeStatus == 'FAILED'>
+                                    <span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Failed"></span>
+                                <#else>
+                                    <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="${req.codeStatus}"></span>
+                                </#if>
+                            </td>
+                            <#if req.codeAuthor?has_content>
+                                <td>${req.codeAuthor}</td>
+                            <#else>
+                                <td data-toggle="tooltip" title="No author for this source code !">N/A</td>
+                            </#if>
+                            <td>${req.codeAuthorComment!''}</td>
+                            <td>
+                                <#if req.testDone>
+                                    <span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="Done"></span>
+                                <#elseif req.testStatus == 'IN_PROGRESS'>
+                                    <span class="glyphicon glyphicon-refresh" data-toggle="tooltip" title="In Progress"></span>
+                                <#elseif req.testStatus == 'IGNORE'>
+                                    <span class="glyphicon glyphicon-minus" data-toggle="tooltip" title="Ignored"></span>
+                                <#elseif req.testStatus == 'FAILED'>
+                                    <span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Failed"></span>
+                                <#else>
+                                    <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="${req.testStatus}"></span>
+                                </#if>
+                            </td>
+                            <#if req.testAuthor?has_content>
+                                <td>${req.testAuthor}</td>
+                            <#else>
+                                <td data-toggle="tooltip" title="No author for this test code !">N/A</td>
+                            </#if>
+                            <td>${req.testAuthorComment!''}</td>
+                            <#if req.link?has_content>
+                                <td data-toggle="tooltip" title="Link to the place where the requirement was declared at the first place">${req.link}</td>
+                            <#else>
+                                <td></td>
+                            </#if>
+                        </tr>
                     </#list>
                 </tbody>
             </table>
@@ -420,11 +446,18 @@ $(function () {
 });
 // Function for colorizing the cells of (code/test) done columns
 function cellDoneStatusStyle(value, row, index) {
-  // var classes = ['active', 'success', 'info', 'warning', 'danger'];
 
   if (value && value.includes("glyphicon-ok")) {
       return {
           classes: 'success'
+      };
+  } else if (value && value.includes("glyphicon-refresh")) {
+      return {
+          classes: 'info'
+      };
+  } else if (value && value.includes("glyphicon-minus")) {
+      return {
+          classes: 'active'
       };
   } else if (value && value.includes("glyphicon-remove")) {
       return {
@@ -475,5 +508,17 @@ dashboard('#dashboard_tests_coverage',freqDataTests);
 
 </script>
 
-<!--
--->
+<!-- 
+var freqDataCode=[
+    {Version:'Version 1.0',freq:{Done:10, Undone:3, Ignored:1}}
+    ,{Version:'Version 1.1',freq:{Done:7, Undone:2, Ignored:0}}
+    ,{Version:'Version 1.3',freq:{Done:8, Undone:3, Ignored:0}}
+    ,{Version:'Version 2.0',freq:{Done:1, Undone:4, Ignored:0}},
+];
+var freqDataTests=[
+    {Version:'Version 1.0',freq:{Done:3, Undone:3, Ignored:1}}
+    ,{Version:'Version 1.1',freq:{Done:1, Undone:2, Ignored:0}}
+    ,{Version:'Version 1.3',freq:{Done:4, Undone:3, Ignored:0}}
+    ,{Version:'Version 2.0',freq:{Done:6, Undone:4, Ignored:0}},
+];
+ -->

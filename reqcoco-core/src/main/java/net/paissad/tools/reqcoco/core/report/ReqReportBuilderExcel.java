@@ -43,6 +43,7 @@ import lombok.Getter;
 import net.paissad.tools.reqcoco.api.exception.ReqReportBuilderException;
 import net.paissad.tools.reqcoco.api.model.Requirement;
 import net.paissad.tools.reqcoco.api.model.Requirements;
+import net.paissad.tools.reqcoco.api.model.Status;
 import net.paissad.tools.reqcoco.api.report.ReqReportConfig;
 
 public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
@@ -415,12 +416,12 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
             XSSFColor cellColor = new XSSFColor(Color.WHITE);
 
             switch (cellConfig) {
-            case CODE:
-                cellColor = getColorForDoneCell(req.isIgnore(), req.isCodeDone());
+            case CODE_STATUS:
+                cellColor = getColorForCell(req.getCodeStatus());
                 break;
 
-            case TEST:
-                cellColor = getColorForDoneCell(req.isIgnore(), req.isTestDone());
+            case TEST_STATUS:
+                cellColor = getColorForCell(req.getTestStatus());
                 break;
 
             case LINK:
@@ -443,7 +444,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
             cell.setCellStyle(currentCellStyle);
             currentCellStyle.setAlignment(headerCellStyle.getAlignmentEnum());
             currentCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            if (req.isIgnore() && !(CellConfig.CODE == cellConfig || CellConfig.TEST == cellConfig)) {
+            if (req.isIgnore() && !(CellConfig.CODE_STATUS == cellConfig || CellConfig.TEST_STATUS == cellConfig)) {
                 currentCellStyle.setFillForegroundColor(IndexedColors.DARK_YELLOW.getIndex());
                 currentCellStyle.setFillPattern(FillPatternType.FINE_DOTS);
             }
@@ -467,11 +468,21 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
         currentCellStyle.setBorderRight(borderStyle);
     }
 
-    private static XSSFColor getColorForDoneCell(final boolean ignore, final boolean done) {
-        if (ignore) {
-            return new XSSFColor(Color.YELLOW);
-        } else {
-            return done ? new XSSFColor(Color.GREEN) : new XSSFColor(Color.RED);
+    private static XSSFColor getColorForCell(final Status requirementStatus) {
+
+        switch (requirementStatus) {
+
+        case DONE:
+            return new XSSFColor(Color.GREEN);
+
+        case IGNORE:
+            return new XSSFColor(Color.LIGHT_GRAY);
+
+        case IN_PROGRESS:
+            return new XSSFColor(Color.BLUE);
+
+        default:
+            return new XSSFColor(Color.RED);
         }
     }
 
@@ -480,22 +491,26 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
         case 0:
             return requirement.getName();
         case 1:
-            return requirement.getVersion();
+            return requirement.getGroup();
         case 2:
-            return requirement.getRevision();
+            return requirement.getVersion();
         case 3:
-            return requirement.getShortDescription();
+            return requirement.getRevision();
         case 4:
-            final String codeDoneMsg = requirement.isCodeDone() ? "OK" : "KO";
-            return requirement.isIgnore() ? "Ignore" : codeDoneMsg;
+            return requirement.getShortDescription();
         case 5:
-            return requirement.getCodeAuthor();
+            return requirement.getCodeStatus().getDisplayName();
         case 6:
-            final String testDoneMsg = requirement.isTestDone() ? "OK" : "KO";
-            return requirement.isIgnore() ? "Ignore" : testDoneMsg;
+            return requirement.getCodeAuthor();
         case 7:
-            return requirement.getTestAuthor();
+            return requirement.getCodeAuthorComment();
         case 8:
+            return requirement.getTestStatus().getDisplayName();
+        case 9:
+            return requirement.getTestAuthor();
+        case 10:
+            return requirement.getTestAuthorComment();
+        case 11:
             return requirement.getLink();
         default:
             throw new IllegalStateException("The position " + position + " is not handled for the Excel report !!!");
@@ -508,8 +523,7 @@ public class ReqReportBuilderExcel extends AbstractReqReportBuilder {
     }
 
     private enum CODE_TYPE {
-                            SOURCE,
-                            TEST;
+        SOURCE, TEST;
     }
 
 }
