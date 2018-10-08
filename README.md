@@ -19,6 +19,7 @@ Table of contents
 
 - [About](#about)
 - [Downloads](#downloads)
+- [Wiki](#wiki)
 - [Source](#source)
 - [License](#license)
 
@@ -36,6 +37,9 @@ desired format/output.
 
 The releases can be retrieved from the [GitHub Releases Download Page][gh-releases-page].
 
+# Wiki
+
+The documentation is located at the [Wiki page][reqcoco-wiki-page]
 
 # Source
 
@@ -46,6 +50,7 @@ The latest source code can be found [here on GitHub][gh-source-code-page]. Feel 
 **ReqCoCo** is licensed under the [LGPL v3 license][reqcoco-license-link]. 
 
 [reqcoco-homepage]: https://paissad.github.io/reqcoco "ReqCoCo Homepage"
+[reqcoco-wiki-page]: https://github.com/paissad/reqcoco/wiki "ReqCoCo Wiki"
 [gh-releases-page]: https://github.com/paissad/reqcoco/releases "ReqCoCo Releases"
 [gh-source-code-page]: https://github.com/paissad/reqcoco "ReqCoCo Source Code"
 [reqcoco-license-link]: https://raw.githubusercontent.com/paissad/reqcoco/master/LICENSE "License"
